@@ -4,7 +4,7 @@ private_lands = room {
 		Ты натыкаешься на лесника.
 	]];
 	way = {
-		'forest',
+		'forest_edge',
 	};
 	obj = {
 		'forester',

@@ -12,6 +12,6 @@ square = room {
 	way = {
 		'home';
 		'forest_edge';
-		'village_neib';
+		'fields';
 	};
 }

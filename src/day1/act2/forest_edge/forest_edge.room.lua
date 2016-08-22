@@ -5,5 +5,6 @@ forest_edge = room {
 	]];
 	way = {
 		'square';
+		'private_lands';
 	};
 }

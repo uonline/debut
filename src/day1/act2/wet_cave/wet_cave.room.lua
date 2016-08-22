@@ -1,4 +1,4 @@
-square = room {
+wet_cave = room {
 	nam = 'Сырая пещера';
 	dsc = [[
 	]];
