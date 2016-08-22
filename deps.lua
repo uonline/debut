@@ -1,3 +1,7 @@
+-- DO NOT EDIT!
+-- This file was generated automatically
+-- using tools/gendeps.lua.
+
 dofile 'src/day1/act1/square/square.room.lua'
 dofile 'src/day1/act1/square/square_well.obj.lua'
 dofile 'src/day1/act1/square/elder.obj.lua'
