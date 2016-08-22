@@ -155,8 +155,9 @@ square = room {
 		'blacksmith';
 	};
 	way = {
-		'home';
-		'forest';
+		'home',
+		'forest',
+		'village_neib'
 	};
 }
 
@@ -169,4 +170,25 @@ forest = room {
 	way = {
 		'square';
 	};
+}
+
+village_neib = room {
+	nam = 'Окрестности деревни',
+	dsc = [[
+		Окрестности деревни.
+	]];
+	obj = {
+		'warren'
+	}
+}
+
+warren = obj {
+	nam = 'Уорри Ростовщик';
+	dsc = [[
+		{Уорри "Ростовщик"} - последний человек в деревне, которому стоило задолжать.
+	]];
+}
+
+uh_camp = room {
+	nam = 'Лагерь урук-хай',
 }
