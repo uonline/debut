@@ -5,13 +5,13 @@ square = room {
 		нет.
 	]];
 	obj = {
-		'square_well';
+		'well';
 		'elder';
 		'blacksmith';
 	};
 	way = {
-		'home',
-		'forest',
-		'village_neib'
+		'home';
+		'forest_edge';
+		'village_neib';
 	};
 }
