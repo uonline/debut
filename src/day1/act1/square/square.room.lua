@@ -5,7 +5,7 @@ square = room {
 		нет.
 	]];
 	obj = {
-		'square_well';
+		'well';
 		'elder';
 		'blacksmith';
 	};
