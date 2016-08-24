@@ -8,6 +8,7 @@ square = room {
 		'well';
 		'elder';
 		'blacksmith';
+		'holy_sign';
 	};
 	way = {
 		'home';

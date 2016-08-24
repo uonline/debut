@@ -7,4 +7,7 @@ fields = room {
 	obj = {
 		'warren';
 	};
+	way = {
+		'square';
+	};
 }

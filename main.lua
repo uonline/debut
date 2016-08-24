@@ -15,6 +15,7 @@ game.use = 'Не сработает.';
 game.inv = 'Зачем это мне?';
 
 function init()
+	stead.phrase_prefix = '-- ';
 	-- инициализация, если она нужна
 end
 

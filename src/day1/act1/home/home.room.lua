@@ -9,6 +9,7 @@ home = room {
 		'food';
 		'trophies';
 		'journal';
+		'diary';
 		'posters';
 	};
 	way = {
