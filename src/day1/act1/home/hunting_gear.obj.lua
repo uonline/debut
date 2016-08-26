@@ -4,8 +4,7 @@ hunting_gear = obj {
 		На стене висит твоё {охотничье снаряжение}.
 	]];
 	tak = function()
-		_hunt_gear = true
-		_need_new_bow = true
+		event 'gear_taken'
 		return [[
 			Ты снял снаряжение со стены и положил в рюкзак.
 			^
@@ -18,3 +17,40 @@ hunting_gear = obj {
 		и красное дилдо.
 	]];
 }
+
+on_event('gear_taken', function()
+	_hunt_gear = true
+	_need_new_bow = true
+end)
+
+diary_entry(function()
+	if not _hunt_gear then
+		return [[
+			Собираюсь на охоту. Нужно взять снаряжение.
+		]]
+	end
+end)
+
+diary_entry(function()
+	if not _hunt_food then
+		return [[
+			Еду тоже надо захватить.
+		]]
+	end
+end)
+
+diary_entry(function()
+	if _need_new_bow then
+		return [[
+			Мой лук уже никуда не годится. Нужно попросить кузнеца сделать новый.
+		]]
+	end
+end)
+
+diary_entry(function()
+	if _warren_conflict then
+		return [[
+			Уоррен отобрал у кузнеца лук за долги. Надо урегулировать.
+		]]
+	end
+end)
