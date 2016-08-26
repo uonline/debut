@@ -20,7 +20,4 @@ function init()
 end
 
 
-dofile 'engine/events.lua'
-dofile 'engine/diary.lua'
-
 dofile 'deps.lua'

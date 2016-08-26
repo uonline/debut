@@ -29,12 +29,17 @@ local prefix = [[-- DO NOT EDIT!
 -- This file was generated automatically
 -- using tools/gendeps.lua.]]
 local template = "dofile '{}'"
+local pf = function(path)
+	for filename, attr in dirtree(path) do
+		if attr.mode == 'file' then
+			local line = string.gsub(template, '{}', filename)
+			print(line)
+		end
+	end
+end
 
 print(prefix)
 print ''
-for filename, attr in dirtree("src/") do
-	if attr.mode == 'file' then
-		local line = string.gsub(template, '{}', filename)
-		print(line)
-	end
-end
+pf 'engine/'
+print ''
+pf 'src/'

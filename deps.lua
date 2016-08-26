@@ -2,6 +2,9 @@
 -- This file was generated automatically
 -- using tools/gendeps.lua.
 
+dofile 'engine/events.lua'
+dofile 'engine/diary.lua'
+
 dofile 'src/day1/act4/tract_camp/tract_camp.room.lua'
 dofile 'src/day1/act1/fields/fields.room.lua'
 dofile 'src/day1/act1/fields/warren.obj.lua'
