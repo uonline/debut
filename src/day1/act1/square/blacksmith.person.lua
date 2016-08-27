@@ -16,6 +16,8 @@ blacksmith_dlg = dlg {
 	]];
 	phr = {
 		{
+			tag = 'new_bow';
+			false;
 			'Мне нужен новый лук!';
 			[[
 				-- Лук сделать -- дело несложное. Только есть одна проблема.
@@ -35,3 +37,7 @@ blacksmith_dlg = dlg {
 		};
 	};
 }
+
+on_event('gear_taken', function()
+	blacksmith_dlg:pon('new_bow')
+end)

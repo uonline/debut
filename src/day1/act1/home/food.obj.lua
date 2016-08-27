@@ -4,7 +4,7 @@ food = obj {
 		На столе лежит {еда}.
 	]];
 	tak = function()
-		_hunt_food = true
+		event 'food_taken'
 		return [[
 			Ты завернул еду в обёрточную бумагу и положил в рюкзак.
 		]]
@@ -14,3 +14,7 @@ food = obj {
 		лягушачьи лапки, парик старой бабки.
 	]];
 }
+
+on_event('food_taken', function()
+	_hunt_food = true
+end)

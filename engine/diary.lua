@@ -4,6 +4,14 @@ diary_entry = function(fn)
 	table.insert(diary_handlers, fn)
 end
 
+diary_helper = function(x, line)
+	if x then
+		return line
+	else
+		return nil
+	end
+end
+
 diary = obj {
 	nam = 'Дневник';
 	inv = function()
