@@ -6,3 +6,7 @@ smith_hammer = obj {
 		и, кажется, руны.
 	]];
 }
+
+on_event('got new bow', function()
+	drop 'smith_hammer'
+end)

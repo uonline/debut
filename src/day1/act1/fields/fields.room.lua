@@ -6,6 +6,7 @@ fields = room {
 	]];
 	obj = {
 		'warren';
+		'victim';
 	};
 	way = {
 		'square';

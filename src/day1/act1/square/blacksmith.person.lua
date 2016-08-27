@@ -30,7 +30,7 @@ blacksmith_dlg = dlg {
 		{
 			tag = 'all_done';
 			false;
-			'Всё готово, сэр';
+			'Всё готово, сэр.';
 			[[
 				-- Окей, вот твой лук.
 			]];
@@ -53,7 +53,6 @@ on_event('gear_taken', function()
 	blacksmith_dlg:pon('new_bow')
 end)
 
-on_event('warren_conflict', function()
-	_warren_conflict = true
-	elder_dlg:pon('who_is_warren')
+on_event('got the hammer', function()
+	blacksmith_dlg:pon('all_done')
 end)

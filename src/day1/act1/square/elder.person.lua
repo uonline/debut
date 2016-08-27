@@ -15,15 +15,18 @@ elder_dlg = dlg {
 		-- Доброе утро! -- с улыбкой говорит староста.
 	]];
 	phr = {
-		--[[
 		{
-			'Братан, выручай, срочно зеркало нужно.';
-			'-- Какие вопросы, держи.';
+			tag = 'why_so_dead';
+			false;
+			'А почему у Уорри под окнами труп лежит?';
+			[[
+				-- А, тебе нравится пиво "Охота крепкое"? Держи зеркало,
+				братан.
+			]];
 			function()
 				take 'mirror'
 			end;
 		};
-		--]]
 		{
 			tag = 'who_is_warren';
 			false;
@@ -44,3 +47,12 @@ elder_dlg = dlg {
 		};
 	};
 }
+
+on_event('warren_conflict', function()
+	_warren_conflict = true
+	elder_dlg:pon('who_is_warren')
+end)
+
+on_event('found the body', function()
+	elder_dlg:pon('why_so_dead')
+end)

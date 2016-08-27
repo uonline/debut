@@ -22,9 +22,15 @@ warren_dlg = dlg {
 			'Я всё знаю, староста -- твой дед.';
 			'-- О боже, изыди, я всё отдам.';
 			function()
-				blacksmith_dlg:pon('all_done')
+				event 'got the hammer'
 				take 'smith_hammer'
 			end;
+		};
+		{
+			tag = 'why_so_dead';
+			false;
+			'Почему у тебя под окнами труп валяется?';
+			'-- Ничё не знаю, это всё пчёлы-убийцы, в суде ты ничего не докажешь.';
 		};
 		{
 			always = true;
@@ -36,3 +42,7 @@ warren_dlg = dlg {
 		};
 	};
 }
+
+on_event('found the body', function()
+	warren_dlg:pon('why_so_dead')
+end)
