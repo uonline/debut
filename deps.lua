@@ -6,6 +6,7 @@ dofile 'engine/events.lua'
 dofile 'engine/diary.lua'
 
 dofile 'src/day1/act4/tract_camp/tract_camp.room.lua'
+dofile 'src/day1/act1/fields/smith_hammer.lua'
 dofile 'src/day1/act1/fields/fields.room.lua'
 dofile 'src/day1/act1/fields/warren.person.lua'
 dofile 'src/day1/act1/state.lua'

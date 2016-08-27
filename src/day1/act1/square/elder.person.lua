@@ -31,7 +31,7 @@ elder_dlg = dlg {
 			'-- А, да внук мой, халтурит на полях иногда.';
 			function()
 				_warren_knows_elder = true
-				--warren_dlg:pon('elder_hates_you')
+				warren_dlg:pon('elder_hates_you')
 			end;
 		};
 		{

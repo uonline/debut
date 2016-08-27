@@ -28,6 +28,17 @@ blacksmith_dlg = dlg {
 			end;
 		};
 		{
+			tag = 'all_done';
+			false;
+			'Всё готово, сэр';
+			[[
+				-- Окей, вот твой лук.
+			]];
+			function()
+				event 'got new bow'
+			end
+		};
+		{
 			always = true;
 			'Я пойду.';
 			'Кузнец погружён в свои мысли и ничего тебе не отвечает.';
