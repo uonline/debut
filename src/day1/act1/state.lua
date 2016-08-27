@@ -29,3 +29,11 @@ diary_entry(function()
 		Уоррен отобрал у кузнеца лук за долги. Надо урегулировать.
 	]])
 end)
+
+_warren_knows_elder = false
+diary_entry(function()
+	return diary_helper((_warren_knows_elder), [[
+		Уоррен -- дальний родственник старосты. Возможно, этим его можно
+		запугать и лишить воли.
+	]])
+end)

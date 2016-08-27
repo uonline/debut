@@ -24,7 +24,7 @@ blacksmith_dlg = dlg {
 				Уоррен, скотина, отобрал у меня молот за долги.
 			]];
 			function()
-				_warren_conflict = true
+				event 'warren_conflict'
 			end;
 		};
 		{
@@ -40,4 +40,9 @@ blacksmith_dlg = dlg {
 
 on_event('gear_taken', function()
 	blacksmith_dlg:pon('new_bow')
+end)
+
+on_event('warren_conflict', function()
+	_warren_conflict = true
+	elder_dlg:pon('who_is_warren')
 end)

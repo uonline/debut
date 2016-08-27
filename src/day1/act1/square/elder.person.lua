@@ -25,6 +25,16 @@ elder_dlg = dlg {
 		};
 		--]]
 		{
+			tag = 'who_is_warren';
+			false;
+			'А кто такой Уорри?';
+			'-- А, да внук мой, халтурит на полях иногда.';
+			function()
+				_warren_knows_elder = true
+				--warren_dlg:pon('elder_hates_you')
+			end;
+		};
+		{
 			always = true;
 			'Я пойду.';
 			'-- До встречи!';
