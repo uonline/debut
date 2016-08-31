@@ -4,7 +4,7 @@ hunting_gear = obj {
 		На стене висит твоё {охотничье снаряжение}.
 	]];
 	tak = function()
-		event 'gear_taken'
+		event 'gear taken'
 		return [[
 			Ты снял снаряжение со стены и положил в рюкзак.
 			^
@@ -18,7 +18,7 @@ hunting_gear = obj {
 	]];
 }
 
-on_event('gear_taken', function()
+on_event('gear taken', function()
 	_hunt_gear = true
 	_need_new_bow = true
 end)

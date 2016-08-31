@@ -1,5 +1,5 @@
 -- $Name: debut$
--- $Version: 0.2.0$
+-- $Version: 0.3.0$
 -- $Author: mixsquad$
 
 instead_version "1.9.1"
@@ -17,7 +17,10 @@ game.inv = 'Зачем это мне?';
 function init()
 	print '-- Game init'
 	stead.phrase_prefix = '-- ';
-	-- инициализация, если она нужна
+end
+
+function start()
+	print '-- Game start'
 end
 
 

@@ -46,3 +46,7 @@ warren_dlg = dlg {
 on_event('found the body', function()
 	warren_dlg:pon('why_so_dead')
 end)
+
+on_event('warren knows elder', function()
+	warren_dlg:pon('elder_hates_you')
+end)

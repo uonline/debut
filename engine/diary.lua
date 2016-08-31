@@ -1,27 +1,30 @@
-diary_handlers = {}
+_diary_entries = {}
 
-diary_entry = function(fn)
-	table.insert(diary_handlers, fn)
+diary_add = function(id, text)
+	table.insert(_diary_entries, {
+		["id"] = id;
+		["text"] = text;
+	})
 end
 
-diary_helper = function(x, line)
-	if x then
-		return line
-	else
-		return nil
+diary_del = function(id)
+	tmp = {}
+	for i,v in ipairs(_diary_entries) do
+		if v.id ~= id then
+			table.insert(tmp, v)
+		end
 	end
+	_diary_entries = tmp
 end
+
 
 diary = obj {
 	nam = 'Дневник';
 	inv = function()
 		ret = 'Ты открываешь дневник и листаешь последние записи.'
 		-- cycle
-		for i,v in ipairs(diary_handlers) do
-			local tmp = v()
-			if tmp ~= nil then
-				ret = ret .. '^-- ' .. tmp
-			end
+		for i,v in ipairs(_diary_entries) do
+			ret = ret .. '^-- ' .. v.text
 		end
 		-- eof
 		ret = ret .. [[
