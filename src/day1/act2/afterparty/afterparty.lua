@@ -5,6 +5,6 @@ afterparty = room {
 		Вокруг сосны. На-на-на, на-на, на-на.
 	]];
 	way = {
-		--'to_infinity_and_beyond';
+		'uh_prison';
 	};
 }
