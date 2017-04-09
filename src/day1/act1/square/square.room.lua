@@ -1,3 +1,6 @@
+square_to_forest_edge = vroom('Край леса', 'forest_edge');
+square_to_forest_edge:disable();
+
 square = room {
 	nam = 'Центральная площадь';
 	dsc = [[
@@ -12,7 +15,11 @@ square = room {
 	};
 	way = {
 		'home';
-		'forest_edge';
+		square_to_forest_edge;
 		'fields';
 	};
 }
+
+on_event('got new bow', function()
+	square_to_forest_edge:enable();
+end);
