@@ -4,6 +4,7 @@ main = room {
 		TODO TODO TODO TODO
 	]];
 	way = {
-		'home';
+		vroom('День 1, акт 1', 'home');
+		vroom('День 1, акт 2', 'forest_edge');
 	};
 }
