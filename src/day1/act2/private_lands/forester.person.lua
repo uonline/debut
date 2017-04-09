@@ -35,13 +35,13 @@ forester_dlg = dlg {
 				event 'promised tits'
 			end;
 		};
-		{ -- TODO: this doesn't really work
+		{
 			tag = 'here_they_are';
 			false;
 			'Я заснял! Я заснял!';
 			'-- Молодец, дай обниму.';
 			function()
-				inv():del('photograph');
+				inv():del('portrait');
 				event 'pleased the forester'
 			end;
 		};
@@ -68,4 +68,8 @@ on_event('pleased the forester', function()
 	forester_dlg:poff('look_what_i_have');
 	forester_dlg:poff('no_journals_today');
 	forester_dlg:poff('look_what_i_have');
+end);
+
+on_event('photographed the princess', function()
+	forester_dlg:pon('here_they_are');
 end);

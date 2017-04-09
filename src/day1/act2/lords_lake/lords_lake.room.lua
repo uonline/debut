@@ -12,3 +12,8 @@ lords_lake = room {
 		'private_lands';
 	};
 }
+
+on_event('installed the mirror', function()
+	objs('lords_lake'):del('lake_tree');
+	objs('lords_lake'):add('lake_tree_mirror');
+end);

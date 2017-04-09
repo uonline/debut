@@ -9,7 +9,10 @@ lake_tree = obj {
 	]];
 	used = function(self, what)
 		if what == mirror then
-			event 'installed the mirror'
+			event 'installed the mirror';
+			return [[
+				Установка зеркала завершена. Хотите создать ярлык?
+			]];
 		end
 	end;
 }
