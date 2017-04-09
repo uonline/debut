@@ -7,6 +7,7 @@ lords_lake = room {
 	]];
 	obj = {
 		'lake_tree';
+		'guards';
 	};
 	way = {
 		'private_lands';
@@ -16,4 +17,8 @@ lords_lake = room {
 on_event('installed the mirror', function()
 	objs('lords_lake'):del('lake_tree');
 	objs('lords_lake'):add('lake_tree_mirror');
+end);
+
+on_event('passed the guards', function()
+	objs('lords_lake'):add('artist');
 end);

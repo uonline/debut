@@ -10,3 +10,7 @@ photo_scroll = obj {
 on_event('promised tits', function()
 	inv():add('photo_scroll');
 end);
+
+on_event('photographed the princess', function()
+	inv():del('photo_scroll');
+end);
