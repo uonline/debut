@@ -38,4 +38,4 @@ diary = obj {
 }
 
 -- always take
-take(diary)
+--take(diary)
