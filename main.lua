@@ -9,6 +9,7 @@ require "dash"
 require "quotes"
 
 require "dbg" -- для отладки
+inv():del('debug_tool'); -- F7 is enough
 
 game.act = 'Гм...';
 game.use = 'Не сработает.';
