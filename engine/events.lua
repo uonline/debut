@@ -11,7 +11,7 @@ event = function(x)
 		end
 	end
 
-	print('Handlers called: '..count)
+	print('(handlers called: '..count..')')
 end
 
 on_event = function(k, v)
