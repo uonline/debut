@@ -1,3 +1,41 @@
+_totem_seq = {};
+_totem_done = false;
+
+totem_touch = function(i)
+	if _totem_done then
+		return [[
+			Ты прикладываешь амулет к тотему. Тотем тихо урчит в ответ.
+		]];
+	end
+
+	table.insert(_totem_seq, i);
+	if table.maxn(_totem_seq) == 4 then
+		local valid = true;
+		if _totem_seq[1] ~= 4 then valid = false end
+		if _totem_seq[2] ~= 2 then valid = false end
+		if _totem_seq[3] ~= 3 then valid = false end
+		if _totem_seq[4] ~= 1 then valid = false end
+		if valid then
+			_totem_done = true;
+			return [[
+				Ты прикладываешь амулет к тотему. Все четыре тотема отзываются
+				длинным высоким гулом. В дальнем конце пещеры часть стены
+				отъезжает в сторону, открывая потайную дверь.
+			]];
+		else
+			_totem_seq = {};
+			return [[
+				Ты прикладываешь амулет к тотему. Все четыре тотема отзываются
+				коротким низким грохотом. Похоже, ты что-то сделал не так.
+			]];
+		end
+	else
+		return [[
+			Ты прикладываешь амулет к тотему. Тотем коротко вздрагивает.
+		]];
+	end
+end
+
 wet_cave = room {
 	nam = 'Сырая пещера';
 	dsc = [[
@@ -61,6 +99,11 @@ totem1 = obj {
 			на это не реагирует.
 		]];
 	end;
+	used = function(self, what)
+		if what == the_thing then
+			return totem_touch(1);
+		end;
+	end;
 }
 
 totem2 = obj {
@@ -74,6 +117,11 @@ totem2 = obj {
 			Ты осторожно прикасаешься к тотему. Что характерно, тотем никак
 			на это не реагирует.
 		]];
+	end;
+	used = function(self, what)
+		if what == the_thing then
+			return totem_touch(2);
+		end;
 	end;
 }
 
@@ -89,6 +137,11 @@ totem3 = obj {
 			на это не реагирует.
 		]];
 	end;
+	used = function(self, what)
+		if what == the_thing then
+			return totem_touch(3);
+		end;
+	end;
 }
 
 totem4 = obj {
@@ -103,5 +156,10 @@ totem4 = obj {
 			Ты осторожно прикасаешься к тотему. Что характерно, тотем никак
 			на это не реагирует.
 		]];
+	end;
+	used = function(self, what)
+		if what == the_thing then
+			return totem_touch(4);
+		end;
 	end;
 }
