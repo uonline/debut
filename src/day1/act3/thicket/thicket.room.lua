@@ -6,9 +6,46 @@ thicket = room {
 		поминальную песню и дико фальшивят.
 	]];
 	obj = {
-		'deer';
+		'thicket_deer_alive';
 	};
-	way = {
-		'wet_cave';
-	};
+}
+
+thicket_deer_alive = obj {
+	nam = 'Олень';
+	dsc = [[
+		Вдалеке ты видишь {оленя}.
+	]];
+	act = [[
+		Ты внимательно рассматриваешь--ЧЁРТ ВОЗЬМИ, ХВАТИТ ПЯЛИТЬСЯ,
+		СТРЕЛЯЙ В НЕГО!
+	]];
+	used = function(self, what)
+		if what == ll_bow then
+			objs():del('thicket_deer_alive');
+			objs():add('thicket_deer_dead');
+		end
+		return [[
+			"Ува, ува!" -- шумит трава.
+			^
+			"Взы-взы!" -- стрижает меч.
+			^
+			Ура! -- оленья голова
+			^
+			Барабардает с плеч!
+		]];
+	end;
+}
+
+thicket_deer_dead = obj {
+	nam = 'Труп оленя';
+	dsc = [[
+		В сотне шагов от тебя лежит {мёртвый олень}.
+	]];
+	act = function()
+		walk 'wet_cave';
+		return [[
+			Ты подходишь к оленю, чтобы разделать тушу, и проваливаешься
+			в какую-то сырую тёмную пещеру.
+		]];
+	end;
 }

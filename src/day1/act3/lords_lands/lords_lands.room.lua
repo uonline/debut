@@ -28,6 +28,11 @@ lords_lands = room {
 		'lords_lands_good';
 		'lords_lands_bad4';
 	};
+	entered = function()
+		-- Clear inventory, add whitelisted items
+		inv():zap();
+		inv():add('ll_bow');
+	end;
 }
 
 lords_lands_good = obj {
