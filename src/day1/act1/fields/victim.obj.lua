@@ -1,3 +1,5 @@
+_seen_victim = false
+
 victim = obj {
 	nam = 'Труп';
 	dsc = [[
@@ -5,7 +7,10 @@ victim = obj {
 		Возле дерева {что-то виднеется}.
 	]];
 	act = function()
-		event 'found the body'
+		if not _seen_victim then
+			_seen_victim = true
+			event 'found the body'
+		end
 		return [[
 			Батюшки-светы, да это же труп!
 		]]
