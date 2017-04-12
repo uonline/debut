@@ -1,5 +1,5 @@
 your_cell_to_prison_hall = vroom('Тюремный коридор', 'prison_hall');
-your_cell_to_prison_hall:disable();
+--your_cell_to_prison_hall:disable();
 
 your_cell = room {
 	nam = 'Твоя камера';
@@ -27,7 +27,7 @@ rat = obj {
 hole = obj {
 	nam = 'Дыра в стене';
 	dsc = [[
-		В стене виднеется {небольшая дырка}, в которую спряталась крыса.
+		В стене виднеется {небольшая дырка}.
 	]];
 	act = [[
 		-- Пщщ, пщщ, первый, первый, я второй, как слышно?
