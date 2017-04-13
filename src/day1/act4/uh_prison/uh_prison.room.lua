@@ -1,3 +1,10 @@
+uh_prison_to_uh_square = vroom('Площадь лагеря', 'uh_square');
+uh_prison_to_uh_square:disable();
+
+on_event('may leave prison', function()
+	uh_prison_to_uh_square:enable();
+end)
+
 uh_prison = room {
 	nam = 'Загон рабов';
 	dsc = [[
@@ -11,7 +18,7 @@ uh_prison = room {
 		'uhp_guardian';
 	};
 	way = {
-		'uh_square';
+		uh_prison_to_uh_square;
 	};
 }
 

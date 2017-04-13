@@ -16,6 +16,7 @@ uhp_blacksmith_dlg = dlg {
 	]];
 	phr = {
 		{
+			tag = 'wassup';
 			true;
 			'Чо тут ваще?';
 			[[
@@ -26,11 +27,15 @@ uhp_blacksmith_dlg = dlg {
 			end;
 		};
 		{
-			true;
-			'Что делать, Шеф?';
+			tag = 'prepare_your_anus';
+			false;
+			'[молча избить]';
 			[[
-				-- Догонять!
+				Работа была непростой, но ты старался как мог.
 			]];
+			function()
+				event 'blood was spilled';
+			end;
 		};
 		{
 			always = true;
@@ -42,3 +47,11 @@ uhp_blacksmith_dlg = dlg {
 		};
 	};
 }
+
+on_event('orc wants blood', function()
+	uhp_blacksmith_dlg:pon('prepare_your_anus');
+end)
+
+on_event('blood was spilled', function()
+	uhp_blacksmith_dlg:poff('wassup');
+end)

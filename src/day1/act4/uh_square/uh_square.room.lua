@@ -12,7 +12,6 @@ uh_square = room {
 		он красный, с перьями и бычьим черепом над входом.
 	]];
 	way = {
-		'uh_prison';
 		'uh_pavilion';
 		'uh_pit';
 	};
