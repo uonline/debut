@@ -9,5 +9,7 @@ barracks_hall = room {
 	};
 	way = {
 		'barracks_armory';
+		'barracks';
+		'barracks_dance_floor';
 	};
 }
