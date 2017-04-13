@@ -10,5 +10,6 @@ main = room {
 		vroom('День 1, акт 4', 'uh_prison');
 		vroom('День 1, акт 5', 'tract_camp');
 		vroom('День 2, акт 1', 'your_cell');
+		vroom('День 2, акт 2', 'barracks_hall');
 	};
 }

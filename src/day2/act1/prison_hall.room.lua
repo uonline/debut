@@ -10,5 +10,6 @@ prison_hall = room {
 	way = {
 		'your_cell';
 		'prison_guards_room';
+		'barracks_hall';
 	};
 }
