@@ -4,7 +4,7 @@ orc_mainguard = obj {
 		Его охраняет {урук в боевой броне}.
 	]];
 	act = function()
-		if _uhs_position == 5 then
+		if _uhs_position == 5 then  -- TODO: replace with event
 			walk 'orc_mainguard_dlg'
 		else
 			return [[
@@ -29,9 +29,7 @@ orc_mainguard_dlg = dlg {
 			[[
 				-- Ну гоу.
 				^
-				Урук-хай заходит в шатёр, ты тенью следуешь за ним. В шатре
-				темно, хоть глаз выколи. Со временем глаза привыкают ко мраку,
-				и ты начинаешь различать окружающие предметы.
+				Урук-хай заходит в шатёр, ты тенью следуешь за ним.
 			]];
 			function()
 				walk 'uh_maintent'
