@@ -4,12 +4,13 @@ main = room {
 		TODO TODO TODO TODO
 	]];
 	way = {
-		vroom('День 1, акт 1', 'home');
-		vroom('День 1, акт 2', 'forest_edge');
-		vroom('День 1, акт 3', 'lords_lands');
-		vroom('День 1, акт 4', 'uh_prison');
-		vroom('День 1, акт 5', 'tract_camp');
-		vroom('День 2, акт 1', 'your_cell');
-		vroom('День 2, акт 2', 'barracks_hall');
+		vroom('Начать игру', 'home');
+		vroom('D1A2', 'forest_edge');
+		vroom('D1A3', 'lords_lands');
+		vroom('D1A4', 'uh_prison');
+		vroom('D1A5', 'uh_maintent');
+		vroom('D1A6', 'tract_camp');
+		vroom('D2A1', 'your_cell');
+		vroom('D2A2', 'barracks_hall');
 	};
 }
