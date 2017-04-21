@@ -1,7 +1,7 @@
 orc_mainguard = obj {
 	nam = 'Урук-хай';
 	dsc = [[
-		Его охраняет {урук в боевой броне}.
+		Его охраняет {урук с ятаганом}.
 	]];
 	act = function()
 		if _uhs_position == 5 then  -- TODO: replace with event
