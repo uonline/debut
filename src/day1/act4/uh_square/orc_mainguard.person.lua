@@ -14,6 +14,12 @@ orc_mainguard = obj {
 			]]
 		end
 	end;
+	used = function(self, what)
+		-- if player had stone, we assumed it's legal
+		if what == emma_stone then
+			walk 'orcinized'
+		end
+	end;
 }
 
 orc_mainguard_dlg = dlg {

@@ -230,6 +230,12 @@ uhs_berserk = obj {
 		]];
 	};
 	used = function(self, what)
+		-- if player had stone, we assumed it's legal
+		if what == emma_stone then
+			walk 'orcinized'
+		end
+
+		-- otherwise, no interaction is allowed except arrow on pos 3
 		if _uhs_position ~= 3 then
 			return
 		end
@@ -368,6 +374,12 @@ uhs_warrior = obj {
 		]];
 	};
 	used = function(self, what)
+		-- if player had stone, we assumed it's legal
+		if what == emma_stone then
+			walk 'orcinized'
+		end
+
+		-- otherwise, no interaction is allowed except sword on pos 4
 		if _uhs_position ~= 4 then
 			return
 		end
