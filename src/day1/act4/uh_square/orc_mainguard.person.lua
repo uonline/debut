@@ -1,7 +1,7 @@
 orc_mainguard = obj {
 	nam = 'Урук-хай';
 	dsc = [[
-		Его охраняет {урук в боевой броне}.
+		Его охраняет {урук с ятаганом}.
 	]];
 	act = function()
 		if _uhs_position == 5 then  -- TODO: replace with event
@@ -12,6 +12,12 @@ orc_mainguard = obj {
 				не шевелится. Лишь кровь пульсирует по венам,
 				хоть этого и нельзя разглядеть.
 			]]
+		end
+	end;
+	used = function(self, what)
+		-- if player had stone, we assumed it's legal
+		if what == emma_stone then
+			walk 'orcinized'
 		end
 	end;
 }

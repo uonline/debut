@@ -34,7 +34,8 @@ uhp_blacksmith_dlg = dlg {
 				Работа была непростой, но ты старался как мог.
 			]];
 			function()
-				event 'blood was spilled';
+				_beaten_blacksmith = true
+				event 'blood was spilled'
 			end;
 		};
 		{
