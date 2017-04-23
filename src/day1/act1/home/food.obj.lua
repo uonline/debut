@@ -1,7 +1,7 @@
 food = obj {
 	nam = 'Еда';
 	dsc = [[
-		На столе лежит {еда}.
+		На столе тебя ждёт {еда}.
 	]];
 	tak = function()
 		event 'food taken'
