@@ -1,5 +1,8 @@
 _blacksmith_dead = false
 _warren_dead = false
+_goblin_dead = false
+_teamed_goblin = false
+_wild_is_here = false
 
 local drop_weapon = function()
 	local weapons = { 'pit_fists', 'pit_axe', 'pit_sword', 'pit_spear' }
@@ -17,6 +20,7 @@ uh_pit = room {
 		бьёт тебя по лицу.
 	]];
 	obj = {
+		'pit_wild';
 		'pit_blacksmith';
 		'pit_warren';
 		'pit_goblin';
@@ -26,6 +30,7 @@ uh_pit = room {
 		'tract_camp';
 	};
 	entered = function()
+		disable 'pit_wild'
 		inv():zap()
 		take 'pit_thumb'
 	end;
@@ -48,12 +53,31 @@ pit_fists = obj {
 
 pit_blacksmith = obj {
 	nam = 'Кузнец';
+	act = function()
+		if _blacksmith_dead then
+			return [[
+				Ты внимательно рассматриваешь труп. Полуметровое лезвие
+				в сердце кого хочешь свалит.
+			]];
+		end
+		return [[
+			Ты внимательно смотришь на кузнеца. Кузнец хмурится в ответ.
+		]];
+	end;
 	dsc = function()
 		if _blacksmith_dead then
 			return 'Труп кузнеца лежит на земле.'
 		end
 		return '{Кузнец} курит сигару, держа в руках топор.'
 	end;
+	used = function(self, what)
+		if what == pit_thumb then
+			return [[
+				Ты показываешь кузнецу большой палец, но он только трясёт
+				головой в ответ.
+			]]
+		end;
+	end
 }
 
 pit_axe = obj {
@@ -62,6 +86,13 @@ pit_axe = obj {
 		На земле лежит {топор кузнеца}.
 	]];
 	tak = function()
+		if not _warren_dead then
+			return [[
+				Ты подходишь, рассчитывая подобрать топор, но Уорри
+				преграждает тебе путь.
+			]], false;
+		end;
+
 		drop_weapon()
 		return [[
 			Ты быстрым движением подбираешь топор.
@@ -81,6 +112,18 @@ pit_warren = obj {
 		end
 		return '{Уорри} злобно озирается, держа в руках меч.'
 	end;
+	act = function()
+		if _warren_dead then
+			return [[
+				Ты внимательно рассматриваешь труп. Проткнут копьём. Ужас
+				какой.
+			]];
+		end;
+		return [[
+			Ты внимательно смотришь на Уорри, а он внимательно смотрит
+			на твою шею.
+		]];
+	end;
 	used = function(self, what)
 		if what == pit_thumb then
 			return [[
@@ -91,9 +134,14 @@ pit_warren = obj {
 			if have 'pit_shield' then
 				_warren_dead = true
 				objs():add 'pit_sword'
+				_wild_is_here = true
+				enable 'pit_wild'
 				return [[
 					Ты блокируешь выпад Уорри и таранишь его щитом.
 					Гоблин добивает его ударом в спину.
+					^
+					В яму сбрасывают известного бандита-рецидивиста по кличке
+					Одичалый.
 				]]
 			else
 				walk 'deserted'
@@ -117,11 +165,31 @@ pit_goblin = obj {
 	nam = 'Сперкл';
 	dsc = [[
 		{Гоблин} курит.
+		^
 	]];
+	act = function()
+		if _goblin_dead then
+			return [[
+				Ты внимательно рассматриваешь труп. Всё брюхо вспорото.
+				Не выживет.
+			]];
+		end;
+		if _teamed_goblin then
+			return [[
+				Ты переглядываешься с гоблином. Тот обнадёживающе кивает
+				в ответ и стискивает гопьё в руках.
+			]];
+		end;
+		return [[
+			Ты внимательно смотришь на гоблина. Гоблин внимательно смотрит
+			на тебя.
+		]];
+	end;
 	used = function(self, what)
 		if what == pit_thumb then
 			inv():del 'pit_thumb'
 			take 'pit_fists'
+			_teamed_goblin = true
 			_blacksmith_dead = true
 			objs():add 'pit_axe'
 			return [[
@@ -153,4 +221,22 @@ pit_shield = obj {
 	inv = [[
 		Ты внимательно рассматриваешь щит. Какое-то говно деревянное.
 	]];
+}
+
+pit_wild = obj {
+	nam = 'Одичалый';
+	act = [[
+		Ты внимательно рассматриваешь одичалого. Его глаза, как два бриллианта
+		в три карата (очень мелкие).
+	]];
+	dsc = '{Одичалый} злобно глядит по сторонам.';
+	used = function(self, what)
+		if what == pit_fists then
+			walk 'deserted'
+			return [[
+				Ты бросаешься на одичалого. Одичалый выбивает из твоих рук щит
+				и хреначит тебя ведром. Ты умираешь от сотрясения мозга.
+			]]
+		end
+	end;
 }
