@@ -18,6 +18,9 @@ tract_camp = room {
 	way = {
 		'dream';
 	};
+	entered = function()
+		take 'a6_the_thing'
+	end;
 }
 
 tract_guard_1 = obj {
