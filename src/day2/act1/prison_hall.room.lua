@@ -5,6 +5,9 @@ prison_hall_to_prison_guards_room:disable();
 
 prison_hall_to_barracks_hall = vroom('Коридор оружейной', 'barracks_hall');
 prison_hall_to_barracks_hall:disable();
+on_event('got his stuff back', function()
+	prison_hall_to_barracks_hall:enable();
+end)
 
 prison_hall = room {
 	nam = 'Тюремный коридор';
