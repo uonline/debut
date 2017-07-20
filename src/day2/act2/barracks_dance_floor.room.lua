@@ -37,6 +37,7 @@ dance_floor_guards = obj {
 			]];
 		end
 
+		inv():zap()
 		walk 'regimenstrasse'
 		return [[
 			Сделав каменное лицо, ты подходишь к стражникам.

@@ -11,9 +11,6 @@ regimenstrasse = room {
 		-- ^_^
 	};
 	way = {
-		-- ^_^
+		'berlinstrasse';
 	};
-	entered = function()
-		inv():zap()
-	end;
 }
