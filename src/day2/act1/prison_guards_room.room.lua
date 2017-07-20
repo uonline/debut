@@ -28,6 +28,9 @@ prison_chest = obj {
 	dsc = [[
 		В углу стоит тяжёлый кованый {сундук} с увесистым замком.
 	]];
+	act = [[
+		Ты внимательно рассматриваешь сундук. Обычный сундук, без зубов.
+	]];
 	used = function(self, what)
 		if what == rat then
 			event 'got his stuff back'

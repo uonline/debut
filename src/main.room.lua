@@ -11,6 +11,7 @@ main = room {
 		vroom('D1A5', 'uh_maintent');
 		vroom('D1A6', 'tract_camp');
 		vroom('D2A1', 'your_cell');
-		vroom('D2A2', 'barracks_hall');
+		vroom('D2A2 (без крысы)', 'barracks_hall');
+		vroom('D2A3', 'regimenstrasse');
 	};
 }
