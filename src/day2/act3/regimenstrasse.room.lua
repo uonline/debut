@@ -1,5 +1,5 @@
--- barracks_to_barracks_hq = vroom('Комната капитана', 'barracks_hq')
--- barracks_to_barracks_hq:disable()
+regimenstrasse_to_berlinstrasse = vroom('Главная улица', 'berlinstrasse')
+regimenstrasse_to_berlinstrasse:disable()
 
 regimenstrasse = room {
 	nam = 'Площадь Режима';
@@ -12,22 +12,24 @@ regimenstrasse = room {
 		'regimenstrasse_singer';
 	};
 	way = {
-		'berlinstrasse';
+		regimenstrasse_to_berlinstrasse;
 	};
 }
 
 on_event('regimenstrasse belongs to singer', function()
-	objs('regimenstrasse'):del('regimenstrasse_propagandist');
-	objs('regimenstrasse'):del('regimenstrasse_singer');
+	objs('regimenstrasse'):del('regimenstrasse_propagandist')
+	objs('regimenstrasse'):del('regimenstrasse_singer')
 
-	objs('regimenstrasse'):add('regimenstrasse_singer_silent');
+	objs('regimenstrasse'):add('regimenstrasse_singer_silent')
+	regimenstrasse_to_berlinstrasse:enable()
 end)
 
 on_event('regimenstrasse belongs to propagandist', function()
-	objs('regimenstrasse'):del('regimenstrasse_propagandist');
-	objs('regimenstrasse'):del('regimenstrasse_singer');
+	objs('regimenstrasse'):del('regimenstrasse_propagandist')
+	objs('regimenstrasse'):del('regimenstrasse_singer')
 
-	objs('regimenstrasse'):add('regimenstrasse_propagandist_silent');
+	objs('regimenstrasse'):add('regimenstrasse_propagandist_silent')
+	regimenstrasse_to_berlinstrasse:enable()
 end)
 
 regimenstrasse_propagandist = obj {
