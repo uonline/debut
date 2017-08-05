@@ -1,0 +1,8 @@
+language: cpp
+addons:
+  apt:
+    packages:
+    - lua5.2
+    - lua-filesystem
+    - lua-filesystem-dev
+script: make
