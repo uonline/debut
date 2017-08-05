@@ -13,5 +13,6 @@ main = room {
 		vroom('D2A1', 'your_cell');
 		vroom('D2A2 (без крысы)', 'barracks_hall');
 		vroom('D2A3', 'regimenstrasse');
+		vroom('D2A4', 'sewer');
 	};
 }
