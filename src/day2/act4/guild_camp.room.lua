@@ -1,5 +1,7 @@
 _guild_camp_horny = false
 _guild_camp_hadsex = false
+_guild_camp_want_axe = false
+_guild_camp_got_axe = false
 
 guild_camp = room {
 	nam = 'Лагерь гильдии';
@@ -8,6 +10,7 @@ guild_camp = room {
 	]];
 	obj = {
 		'guild_camp_nameless';
+		'guild_camp_axe';
 		'guild_camp_priest';
 		'guild_camp_smuggler';
 		'guild_camp_lord';
@@ -24,12 +27,36 @@ guild_camp = room {
 guild_camp_nameless = obj {
 	nam = 'Урук из Харгфхейма'; -- блядь, серьёзно?
 	dsc = [[
-		По левую сторону от костра {тощий урук} сушит носки, облизывая топор.
+		^
+		По левую сторону от костра {тощий урук} сушит носки.
 	]];
-	act = [[
-		Ты спрашиваешь урука про котировки на бирже. Он отвечает, что
-		индексные фонды в среднем приносят больше дохода, чем высокорисковые
-		активы.
+	act = function()
+		if _guild_camp_want_axe and not _guild_camp_got_axe then
+			take 'guild_camp_axe'
+			_guild_camp_got_axe = true
+			return [[
+				-- Братан, одолжи топор.
+				^
+				-- Ну бери.
+			]]
+		end
+
+		return [[
+			Ты спрашиваешь урука про котировки на бирже. Он отвечает, что
+			индексные фонды в среднем приносят больше дохода, чем высокорисковые
+			активы.
+		]]
+	end;
+}
+
+guild_camp_axe = obj {
+	nam = 'Топор';
+	dsc = [[
+		Рядом с ним лежит топор.
+	]];
+	inv = [[
+		Ты внимательно осматриваешь топор. "Тупой," -- думаешь ты.
+		"Сам ты тупой," -- думает топор.
 	]];
 }
 
@@ -115,6 +142,7 @@ guild_camp_slut = obj {
 	act = function()
 		if _guild_camp_hadsex then
 			event 'we want meat'
+			_guild_camp_want_axe = true
 			return [[
 				-- О, это было незабываемо! Чем бы мне тебе отплатить?
 				Ну конечно, жареными крысами. Нужно только наловить крыс,
