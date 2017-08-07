@@ -2,6 +2,7 @@ _guild_camp_horny = false
 _guild_camp_hadsex = false
 _guild_camp_want_axe = false
 _guild_camp_got_axe = false
+_guild_camp_fueled = false
 
 guild_camp = room {
 	nam = 'Лагерь гильдии';
@@ -9,11 +10,15 @@ guild_camp = room {
 		Пробравшись через трубы, ты выходишь на полянку. Тут полно людей.
 	]];
 	obj = {
+		'guild_camp_fire';
+		'guild_camp_wood';
+
 		'guild_camp_nameless';
 		'guild_camp_axe';
 		'guild_camp_priest';
 		'guild_camp_smuggler';
 		'guild_camp_lord';
+
 		'guild_camp_knight';
 		'guild_camp_slut';
 		'guild_camp_mage';
@@ -22,6 +27,42 @@ guild_camp = room {
 	way = {
 		'sewer';
 	};
+}
+
+guild_camp_fire = obj {
+	nam = 'Костёр';
+	dsc = [[
+		Посередине горит {костёр.}
+	]];
+	act = [[
+		Пламя костра навевает грустные мысли. Однажды в таком же костре
+		сожгли все твои деньги.
+	]];
+}
+
+guild_camp_wood = obj {
+	nam = 'Дрова';
+	dsc = [[
+		Рядом лежат {дрова.}
+	]];
+	act = [[
+		Ты нежно гладишь полено.
+	]];
+	used = function(self, what)
+		if what == guild_camp_axe then
+			if not _guild_camp_fueled then
+				_guild_camp_fueled = true
+				disable 'guild_camp_wood'
+				return [[
+					Наточил ты свой топор -- головешек полон двор. Ты рубишь
+					дрова и кидаешь их в костёр. Все. Ты был неправ, что всё
+					спалил за час, и через час большой огонь угас, но в этот
+					час стало всем теплей. Ещё не всё здесь решено, ещё не всё
+					разрешено, ещё не все погасли краски дня.
+				]]
+			end
+		end
+	end;
 }
 
 guild_camp_nameless = obj {
