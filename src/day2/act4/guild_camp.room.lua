@@ -3,6 +3,7 @@ _guild_camp_hadsex = false
 _guild_camp_want_axe = false
 _guild_camp_got_axe = false
 _guild_camp_fueled = false
+_guild_camp_cooked = false
 
 guild_camp = room {
 	nam = 'Лагерь гильдии';
@@ -181,6 +182,25 @@ guild_camp_slut = obj {
 		рыцаря Тампуки".
 	]];
 	act = function()
+		if _guild_camp_cooked then
+			return [[
+				-- Правда, я хорошо готовлю? Меня мама научила.
+			]]
+		end
+
+		if have('fatrat') and _guild_camp_fueled then
+			_guild_camp_cooked = true
+			inv():del 'fatrat'
+			take 'ratkebab'
+			return [[
+				-- О, класс, давай это всё сюда.
+				^
+				Барышня забирает у тебя крысу, отрезает ей голову, потрошит
+				внутренности и жарит тушу на костре, после чего отдаёт тебе
+				с радостной улыбкой.
+			]]
+		end
+
 		if _guild_camp_hadsex then
 			event 'we want meat'
 			_guild_camp_want_axe = true
