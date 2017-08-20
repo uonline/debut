@@ -1,10 +1,16 @@
 tower_stage2 = room {
 	nam = 'Второй этаж';
-	dsc = [[
-		Комната с лестницей.
-		После продолжительного винтового пролёта вы оказываетесь
-		на втором этаже башни, и обнаруживаете, что Полукровка исчезла.
-	]];
+	dsc = function()
+		ret = [[
+			Комната с лестницей.
+			После продолжительного винтового пролёта вы оказываетесь
+			на втором этаже башни]]
+		if tower_stage2_thieves_leader:disabled() then
+			return ret .. '.' --когда пропал главарь, убираем заодно и текст про полукровку
+		else
+			return ret .. ' и обнаруживаете, что Полукровка исчезла.'
+		end
+	end;
 	obj = {
 		'tower_stage2_thieves_leader';
 	};
@@ -24,3 +30,6 @@ tower_stage2_thieves_leader = obj {
 	]];
 }
 
+on_event('thieves leader disappeared', function()
+	tower_stage2_thieves_leader:disable()
+end)

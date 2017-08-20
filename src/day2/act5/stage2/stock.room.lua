@@ -7,7 +7,7 @@ tower_stage2_stock = room {
 		'tower_stage2_stock_elder';
 	};
 	way = {
-		vroom('Лестница', 'tower_stage3');
+		vroom('Назад', 'tower_stage2');
 	};
 }
 
@@ -30,10 +30,11 @@ tower_stage2_stock_elder_dlg = dlg {
 	phr = {
 		{
 			tag = 'spyglass_request';
-			always = false;
-			'А можено трубу посмотреть.';
+			false;
+			'А можно трубу посмотреть?';
 			'-- Да на здоровье!';
 			function()
+				inv():del 'tower_spyglass_paper'
 				inv():add 'tower_spyglass'
 			end;
 		};
@@ -46,6 +47,10 @@ tower_stage2_stock_elder_dlg = dlg {
 		};
 	};
 }
+
+on_event('got spyglass paper', function()
+	tower_stage2_stock_elder_dlg:pon('spyglass_request');
+end)
 
 tower_spyglass = obj {
 	nam = 'Подзорная труба';
