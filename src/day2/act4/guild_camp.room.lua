@@ -3,6 +3,13 @@ _guild_camp_hadsex = false
 _guild_camp_want_axe = false
 _guild_camp_got_axe = false
 _guild_camp_fueled = false
+_guild_camp_cooked = false
+
+_guild_camp_giveaway = false
+on_event('old man needs his drink', function()
+	_guild_camp_giveaway = true
+end)
+
 
 guild_camp = room {
 	nam = 'Лагерь гильдии';
@@ -26,6 +33,7 @@ guild_camp = room {
 	};
 	way = {
 		'sewer';
+		'tunnel';
 	};
 }
 
@@ -119,11 +127,24 @@ guild_camp_smuggler = obj {
 		Прокуренный {мужик в фетровой шляпе} и кожаной куртке смотрит на тебя,
 		почёсывая бороду.
 	]];
-	act = [[
-		-- Эй, брат! -- мужик чуть приокрывает куртку. -- У меня тут есть
-		бутылка "Скалистого берега". Только я тебе её не отдам, потому что
-		у тебя документов нету.
-	]];
+	act = function()
+		if _guild_camp_giveaway then
+			_guild_camp_giveaway = false
+			take 'rocky_island'
+			return [[
+				-- Слышь, там какой-то старик сидит.
+				^
+				-- Все мы когда-нибудь сядем. Так печально, аж слезу пустил.
+				На, выпей за моё здоровье.
+			]]
+		end
+
+		return [[
+			-- Эй, брат! -- мужик чуть приокрывает куртку. -- У меня тут есть
+			бутылка "Скалистого берега". Только я тебе её не отдам, потому что
+			у тебя документов нету.
+		]]
+	end;
 }
 
 guild_camp_lord = obj {
@@ -132,9 +153,21 @@ guild_camp_lord = obj {
 		{Статный блондин} в изорванном платье из красного шёлка сидит на камне
 		и чистит свои сапоги.
 	]];
-	act = [[
-		-- Быть лордом никогда не легко, -- изрекает он в твою сторону.
-	]];
+	act = function()
+		if _guild_camp_giveaway then
+			_guild_camp_giveaway = false
+			take 'lord_sign'
+			return [[
+				-- Слышь, там какой-то старик сидит.
+				^
+				-- Я тоже сидел. Вот сувенир.
+			]]
+		end
+
+		return [[
+			-- Быть лордом никогда не легко, -- изрекает он в твою сторону.
+		]]
+	end;
 }
 
 guild_camp_knight = obj {
@@ -181,6 +214,25 @@ guild_camp_slut = obj {
 		рыцаря Тампуки".
 	]];
 	act = function()
+		if _guild_camp_cooked then
+			return [[
+				-- Правда, я хорошо готовлю? Меня мама научила.
+			]]
+		end
+
+		if have('fatrat') and _guild_camp_fueled then
+			_guild_camp_cooked = true
+			inv():del 'fatrat'
+			take 'ratkebab'
+			return [[
+				-- О, класс, давай это всё сюда.
+				^
+				Барышня забирает у тебя крысу, отрезает ей голову, потрошит
+				внутренности и жарит тушу на костре, после чего отдаёт тебе
+				с радостной улыбкой.
+			]]
+		end
+
 		if _guild_camp_hadsex then
 			event 'we want meat'
 			_guild_camp_want_axe = true
