@@ -1,4 +1,4 @@
-under_scaffold_to_dark_lane = vroom('Тёмный проулок', 'dark_lane');
+under_scaffold_to_dark_lane = vroom('Тёмный проулок', 'burning_quarter');
 under_scaffold_to_dark_lane:disable();
 
 under_scaffold = room {
@@ -46,7 +46,10 @@ ax_in_guardsman = obj {
 	]];
 	act = function()
 		under_scaffold_to_dark_lane:enable();
-		return 'Ты подполз к стражнику и разрезал о секиру верёвку, связывающую руки. Потом освободил и ноги.';
+		return [[
+			Ты подполз к стражнику и разрезал о секиру верёвку,
+			связывающую руки. Потом освободил и ноги.'
+		]];
 	end;
 }
 
@@ -58,7 +61,10 @@ coldier_and_thug = obj {
 	act = function()
 		coldier_and_thug:disable();
 		take 'coldier_sword';
-		return 'Солдат проткнул орка мечом, но тот накрыл его своей тушей. Оба больше не подают признков жизни. А меч пригодится.';
+		return [[
+			Солдат проткнул орка мечом, но тот накрыл его своей тушей.
+			Оба больше не подают признков жизни. А меч пригодится.'
+		]];
 	end;
 }
 
