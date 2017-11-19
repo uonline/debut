@@ -15,6 +15,7 @@ burning_quarter = room {
 		if not have 'coldier_sword' then
 			walk 'halfed_by_panglolin'
 		end;
+		drop 'coldier_sword';
 	end;
 	way = {
 		burning_quarter_to_lane_room;
