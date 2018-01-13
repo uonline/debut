@@ -15,6 +15,7 @@ main = room {
 		vroom('D2A3', 'regimenstrasse');
 		vroom('D2A4', 'sewer');
 		vroom('D2A5', 'tower_stage1');
-		vroom('D2A7', 'scaffold');
+		vroom('D2A6 (его нет)', 'scaffold');
+		vroom('D2A7', 'under_scaffold');
 	};
 }
