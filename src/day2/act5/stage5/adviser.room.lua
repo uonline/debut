@@ -15,6 +15,9 @@ tower_stage5_adviser_room = room {
 		^
 		Полукровка исчезает. На лестнице слышен топот.
 	]];
+	way = {
+		'scaffold';
+	};
 	enter = function()
 		if not have('tower_adviser_room_key') then
 			return 'Закрыто.', false
