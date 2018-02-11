@@ -53,7 +53,7 @@ covered_hatch = obj {
 			elseif not pile_of_trash:disabled() then
 				return not_sure_if_can_leave;
 			else
-				walk 'to_be_continued';
+				walk 'the_end';
 			end
 		end
 	end;
