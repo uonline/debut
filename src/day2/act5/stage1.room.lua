@@ -1,5 +1,9 @@
 _tower_stage1_guard_searched = false
 
+on_event('tower penetration', function()
+	walk 'tower_stage1'
+end)
+
 tower_stage1 = room {
 	nam = 'Первый этаж';
 	dsc = [[
