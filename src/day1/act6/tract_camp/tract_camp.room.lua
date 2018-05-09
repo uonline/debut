@@ -26,6 +26,7 @@ tract_camp = room {
 		tract_camp_to_dream;
 	};
 	entered = function()
+		inv():zap();
 		take 'a6_the_thing'
 	end;
 }

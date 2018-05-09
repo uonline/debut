@@ -20,6 +20,10 @@ uh_prison = room {
 	way = {
 		uh_prison_to_uh_square;
 	};
+	entered = function()
+		-- Clear inventory, add whitelisted items
+		inv():zap();
+	end;
 }
 
 uhp_warren = obj {

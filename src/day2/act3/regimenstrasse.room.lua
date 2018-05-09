@@ -14,6 +14,10 @@ regimenstrasse = room {
 	way = {
 		regimenstrasse_to_berlinstrasse;
 	};
+	entered = function()
+		-- Clear inventory, add whitelisted items
+		inv():zap();
+	end;
 }
 
 on_event('regimenstrasse belongs to singer', function()
