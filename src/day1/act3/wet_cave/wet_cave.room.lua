@@ -1,3 +1,10 @@
+wet_cave_to_afterparty = vroom('Выход из пещеры', 'afterparty');
+wet_cave_to_afterparty:disable();
+
+on_event('totems solved', function()
+	wet_cave_to_afterparty:enable()
+end)
+
 _totem_seq = {};
 _totem_done = false;
 
@@ -29,6 +36,7 @@ totem_touch = function(i)
 		if _totem_seq[4] ~= 1 then valid = false end
 		if valid then
 			_totem_done = true;
+			event('totems solved');
 			return [[
 				Ты прикладываешь амулет к тотему. Все четыре тотема отзываются
 				длинным высоким гулом. В дальнем конце пещеры часть стены
@@ -68,7 +76,7 @@ wet_cave = room {
 		'totem4';
 	};
 	way = {
-		'afterparty';
+		wet_cave_to_afterparty;
 	};
 }
 
