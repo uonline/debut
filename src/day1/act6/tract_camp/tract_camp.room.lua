@@ -1,3 +1,10 @@
+tract_camp_to_dream = vroom('Лечь спать', 'dream');
+tract_camp_to_dream:disable();
+
+on_event('talked to black guy', function()
+	tract_camp_to_dream:enable()
+end)
+
 tract_camp = room {
 	nam = 'Стоянка повозки у тракта';
 	dsc = [[
@@ -16,7 +23,7 @@ tract_camp = room {
 		'tract_mystery';
 	};
 	way = {
-		'dream';
+		tract_camp_to_dream;
 	};
 	entered = function()
 		take 'a6_the_thing'
@@ -67,7 +74,14 @@ tract_mystery = obj {
 		своей неожиданно тонкой руки с длинными пальцами, на одном из которых
 		красуется крупный синий перстень.
 	]];
-	act = [[
-		Из всех конвоиров этот пугает тебя больше всего. Бр-р-р.
-	]];
+	act = function()
+		event 'talked to black guy'
+		return [[
+			Ты начинаешь буравить чувака взглядом. Он оборачивается.
+			^
+			-- Ну и чего ты тут это? Это тебе не это? Спи лучше.
+			^
+			"Действительно, почему бы ещё не поспать," -- думаешь ты.
+		]];
+	end;
 }
