@@ -18,8 +18,8 @@ lords_lake = room {
 		Да и здешние живописные виды вовсе не располагают к дурным фантазиям.
 	]];
 	obj = {
-		'lake_tree';
 		'guards';
+		'lake_tree';
 	};
 	way = {
 		'private_lands';
