@@ -14,6 +14,10 @@ regimenstrasse = room {
 	way = {
 		regimenstrasse_to_berlinstrasse;
 	};
+	entered = function()
+		-- Clear inventory, add whitelisted items
+		inv():zap();
+	end;
 }
 
 on_event('regimenstrasse belongs to singer', function()
@@ -70,7 +74,7 @@ regimenstrasse_singer_silent = obj {
 		{Менестрель} играет на своей виолончели.
 	]];
 	act = [[
-		Ты внимательно смотришь на глашатая. Тот нежно гладит струны,
+		Ты внимательно смотришь на менестреля. Тот нежно гладит струны,
 		видимо, размышляя о чём-то своём.
 	]];
 }

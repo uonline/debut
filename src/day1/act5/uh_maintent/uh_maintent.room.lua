@@ -29,6 +29,10 @@ uh_maintent = room {
 	way = {
 		-- no way
 	};
+	entered = function()
+		-- Clear inventory, add whitelisted items
+		inv():zap();
+	end;
 }
 
 dagger = obj {
