@@ -12,7 +12,7 @@ uhp_blacksmith_dlg = dlg {
 	nam = 'Кузнец';
 	hideinv = true;
 	entered = [[
-		-- Обстоятельства немножечко не это, но я рад встрече.
+		Кузнец хмуро смотрит на тебя.
 	]];
 	phr = {
 		{
@@ -41,7 +41,7 @@ uhp_blacksmith_dlg = dlg {
 		{
 			always = true;
 			'Я пойду.';
-			'-- До встречи!';
+			'Кузнец не отвечает.';
 			function()
 				back()
 			end;

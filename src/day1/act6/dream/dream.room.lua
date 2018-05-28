@@ -10,7 +10,7 @@ dream = room {
 		'dream_figure';
 	};
 	way = {
-		'tract_camp';
+		--'tract_camp';
 	};
 }
 

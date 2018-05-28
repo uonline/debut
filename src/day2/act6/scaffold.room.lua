@@ -9,6 +9,10 @@ scaffold = room {
 	way = {
 		'under_scaffold'
 	};
+	entered = function()
+		-- Clear inventory, add whitelisted items
+		inv():zap();
+	end;
 }
 
 on_event('caught in action', function()

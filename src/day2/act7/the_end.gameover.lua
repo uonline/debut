@@ -7,4 +7,8 @@ the_end = room {
 		^
 		Над игрой работали такие-то чуваки.
 	]];
+	entered = function()
+		-- Clear inventory, add whitelisted items
+		inv():zap();
+	end;
 }
