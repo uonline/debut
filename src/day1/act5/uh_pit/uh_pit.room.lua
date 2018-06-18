@@ -119,7 +119,7 @@ pit_warren = obj {
 		if _warren_dead then
 			return 'Труп Уорри лежит на земле.'
 		end
-		return '{Уорри} злобно озирается, держа в руках меч.'
+		return '{Уорри} злобно озирается, вращая в руках меч. Ох, не зря его прозвали ростовщик.'
 	end;
 	act = function()
 		if _warren_dead then
