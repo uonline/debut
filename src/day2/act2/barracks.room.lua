@@ -34,13 +34,13 @@ barracks_stash = obj {
 		У кроватей стоят {тумбочки}.
 	]];
 	act = function()
-		if have('guard_docs') then
+		if have('guard_letter') then
 			return [[
 				Ты обыскиваешь тумбочки ещё раз, но не находишь там
 				ничего интересного.
 			]]
 		end
-		take 'guard_docs'
+		take 'guard_letter'
 		return [[
 			Ты обыскиваешь тумбочки и находишь там документы на имя Реджинальда
 			Курсемдумбла. Лишняя бумага никогда не помешает.
