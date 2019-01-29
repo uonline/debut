@@ -3,7 +3,7 @@ _guard_just_died = false
 prison_hall_to_prison_guards_room = vroom('Комната стражи', 'prison_guards_room');
 prison_hall_to_prison_guards_room:disable();
 
-prison_hall_to_barracks_hall = vroom('Коридор оружейной', 'barracks_hall');
+prison_hall_to_barracks_hall = vroom('Коридор штаба', 'barracks_hall');
 prison_hall_to_barracks_hall:disable();
 on_event('got his stuff back', function()
 	prison_hall_to_barracks_hall:enable();
