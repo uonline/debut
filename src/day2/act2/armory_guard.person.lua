@@ -6,6 +6,14 @@ armory_guard = obj {
 		занятый чисткой ржавчины с внушительного вида двуручного меча.
 	]];
 	act = function()
+		if not have('guard_letter') then
+			if not have('guard_docs') then
+				return [[
+					Двуручный меч выглядит довольно грозно, и ты не решаешься отвлекать солдата
+					от его важного занятия.
+				]];
+			end
+		end
 		walk 'armory_guard_dlg'
 	end;
 }
@@ -26,6 +34,7 @@ armory_guard_dlg = dlg {
 				-- Чего? -- солдат резко поворачивает голову вбок, выглядя
 				при этом крайне удивлённым.
 			]];
+
 			function()
 				armory_guard_dlg:pon('phr2');
 			end;
