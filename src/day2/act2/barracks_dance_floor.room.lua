@@ -32,6 +32,7 @@ dance_floor_guards = obj {
 
 		if not have('barracks_hq_docs') then
 			return [[
+				!!!
 				Та дубовая дверь не даёт тебе покоя. Её изгибы манят,
 				её изящная ручка зовёт к себе.
 			]];
