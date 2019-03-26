@@ -24,9 +24,9 @@ regimenstrasse = room {
 		'regimenstrasse_staff';
 		'regimenstrasse_monument';
 		'regimenstrasse_salers';
+		'regimenstrasse_crowd';
 		'regimenstrasse_propagandist';
 		'regimenstrasse_singer';
-		'regimenstrasse_crown';
 		'regimenstrasse_girl';
 		'regimenstrasse_todo';
 	};
@@ -115,15 +115,36 @@ regimenstrasse_monument = obj {
 	end;
 }
 
--- TODO
 -- Торгаши
 regimenstrasse_salers = obj {
 	nam = 'Торговцы';
 	dsc = [[
-		{Торгаши}.
+		Бодрясь утренней свежестью, {торгаши} разминают голоса, зазывая первых покупателей.
 	]];
 	act = function()
-		walk 'regimenstrasse_conflict'
+		retrun [[
+			Ты осматриваешь палатки и их владельцев. Судя по нарядам, на площади Режима торгуют
+			преимущественно заезжие купцы. Ты решаешь, что тебе от них пользы будет мало.
+		]];
+	end;
+}
+
+-- TODO
+--- Толпа зевак
+regimenstrasse_crowd = obj {
+	nam = 'Толпа зевак';
+	dsc = [[
+		Впрочем, их усилия пропадают даром, и большая часть людей окружает вовсе не лотки
+		с товарами. Небольшая {толпа} обступила пару препирающихся, крики которых
+		перебивают зазвывания торговцев.
+	]];
+	act = function()
+		return [[
+			Ты осматриваешь толпу зевак. В движениях некоторых, читается определённый азарт.
+			Похоже люди ждут драки. Хотя некоторые с опаской посматривают в твою сторону
+			Ты вспоминаешь, что облачён в форму режима, и люди могут ждать от тебя
+			какой-то реакции и действий.
+		]];
 	end;
 }
 
@@ -172,17 +193,6 @@ regimenstrasse_singer_silent = obj {
 		Ты внимательно смотришь на менестреля. Тот нежно гладит струны,
 		видимо, размышляя о чём-то своём.
 	]];
-}
-
--- Толпа зевак
-regimenstrasse_crown = obj {
-	nam = 'Толпа зевак';
-	dsc = [[
-		{Торгаши}.
-	]];
-	act = function()
-		walk 'regimenstrasse_conflict'
-	end;
 }
 
 -- Девочка
