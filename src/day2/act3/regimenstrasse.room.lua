@@ -16,7 +16,7 @@ regimenstrasse = room {
 		на которой воздвигали соответствующий монумент -- массивную раскрытую книгу, а рядом
 		сажали знаменитое каменное древо. Этот город не стал исключением.
 		^
-		Хотя солнце ещё только встало, горожане уже заполнили площадь.
+		Хотя солнце только встало, горожане уже заполнили площадь.
 	]];
 	obj = {
 		'regimenstrasse_staff';
@@ -42,15 +42,17 @@ regimenstrasse = room {
 on_event('regimenstrasse belongs to singer', function()
 	objs('regimenstrasse'):del('regimenstrasse_propagandist')
 	objs('regimenstrasse'):del('regimenstrasse_singer')
-	objs('regimenstrasse'):del('regimenstrasse_crown')
+	objs('regimenstrasse'):del('regimenstrasse_crowd')
 
 	-- Если мы не помогли девочке, то удаляем её вместе с толпой
 	if not _girl_is_gotten_help then
 		objs('regimenstrasse'):del('regimenstrasse_girl')
 	end;
 
+	-- Добавляем обновлённого менестреля
 	objs('regimenstrasse'):add('regimenstrasse_singer_silent')
-	objs('regimenstrasse'):add('regimenstrasse_')
+	-- Добавляем странника
+	objs('regimenstrasse'):add('regimenstrasse_stranger')
 
 	regimenstrasse_to_berlinstrasse:enable()
 end)
@@ -59,15 +61,17 @@ end)
 on_event('regimenstrasse belongs to propagandist', function()
 	objs('regimenstrasse'):del('regimenstrasse_propagandist')
 	objs('regimenstrasse'):del('regimenstrasse_singer')
-	objs('regimenstrasse'):del('regimenstrasse_crown')
+	objs('regimenstrasse'):del('regimenstrasse_crowd')
 
 	-- Если мы не помогли девочке, то удаляем её вместе с толпой
 	if not _girl_is_gotten_help then
 		objs('regimenstrasse'):del('regimenstrasse_girl')
 	end;
 
+	-- Добавляем обновлённого глашатая
 	objs('regimenstrasse'):add('regimenstrasse_propagandist_silent')
-	objs('regimenstrasse'):add('regimenstrasse_')
+	-- Добавляем странника
+	objs('regimenstrasse'):add('regimenstrasse_stranger')
 
 	regimenstrasse_to_berlinstrasse:enable()
 end)
@@ -100,7 +104,7 @@ regimenstrasse_monument = obj {
 	nam = 'Монумент';
 	dsc = [[
 		^
-		На площади перед штабом напротив многолюдно. {Монумент Режима} окружён палатками
+		На площади перед штабом, напротив многолюдно. {Монумент Режима} окружён палатками
 		 торговцев.
 	]];
 	act = function()
@@ -117,7 +121,7 @@ regimenstrasse_monument = obj {
 regimenstrasse_salers = obj {
 	nam = 'Торговцы';
 	dsc = [[
-		Бодрясь утренней свежестью, {торгаши} разминают голоса, зазывая покупателей.
+		Бодрясь утренней свежестью, {торгаши} разминают голоса, зазывая первых покупателей.
 	]];
 	act = function()
 		return [[
@@ -139,7 +143,7 @@ regimenstrasse_crowd = obj {
 		return [[
 			Ты осматриваешь толпу зевак. В движениях некоторых, читается определённый азарт.
 			Похоже, люди ждут драки. Некоторые с опаской посматривают в твою сторону.
-			Ты вспоминаешь, что облачён в доспех режима, и люди могут ожидать, что ты
+			Ты вспоминаешь, что облачён в доспех Режима, и люди могут ожидать, что ты
 			вмешаешься в перепалку.
 		]];
 	end;
@@ -152,7 +156,7 @@ regimenstrasse_propagandist = obj {
 	dsc = [[
 		Один из них, {бритоголовый детина} в нелепого вида робе, визгливо изрекает молитву,
 		перемежающуюся проклятьями. Причём, молитвы он умудряется адресовать
-		толпе, а проклятия второму крикуну.
+		толпе, а проклятия -- второму крикуну.
 	]];
 	act = function()
 		walk 'regimenstrasse_conflict'
@@ -213,7 +217,7 @@ regimenstrasse_girl = obj {
 }
 
 -- Иностранец
-regimenstrasse_ = obj {
+regimenstrasse_stranger = obj {
 	nam = 'Stranger';
 	dsc = [[
 		{Странник} из вольного города (Агалорда).
