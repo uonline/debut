@@ -51,8 +51,6 @@ on_event('regimenstrasse belongs to singer', function()
 
 	-- Добавляем обновлённого менестреля
 	objs('regimenstrasse'):add('regimenstrasse_singer_silent')
-	-- Добавляем странника
-	objs('regimenstrasse'):add('regimenstrasse_stranger')
 
 	regimenstrasse_to_berlinstrasse:enable()
 end)
@@ -71,8 +69,6 @@ on_event('regimenstrasse belongs to propagandist', function()
 
 	-- Добавляем обновлённого глашатая
 	objs('regimenstrasse'):add('regimenstrasse_propagandist_silent')
-	-- Добавляем странника
-	objs('regimenstrasse'):add('regimenstrasse_stranger')
 
 	regimenstrasse_to_berlinstrasse:enable()
 end)
@@ -122,7 +118,7 @@ regimenstrasse_monument = obj {
 regimenstrasse_salers = obj {
 	nam = 'Торговцы';
 	dsc = [[
-		Бодрясь утренней свежестью, {торгаши} разминают голоса, зазывая первых покупателей.
+		Бодрясь утренней свежестью, {торгаши} разминают голоса, зазывая покупателей.
 	]];
 	act = function()
 		return [[
@@ -267,16 +263,5 @@ regimenstrasse_girl = obj {
 			^
 			Ты снова остаёшься наедине со своими поисками.
 		]]
-	end;
-}
-
--- Иностранец
-regimenstrasse_stranger = obj {
-	nam = 'Stranger';
-	dsc = [[
-		{Странник} из вольного города (Агалорда).
-	]];
-	tak = function()
-		return [[К нам привязывается иностранец]]
 	end;
 }
