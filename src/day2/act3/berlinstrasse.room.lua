@@ -34,6 +34,13 @@ berlinstrasse = room {
 	};
 }
 
+-- События
+-- Пугаем мальчика
+-- Помогаем девочке
+on_event('berlinstrasse lost boy', function()
+	objs('berlinstrasse'):del('berlinstrasse_boy')
+end)
+
 -- Объекты
 -- Мальчишка
 berlinstrasse_boy = obj {
@@ -42,6 +49,7 @@ berlinstrasse_boy = obj {
 		Вокруг тебя крутиться {мальчишка} лет семи, толи передразнивая, толи играя.
 	]];
 	act = function()
+		event 'berlinstrasse lost boy'
 		return [[
 			-- Расскажите что-нибудь о службе в Режиме?! --
 			^
