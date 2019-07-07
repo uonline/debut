@@ -69,9 +69,10 @@ dance_floor_guards = obj {
 			]];
 		end
 
-		inv():zap()
-		walk 'regimenstrasse'
+		inv():zap();
+		walk 'regimenstrasse';
 		take 'capitan_docs';
+		take 'magic_substrate';
 		return [[
 			Сделав каменное лицо, ты направляешься прямо к выходу мимо караульных.
 			Попытка была хорошей, но один из них всё же обращает на тебя внимание.
