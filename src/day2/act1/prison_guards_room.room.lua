@@ -54,6 +54,7 @@ prison_chest = obj {
 	]];
 	used = function(self, what)
 		if what == rat then
+			take 'magic_substrate'
 			event 'got his stuff back'
 			return [[
 				Ты решительно сталкиваешь стражника с сундука и пробуешь поднять крышку.
