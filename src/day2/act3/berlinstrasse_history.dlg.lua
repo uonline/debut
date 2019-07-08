@@ -147,7 +147,7 @@ berlinstrasse_history = dlg {
 		{
 			always = true;
 			'Я пойду.';
-			'Прощай.';
+			'Да хранят тебя Благие.';
 			function()
 				back()
 			end;
