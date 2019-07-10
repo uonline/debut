@@ -4,8 +4,8 @@ _thief_leader_has_gotten_help = false
 _orc_is_angry = false
 
 -- Переходы
-bazaar_to_sewer = vroom('На встречу с торгашом', 'sewer')
-bazaar_to_sewer:disable()
+bazaar_to_lane = vroom('На встречу с торгашом', 'lane')
+bazaar_to_lane:disable()
 
 -- Локация
 bazaar = room {
@@ -30,7 +30,7 @@ bazaar = room {
 	};
 	way = {
 		'berlinstrasse';
-		bazaar_to_sewer;
+		bazaar_to_lane;
 	};
 }
 
@@ -53,7 +53,7 @@ end)
 
 -- Главарь воров нас признал и рассказал, как попасть в подполье
 on_event('learned about guild', function()
-	bazaar_to_sewer:enable()
+	bazaar_to_lane:enable()
 	-- Убираем главаря воров с рынка
 	objs('bazaar'):del('bazaar_thief_leader')
 end)
@@ -400,20 +400,4 @@ bazaar_wolf_man = obj {
 		-- Спасибо, я понял, -- останавливаешь ты торговца, с извинительной улыбкой,
 		чтобы уйти.
 	]];
-}
-
--- TODO
-berlinstrasse_todo = obj {
-	nam = 'Todo';
-	dsc = [[
-		{...}
-	]];
-	act = function()
-		return [[
-			- Воспоминания ГГ о городах Приграничья и людях. Нужно влюбить игрока в город, чтобы он сопереживал его гибели в огне;
-			^
-			- Нужно добавить комнату с местом встречи с главарём в переулке.
-			- Ты вспоминаешь, что твоё детсво прошло примерно в таком же переулке
-		]];
-	end;
 }
