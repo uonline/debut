@@ -30,11 +30,16 @@ local prefix = [[-- DO NOT EDIT!
 -- using tools/gendeps.lua.]]
 local template = "dofile '{}'"
 local pf = function(path)
+	ret = {}
 	for filename, attr in dirtree(path) do
 		if attr.mode == 'file' then
 			local line = string.gsub(template, '{}', filename)
-			print(line)
+			table.insert(ret, line)
 		end
+	end
+	table.sort(ret)
+	for index, line in ipairs(ret) do
+		print(line)
 	end
 end
 
