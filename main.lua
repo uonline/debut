@@ -1,8 +1,15 @@
 -- $Name: debut$
--- $Version: 0.3.0$
--- $Author: mixsquad$
+-- $Version: 0.8.0$
+-- $Author: m1kc$
 
 instead_version "1.9.1"
+
+DEBUG = true
+--<<BUILD_DEBUG>>
+BUILD_DATE = 'unknown'
+--<<BUILD_DATE>>
+BUILD_COMMIT = 'unknown'
+--<<BUILD_COMMIT>>
 
 require "para" -- для оформления
 require "dash"

@@ -1,3 +1,7 @@
+release.zip
+__build/
+
+
 # Compiled Lua sources
 luac.out
 
