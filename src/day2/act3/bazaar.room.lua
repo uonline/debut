@@ -1,7 +1,9 @@
+-- Переменные глобальные
+_bazaar_old_woman_is_burned = false
 -- Переменные локации
-_thief_leader_quest = false
-_thief_leader_has_gotten_help = false
-_orc_is_angry = false
+local _thief_leader_quest = false
+local _thief_leader_has_gotten_help = false
+local _orc_is_angry = false
 
 -- Переходы
 bazaar_to_lane = vroom('На встречу с торгашом', 'lane')
@@ -37,8 +39,12 @@ bazaar = room {
 -- События
 -- Старуха даёт предсказание
 on_event('take prediction', function()
+	-- Запоминаем это событие
+	_bazaar_old_woman_is_burned = true
 	-- Убираем старуху с рынка
 	objs('bazaar'):del('bazaar_old_woman')
+	-- Добавляем старуху в Переулок
+	objs('lane'):add('lane_old_woman')
 end)
 
 -- Помогаем главарю воров, нейтрализуя конкурентов
