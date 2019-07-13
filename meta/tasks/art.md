@@ -54,12 +54,66 @@
 
 
 ## Программа максимум
-Иллюстрации для каждой сцены.
+Иллюстрации для каждой сцены + описания для gameover-ов. Возможно совмещение с программой-минимум. Т.е. для каких-то сцен нужно отдельное описание, какие-то сцены, например сцены в канализации, можно объединить одной иллюстрацией.
 
-   1. {-} **Чаща леса**;
-   1. {-} **Площадь Режима**;
-   1. {-} **Главная улица** &mdash; описание в `src/day2/act3/berlinstrasse.room`
-   1. {-} **Площадь с эшафотом при нападении**;
+   1. {-} `src/day1/act1/fields/fields.room`;
+   1. {-} `src/day1/act1/fields/smith_hammer`;
+   1. {-} `src/day1/act1/home/home.room`;
+   1. {-} `src/day1/act1/square/square.room`;
+   1. {-} `src/day1/act1/state`;
+   1. {-} `src/day1/act2/forest_edge/forest_edge.room`;
+   1. {-} `src/day1/act2/lords_lake/lake_tree_mirror`;
+   1. {-} `src/day1/act2/lords_lake/lords_lake.room`;
+   1. {-} `src/day1/act2/private_lands/private_lands.room`;
+   1. {-} `src/day1/act3/afterparty/afterparty`;
+   1. {-} `src/day1/act3/lords_lands/lords_lands.room`;
+   1. {-} `src/day1/act3/lords_lands/wolfest.gameover`;
+   1. {-} `src/day1/act3/thicket/thicket.room`;
+   1. {-} `src/day1/act3/wet_cave/wet_cave.room`;
+   1. {-} `src/day1/act4/uh_prison/orcslaughter.gameover`;
+   1. {-} `src/day1/act4/uh_prison/uh_prison.room`;
+   1. {-} `src/day1/act4/uh_square/orcinized.gameover`;
+   1. {-} `src/day1/act4/uh_square/uh_square.room`;
+   1. {-} `src/day1/act5/uh_maintent/assassinated.gameover`;
+   1. {-} `src/day1/act5/uh_maintent/uh_maintent.room`;
+   1. {-} `src/day1/act5/uh_pit/deserted.gameover`;
+   1. {-} `src/day1/act5/uh_pit/uh_pit.room`;
+   1. {-} `src/day1/act6/dream/dream.room`;
+   1. {-} `src/day1/act6/tract_camp/tract_camp.room`;
+   1. {-} `src/day2/act1/prison_guards_room.room`;
+   1. {-} `src/day2/act1/prison_hall.room`;
+   1. {-} `src/day2/act1/your_cell.room`;
+   1. {-} `src/day2/act2/barracks.room`;
+   1. {-} `src/day2/act2/barracks_armory.room`;
+   1. {-} `src/day2/act2/barracks_dance_floor.room`;
+   1. {-} `src/day2/act2/barracks_hall.room`;
+   1. {-} `src/day2/act2/barracks_hq.room`;
+   1. {-} `src/day2/act3/bazaar.room`;
+   1. {-} `src/day2/act3/berlinstrasse.room`;
+   1. {-} `src/day2/act3/lane.room`;
+   1. {-} `src/day2/act3/regimenstrasse.room`;
+   1. {-} `src/day2/act4/collector.room`;
+   1. {-} `src/day2/act4/guild_camp.room`;
+   1. {-} `src/day2/act4/sewer.room`;
+   1. {-} `src/day2/act4/tunnel.room`;
+   1. {-} `src/day2/act5/stage1.room`;
+   1. {-} `src/day2/act5/stage2/stage2.room`;
+   1. {-} `src/day2/act5/stage2/stock.room`;
+   1. {-} `src/day2/act5/stage3/archive.room`;
+   1. {-} `src/day2/act5/stage3/secret.room`;
+   1. {-} `src/day2/act5/stage3/stage3.room`;
+   1. {-} `src/day2/act5/stage4/sentry.room`;
+   1. {-} `src/day2/act5/stage4/stage4.room`;
+   1. {-} `src/day2/act5/stage5/adviser.room`;
+   1. {-} `src/day2/act5/stage5/stage5.room`;
+   1. {-} `src/day2/act5/stage5/vicar.room`;
+   1. {-} `src/day2/act6/scaffold.room`;
+   1. {-} `src/day2/act7/burning_quarter.room`;
+   1. {-} `src/day2/act7/halfed_by_panglolin.gameover`;
+   1. {-} `src/day2/act7/lane.room`;
+   1. {-} `src/day2/act7/slain_by_slave.gameover`;
+   1. {-} `src/day2/act7/the_end.gameover`;
+   1. {-} `src/day2/act7/under_scaffold.room`;
 
 ---
 
@@ -67,6 +121,7 @@
 Необязательно.
 
 ## Программа максимум
+Список дополняется теми предметами, что не вынесены в отедльные файлы.
 
   1. {-} **Молот кузнеца** &mdash; `src/day1/act1/fields/smith_hammer`;
   1. {-} **Еда** &mdash; `src/day1/act1/home/food.obj`;
@@ -110,6 +165,7 @@
 ### Прочее
 
    1. {-} Портрет главного героя;
+   1. {-} Злополучные тотемы;
 
 ## Мечты
 ### Своя тема для игры
