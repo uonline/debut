@@ -1,3 +1,4 @@
+-- Переменные локации
 _guild_camp_horny = false
 _guild_camp_hadsex = false
 _guild_camp_want_axe = false
@@ -5,14 +6,15 @@ _guild_camp_got_axe = false
 _guild_camp_fueled = false
 _guild_camp_cooked = false
 
+-- События
 _guild_camp_giveaway = false
 on_event('old man needs his drink', function()
 	_guild_camp_giveaway = true
 end)
 
-
+-- Локация
 guild_camp = room {
-	nam = 'Лагерь гильдии';
+	nam = 'Лагерь подполья';
 	dsc = [[
 		Пробравшись через трубы, ты выходишь на полянку. Тут полно людей.
 		^
@@ -40,6 +42,8 @@ guild_camp = room {
 	};
 }
 
+-- Объекты
+-- Костёр
 guild_camp_fire = obj {
 	nam = 'Костёр';
 	dsc = [[
@@ -51,6 +55,7 @@ guild_camp_fire = obj {
 	]];
 }
 
+-- Дрова
 guild_camp_wood = obj {
 	nam = 'Дрова';
 	dsc = [[
@@ -76,8 +81,9 @@ guild_camp_wood = obj {
 	end;
 }
 
+-- Урук из Харгфхейма
 guild_camp_nameless = obj {
-	nam = 'Урук из Харгфхейма'; -- блядь, серьёзно?
+	nam = 'Урук из Харгфхейма'; -- ещё как серьёзно, даже статься в вики есть, про этот город.
 	dsc = [[
 		^
 		По левую сторону от костра {тощий урук} сушит носки.
@@ -101,6 +107,7 @@ guild_camp_nameless = obj {
 	end;
 }
 
+-- Топор
 guild_camp_axe = obj {
 	nam = 'Топор';
 	dsc = [[
@@ -112,6 +119,7 @@ guild_camp_axe = obj {
 	]];
 }
 
+-- Проповедник
 guild_camp_priest = obj {
 	nam = 'Проповедник';
 	dsc = [[
@@ -140,6 +148,7 @@ guild_camp_priest = obj {
 	]];
 }
 
+-- Контрабандист
 guild_camp_smuggler = obj {
 	nam = 'Контрабандист';
 	dsc = [[
@@ -173,6 +182,7 @@ guild_camp_smuggler = obj {
 	end;
 }
 
+-- Лорд
 guild_camp_lord = obj {
 	nam = 'Лорд-изгнанник';
 	dsc = [[
@@ -196,6 +206,7 @@ guild_camp_lord = obj {
 	end;
 }
 
+-- Рыцарь
 guild_camp_knight = obj {
 	nam = 'Кархэрд Чёрный рыцарь';
 	dsc = [[
@@ -214,15 +225,13 @@ guild_camp_knight = obj {
 		if _guild_camp_horny then
 			_guild_camp_hadsex = true
 			return [[
-				-- Пссс, рыцарь, добрые дела интересуют?
+				Test
 				^
-				-- Покажи товар.
-				^
-				-- Видишь вон ту тёлку? Её надо спасти от одиночества.
-				^
-				-- Говно вопрос.
-				^
-				Рыцарь подходит к девушке и три часа жарит её в задницу.
+				-- Сайри Душка? -- суровость рыцаря как-то сразу сходит на нет.
+				-- лет десять назад у неё была куча поклонников. Да вот только, и
+				она мало кому отказывала. Прозвища не берутся просто так. Скажи ей
+				что мы встретимся в полночь. А я что-нибудь придумаю. Кто-знает,
+				может наш усач сводит за меня.
 				^
 				Test
 				-- Рассказать тебе о рыцарях? Тут нечего и рассказывать.
@@ -255,6 +264,7 @@ guild_camp_knight = obj {
 	end;
 }
 
+-- Душка Сайр
 guild_camp_slut = obj {
 	nam = 'Душка Сайр';
 	dsc = [[
@@ -336,8 +346,9 @@ guild_camp_slut = obj {
 	end;
 }
 
+-- Маг, бывшая крыса
 guild_camp_mage = obj {
-	nam = 'Беглый маг';
+	nam = 'Маг';
 	dsc = [[
 		!!!
 		{Дедушка в белом плаще} читает увесистый трактат -- и ты мог бы
@@ -348,12 +359,15 @@ guild_camp_mage = obj {
 	end;
 }
 
+-- Полукровка
 guild_camp_halfblood = obj {
 	nam = 'Полукровка';
 	dsc = [[
 		{Девушка} в кожаном плаще, треуголке и с повязкой на глазу точит
 		кинжал, периодически изругая ругательства в адрес каких-то
 		сухопутных крыс.
+		^
+		В её движениях есть какая-то странная, нечеловеческая грациозность.
 	]];
 	act = [[
 		-- Уважаемая леди, у вас рукав расстегнулся.
