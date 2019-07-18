@@ -4,7 +4,7 @@ on_event('ready to rock the boat', function()
 end)
 
 tunnel = room {
-	nam = 'Тоннель с тупиком';
+	nam = 'Тоннель';
 	dsc = [[
 		Ты стоишь в очередном сраном тоннеле.
 	]];
