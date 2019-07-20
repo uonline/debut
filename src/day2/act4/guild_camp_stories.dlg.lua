@@ -1,16 +1,31 @@
+-- Переменные диалога
+local _mage_greeting = false
+
 -- Диалог с продавцом пряностей
 guild_camp_stories = dlg {
 	nam = 'Беглый маг';
 	hideinv = true;
-	entered = [[
-		-- А вот и ты.
-	]];
+	entered = function()
+		-- Приветствие
+		if not _mage_greeting then
+			_mage_greeting = true;
+			return [[
+				-- А вот и ты. Я знал, что у тебя всё получится.
+			]];
+		end;
+
+		-- Повторный диалог
+		return [[
+			-- А вот и ты.
+		]];
+	end;
+
 	phr = {
 		-- Просишь рассказать откуда продавец
 		{
 			true;
-			tag='first_question';
-			'И ты здесь?';
+			tag = 'first_question';
+			'Так что, ты здесь делаешь?';
 			[[
 				Test (прочитать все диалоги с крысами)
 				^
@@ -65,7 +80,7 @@ guild_camp_stories = dlg {
 		-- Просишь рассказать про Имперские колонии
 		{
 			false;
-			tag='free_kingdome_question';
+			tag = 'free_kingdome_question';
 			[[1.]];
 			[[
 				1. -- Знаешь, тебя можно назвать внимательным слушателем. Даже если ты
@@ -80,7 +95,7 @@ guild_camp_stories = dlg {
 		-- Просишь рассказать про Термитники
 		{
 			false;
-			tag='termites';
+			tag = 'termites';
 			'2.';
 			[[
 				-- Никогда не понимал, за что церковники вас так невзлюбили.
@@ -102,7 +117,7 @@ guild_camp_stories = dlg {
 		-- Просишь рассказать про Торговый путь
 		{
 			false;
-			tag='trade_way';
+			tag = 'trade_way';
 			'3.';
 			[[
 				-- Сами богословы иногда мыслят весьма опасно. Например, религия Режима...
