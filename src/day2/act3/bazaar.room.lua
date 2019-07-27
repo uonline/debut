@@ -1,7 +1,9 @@
+-- Переменные глобальные
+_bazaar_old_woman_is_burned = false
 -- Переменные локации
-_thief_leader_quest = false
-_thief_leader_has_gotten_help = false
-_orc_is_angry = false
+local _thief_leader_quest = false
+local _thief_leader_has_gotten_help = false
+local _orc_is_angry = false
 
 -- Переходы
 bazaar_to_lane = vroom('На встречу с торгашом', 'lane')
@@ -11,7 +13,7 @@ bazaar_to_lane:disable()
 bazaar = room {
 	nam = 'Торговая площадь';
 	dsc = [[
-		Ты стоишь на торговой площади. Вокруг кипит жизнь. Среди рядов лотков-палаток
+		Ты стоишь на шумной торговой площади. Вокруг кипит жизнь. Среди рядов лотков-палаток
 		снуют многочисленные покупатели в перемешку с попропошайками разного толка.
 		Местные торговцы и заезжие купцы пытаются перекричать друг друга. Булочники
 		катят тележки со своим товаром и предлагают продавцам и покупателям подкрепиться.
@@ -26,6 +28,7 @@ bazaar = room {
 		'bazaar_thief_leader';
 		'bazaar_prystay_seller';
 		'bazaar_competitors';
+		'bazaar_competitors_counters';
 		'bazaar_wolf_man';
 	};
 	way = {
@@ -37,25 +40,30 @@ bazaar = room {
 -- События
 -- Старуха даёт предсказание
 on_event('take prediction', function()
+	-- Запоминаем это событие
+	_bazaar_old_woman_is_burned = true;
 	-- Убираем старуху с рынка
-	objs('bazaar'):del('bazaar_old_woman')
+	objs('bazaar'):del('bazaar_old_woman');
+	-- Добавляем старуху в Переулок
+	objs('lane'):add('lane_old_woman');
 end)
 
 -- Помогаем главарю воров, нейтрализуя конкурентов
 on_event('help to thief leader', function()
 	-- Убираем конкурентов с рынка
-	objs('bazaar'):del('bazaar_competitors')
+	objs('bazaar'):del('bazaar_competitors');
+	objs('bazaar'):del('bazaar_competitors_counters');
 	-- Задание главря воров выполнено
 	_thief_leader_quest = false;
 	-- Рязвязываем язык главарю воров
-	_thief_leader_has_gotten_help = true
+	_thief_leader_has_gotten_help = true;
 end)
 
 -- Главарь воров нас признал и рассказал, как попасть в подполье
 on_event('learned about guild', function()
-	bazaar_to_lane:enable()
+	bazaar_to_lane:enable();
 	-- Убираем главаря воров с рынка
-	objs('bazaar'):del('bazaar_thief_leader')
+	objs('bazaar'):del('bazaar_thief_leader');
 end)
 
 -- Объекты
@@ -280,7 +288,7 @@ bazaar_thief_leader = obj {
 				-- Отлично, -- торгаш хлопает тебя по плечу, -- ну, у вас, наверное,
 				служба, страж. Не буду больше отвлекать нести это бремя.
 			]];
-		end
+		end;
 	end;
 }
 
@@ -292,10 +300,26 @@ bazaar_prystay_seller = obj {
 		который зазывает покупателей громче всех.
 	]];
 	act = function()
+		if _thief_leader_has_gotten_help == true then
+			return [[
+				-- И чего мы так шумим? -- обращаешься ты к торговцу, на столе которого
+				расставлено множество баночек самых разных размеров и форм.
+				^
+				-- Эти торгаши из Вольных городов, всех покупателей распугали своей тарабарщиной!
+				Хорошо, что вы прогнали этих проходимцев. Теперь-то торговля пойдёт! Кстати, не
+				желаете приобрести баночку специй? У меня есть кое-что весьма экзотическое.
+				Прямиком с севера Полисов.
+				Даже самоё жёсткое мясо превратит в изумительное блюдо.
+				^
+				Твой живот издал протяжные звуки. Ты всё утро гадал, когда он даст о себе знать.
+				^
+				-- Нет, спасибо. Удачного дня, -- отказываешься ты и отходишь подальше.
+			]];
+		end;
+
 		walk 'bazaar_stories';
 	end;
 }
-
 -- Конкуренты главаря воров
 bazaar_competitors = obj {
 	nam = 'Купцы из Вольныз городов';
@@ -310,6 +334,21 @@ bazaar_competitors = obj {
 		или спине, вторые предлагают какие-то напитки в чашах, третьи уже показывают
 		свои товары. Очень быстро от всей этой суеты у тебя начинает кружиться
 		голова, и ты решительно вырываешься из этого кольца.
+	]];
+}
+
+-- Прилавки конкурентов главаря воров
+bazaar_competitors_counters = obj {
+	nam = 'Прилавки купцов';
+	dsc = [[
+		Их {прилавки} завалены всяческими товарами, но народ всё равно
+		обходит эту компанию стороной.
+	]];
+	act = [[
+		Ты осматриваешь добро купцов.
+		Глядя на всё это разнообразие, разбегаются глаза. Ткани самых разных фактур,
+		с узорами и без, прочее тряпьё, бутылки с экзотическими напитками,
+		керамическая посуда.
 	]];
 	-- Подкидываем купцам субстрат
 	used = function(self, what)
@@ -360,9 +399,7 @@ bazaar_competitors = obj {
 				]];
 			end;
 		end;
-		return [[
-			Не сработает.
-		]];
+		return 'Не сработает.';
 	end;
 }
 
