@@ -111,4 +111,31 @@ collector_man = obj {
 				* Охота на богоизбранных-предателей;
 		]]
 	end;
+
+collector_man_dlg = dlg {
+	nam = 'Старик-горбун';
+	hideinv = true;
+	entered = [[
+		...
+	]];
+	phr = {
+		{
+			tag = '1';
+			false;
+			'1.';
+			[[
+				...
+			]];
+			function()
+			end;
+		};
+		{
+			always = true;
+			'Я пойду.';
+			function()
+				back()
+			end;
+		};
+	};
+}
 }
