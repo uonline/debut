@@ -1,11 +1,13 @@
 _wants_cocaine = false
 _wants_answers = true
 
-_rat_talk_about_mission = true
-_rat_talk_about_fail = false
-_rat_talk_about_you = false
-_rat_talk_about_tower = false
-_rat_talk_about_dust = false
+_rat_talk_about_mission = true   -- Разговор о делах мага в городе
+_rat_talk_about_fail = false     -- Разговор о поимке мага
+_rat_talk_about_you = false      -- Разговор о тебе
+_rat_talk_about_tower = false    -- Разговор о башне
+_rat_talk_about_dust = false     -- Разговор о субстрате
+
+_mage_dialogs = false            -- Открываем ветки диалогов с магом в лагере подполья, если true
 
 your_cell_to_prison_hall = vroom('Тюремный коридор', 'prison_hall');
 your_cell_to_prison_hall:disable();
@@ -236,6 +238,7 @@ rat = obj {
 
 		if _rat_talk_about_dust then
 			_rat_talk_about_dust = false
+			_mage_dialogs = true
 			return _rat_talk .. [[
 				-- Ещё вопрос?!
 				^
