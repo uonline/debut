@@ -32,8 +32,8 @@ collector_man = obj {
 
 		-- Если есть знак расположения лорда
 		if have 'lord_sign' then
-			_collector_drunk = true
-			event 'ready to rock the boat'
+			_collector_drunk = true;
+			event 'ready to rock the boat';
 			inv():del 'lord_sign'
 			return [[
 				-- Нихуя чё ты принёс. Где достал?
@@ -45,14 +45,14 @@ collector_man = obj {
 				-- И не говори, а ещё они заговор планируют, вот бумаги.
 				^
 				-- А расскажи городскому совету, пусть тоже порадуются.
-			]]
-		end
+			]];
+		end;
 
 		-- Если есть бутылка вина
 		if have 'rocky_island' then
-			_collector_drunk = true
-			event 'ready to rock the boat'
-			inv():del 'rocky_island'
+			_collector_drunk = true;
+			event 'ready to rock the boat';
+			inv():del 'rocky_island';
 			return [[
 				-- Ой, хорошо пошла. А чё ты тут делаешь?
 				^
@@ -60,11 +60,11 @@ collector_man = obj {
 				апартаменты.
 				^
 				-- А расскажи городскому совету, пусть тоже порадуются.
-			]]
-		end
+			]];
+		end;
 
 		-- Советник не будет с тобой разговаривать, пока ты не принесёшь ему бутылку или знак лорда
-		event 'old man needs his drink'
+		event 'old man needs his drink';
 		return [[
 			^
 			Test
@@ -73,8 +73,7 @@ collector_man = obj {
 			-- Эй, старик! А давай вспоминать старые времена.
 			^
 			Старик жестами объясняет, что ему нужно промочить горло.
-
-		]]
+		]];
 	end;
 }
 
@@ -148,7 +147,10 @@ collector_man_dlg = dlg {
 			always = true;
 			'Я пойду.';
 			function()
-				back()
+				back();
+				return [[
+					-- Покеда!
+				]];
 			end;
 		};
 	};
