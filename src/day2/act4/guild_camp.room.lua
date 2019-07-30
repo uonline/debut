@@ -10,9 +10,10 @@ _guild_camp_priest_greeting = false
 _guild_camp_smuggler_greeting = false
 _guild_camp_lord_greeting = false
 _guild_camp_halfblood_greeting = false
+_guild_camp_giveaway = false
 
 -- События
-_guild_camp_giveaway = false
+-- Старик получает, что хотел
 on_event('old man needs his drink', function()
 	_guild_camp_giveaway = true
 end)
