@@ -1,5 +1,6 @@
 -- Переменные локации
 _collector_drunk = false
+_collector_took_lord_sign = false
 
 -- Локация
 collector = room {
@@ -28,10 +29,17 @@ collector_man = obj {
 		размера. Рядом с ним ты различаешь какое-то {копошение}.
 	]];
 	act = function()
-		-- Если советник выпил, то делаем доступным диалог с ним
-		if _collector_drunk then
+		-- Если советник получил знак расположения лорда, то делаем доступным диалог с ним
+		if _collector_took_lord_sign then
 		--if true then
 			walk 'collector_man_dlg';
+		end;
+
+		-- Если советник выпил
+		if _collector_took_lord_sign then
+			return [[
+				Ты прислушиваешься. Кажется, ....
+			]];
 		end;
 
 		-- Текст с началом передачи советнику одного из предметов
@@ -113,7 +121,7 @@ collector_man = obj {
 
 		-- Если есть знак расположения лорда
 		if have 'lord_sign' then
-			_collector_drunk = true;
+			_collector_took_lord_sign = true;
 			event 'ready to rock the boat';
 			inv():del 'lord_sign'
 			return collectors_drink .. [[
@@ -167,7 +175,9 @@ collector_man = obj {
 				-- Действительно Скалистый берег, -- говорит старик, вытирая рот.
 				^
 				-- Значит, не такой уж он и пройдоха, -- заключаешь ты.
-			]] .. collector_read;
+				^
+				...Отдаёт ключи без чтения.
+			]];
 		end;
 
 		-- Советник не будет с тобой разговаривать, пока ты не принесёшь ему бутылку или знак лорда
