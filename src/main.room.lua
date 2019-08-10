@@ -14,6 +14,7 @@ local main_ways_debug = {
 	vroom('D2A3 (без субстрата)^', 'regimenstrasse');
 	vroom('D2A3 (Переулок без бумаг)^', 'lane');
 	vroom('D2A4^', 'sewer');
+	vroom('D2A4 (Коллектор)^', 'collector');
 	vroom('D2A5^', 'tower_stage1');
 	vroom('D2A6^ (ну такой)', 'scaffold');
 	vroom('D2A7^', 'under_scaffold');

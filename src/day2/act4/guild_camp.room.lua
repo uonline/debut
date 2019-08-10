@@ -10,9 +10,10 @@ _guild_camp_priest_greeting = false
 _guild_camp_smuggler_greeting = false
 _guild_camp_lord_greeting = false
 _guild_camp_halfblood_greeting = false
+_guild_camp_giveaway = false
 
 -- События
-_guild_camp_giveaway = false
+-- Старик получает, что хотел
 on_event('old man needs his drink', function()
 	_guild_camp_giveaway = true
 end)
@@ -21,7 +22,7 @@ end)
 guild_camp = room {
 	nam = 'Лагерь подполья';
 	dsc = [[
-		Ты выходишь в просторный зал. Помещение заполняет несколько рядов колонн,
+		Ты входишь в просторный зал. Помещение заполняет несколько рядов колонн,
 		на которых закреплена пара факелов. Между колонн высятся горы ящиков и сундуков
 		разных размеров.
 		В потолке местами проделаны небольшие отверстия, через

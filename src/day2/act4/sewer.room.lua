@@ -1,5 +1,5 @@
 -- Переменные локации
-sewer_to_collector = vroom('Коллектор', 'collector')
+sewer_to_collector = vroom('В укрытие старика', 'collector')
 sewer_to_guild_camp = vroom('Лагерь подполья', 'guild_camp')
 sewer_to_collector:disable()
 sewer_to_guild_camp:disable()
