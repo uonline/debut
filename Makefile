@@ -30,6 +30,6 @@ release: lint deps
 
 spell:
 	which hunspell
-	find -name '*.lua' -exec hunspell -d en_US,ru_RU '{}' ';'
+	find -name '*.lua' -exec hunspell -d en_US,ru_RU '{}' '+'
 
 spellcheck: spell
