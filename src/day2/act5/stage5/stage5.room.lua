@@ -18,7 +18,7 @@ tower_stage5_room2 = vroom('Ближняя левая комната', 'tower_st
 tower_stage5_room3 = room {
 	nam = 'Дальняя правая комната';
 	enter = function()
-		return 'В комнате соврешенно пусто.', false
+		return 'В комнате совершенно пусто.', false
 	end;
 }
 

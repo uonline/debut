@@ -26,3 +26,10 @@ release: lint deps
 	rm -f release.zip
 	7z a release.zip __build/
 	rm -rf __build
+
+
+spell:
+	which hunspell
+	find -name '*.lua' -exec hunspell -d en_US,ru_RU '{}' ';'
+
+spellcheck: spell
