@@ -28,7 +28,7 @@ tower_picture = obj {
 			tower_stage3_archive_to_secret_room:enable()
 			tower_picture:disable()
 			return [[
-				Картина наклонилась в другую сторону. За стеной послышался какой-то сркежет.
+				Картина наклонилась в другую сторону. За стеной послышался какой-то скрежет.
 			]]
 		end
 	end;
