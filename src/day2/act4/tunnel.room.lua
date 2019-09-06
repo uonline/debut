@@ -242,7 +242,9 @@ tunnel_leader = obj {
 			то мы ждём его появления. Мы рассказываем советнику всё, что знаем о планах капитана, заговоре
 			и о нападении на город, ты показываешь ему документы.
 			^
-			-- И уповаем на мудрость очередного старикана.
+			-- Ты знаком с содержимым документов, а значит сможешь более-менее внятно описать проблему.
+			^
+			-- И уповаем на мудрость очередного упрямого старикана.
 			^
 			Главарь встаёт и нажимает, что-то на боковой стене. Стена у него за спиной отодвигается.
 		]];
@@ -251,13 +253,13 @@ tunnel_leader = obj {
 		if _collector_drunk then
 			-- Если мы уже знакомились с Полукровкой, то отмечаем её серьёзность
 			if _guild_camp_halfblood_greeting then
-				return tunnel_leader_greeting .. about_chaos .. halfblood_changes .. to_tower;
+				return tunnel_leader_greeting .. about_chaos .. halfblood_changes .. to_tower .. _tower_penetration;
 			end;
-				return tunnel_leader_greeting .. about_chaos .. to_tower;
+				return tunnel_leader_greeting .. about_chaos .. to_tower .. _tower_penetration;
 		end;
 
 		-- Если бывший советник не пил, то обсуждаем разговор с ним и отправляемся в башню
-		return tunnel_leader_greeting .. about_exconsul .. to_tower;
+		return tunnel_leader_greeting .. about_exconsul .. to_tower .. _tower_penetration;
 	end;
 }
 

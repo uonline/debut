@@ -1,9 +1,17 @@
+-- Переменные локации
 _tower_stage1_guard_searched = false
+_tower_penetration = [[
+		Минуя запутанные тоннели канализации, вы пробираетесь через лаз в башню
+		наместника. Полукровка оглушает стражника. Пока вы в безопасности,
+		но нужно двигаться дальше.
+]];
 
+-- События
 on_event('tower penetration', function()
 	walk 'tower_stage1'
 end)
 
+-- Локация
 tower_stage1 = room {
 	nam = 'Башня';
 	dsc = [[
@@ -11,11 +19,7 @@ tower_stage1 = room {
 		уверен. Здесь неожиданно много дверей.
 	]];
 	-- Описание дороги в башню
-	entered = [[
-		Минуя запутанные тоннели канализации, вы пробираетесь через лаз в башню
-		наместника. Полукровка оглушает стражника. Пока вы в безопасности,
-		но нужно двигаться дальше.
-	]];
+	entered = _tower_penetration;
 	obj = {
 		'tower_stage1_thieves_leader';
 		'tower_halfblood';
@@ -29,6 +33,8 @@ tower_stage1 = room {
 	};
 }
 
+-- Объекты локации
+-- Дальняя левая комната
 tower_stage1_room1 = room {
 	nam = 'Дальняя левая комната';
 	enter = function()
@@ -38,8 +44,10 @@ tower_stage1_room1 = room {
 	end;
 }
 
+-- Ближняя левая комната
 tower_stage1_room2 = vroom('Ближняя левая комната', 'tower_stage2');
 
+-- Дальняя правая комната
 tower_stage1_room3 = room {
 	nam = 'Дальняя правая комната';
 	enter = function()
@@ -49,6 +57,7 @@ tower_stage1_room3 = room {
 	end;
 }
 
+-- Ближняя правая комната
 tower_stage1_room4 = room {
 	nam = 'Ближняя правая комната';
 	enter = function()
@@ -59,6 +68,7 @@ tower_stage1_room4 = room {
 	end;
 }
 
+-- Главарь подполья
 tower_stage1_thieves_leader = obj {
 	nam = 'Главарь воров';
 	dsc = [[
@@ -70,6 +80,7 @@ tower_stage1_thieves_leader = obj {
 	]];
 }
 
+-- Полукровка
 tower_halfblood = obj {
 	nam = 'Полукровка';
 	dsc = [[
@@ -81,6 +92,7 @@ tower_halfblood = obj {
 	]];
 }
 
+-- Оглушённый стражник
 tower_guard = obj {
 	nam = 'Оглушённый стражник';
 	dsc = [[
@@ -98,6 +110,7 @@ tower_guard = obj {
 	end;
 }
 
+-- Карта башни
 tower_map = obj {
 	nam = 'Карта башни';
 	inv = [[
