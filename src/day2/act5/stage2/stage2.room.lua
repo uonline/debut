@@ -1,3 +1,6 @@
+-- Переменные локации
+_tower_stage2_where_is_halfblood = true;
+
 -- События
 on_event('thieves leader disappeared', function()
 	tower_stage2_thieves_leader:disable();
@@ -57,9 +60,6 @@ tower_stage2_stock_room = room {
 }
 
 -- Объекты локации
-
--- Окна под потолком, как и на первом этаже они украшены витражами...
-
 -- Главарь подполья
 tower_stage2_thieves_leader = obj {
 	nam = 'Главарь подполья';
@@ -71,20 +71,55 @@ tower_stage2_thieves_leader = obj {
 	end;
 }
 
+-- Окна под потолком, как и на первом этаже они украшены витражами...
+
 -- Диалог с главарём подполья
 tower_stage2_thieves_leader_dlg = dlg {
 	nam = 'Главарь подполья';
 	hideinv = true;
-	entered = [[
-		Тебе кажется, что главарь несколько похудел.
-		^
-		...
-		-- Куда, чёрт возьми, она подевалась?
-		^
-		-- Я думаю -- покои советнка на самом вреху башни. Но на всякий случай можешь
-		проверить, что за той дверью.
-	]];
+	entered = function()
+		-- Спрашиваем, где Полукровка
+		if _tower_stage2_where_is_halfblood then
+			return [[
+				-- Куда она подевалась? -- спрашиваешь ты бывшего торгаша.
+				^
+				-- ...
+			]];
+		end;
+
+		return [[
+		]];
+	end;
 	phr = {
+		-- Где полукровка
+		{
+			tag = 'about_halfblood';
+			true;
+			'Будем её искать?';
+			[[
+				-- Тогда мы отсюда никогда не выберемся, -- ...
+				-- нам нужно найти советника. Полукровка не пропадёт.
+			]];
+			function()
+				_tower_stage2_where_is_halfblood = false;
+				tower_stage2_thieves_leader_dlg:pon('new_way');
+			end;
+		};
+		-- Куда дальше
+		{
+			tag = 'new_way';
+			false;
+			'Куда дальше?';
+			[[
+				-- Я думаю -- покои советнка на самом вреху башни. Но на всякий случай можешь
+				проверить, что за той дверью.
+			]];
+			function()
+				tower_stage2_thieves_leader_dlg:pon('about_religion');
+				tower_stage2_thieves_leader_dlg:poff('new_way');
+			end;
+		};
+		-- О религии благих
 		{
 			tag = 'about_religion';
 			false;
@@ -96,12 +131,17 @@ tower_stage2_thieves_leader_dlg = dlg {
 			]];
 			function()
 				-- ...
+				tower_stage2_thieves_leader_dlg:pon('go_go_go');
 			end;
 		};
+		-- Уходим
 		{
-			always = true;
+			tag='go_go_go';
+			false;
 			'Думаю, нам пора.';
 			function()
+				tower_stage2_thieves_leader_dlg:poff('about_religion');
+				tower_stage2_thieves_leader_dlg:pon('go_go_go');
 				back();
 			end;
 		};
