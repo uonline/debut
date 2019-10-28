@@ -1,3 +1,9 @@
+-- События
+on_event('got spyglass paper', function()
+	tower_stage2_stock_elder_dlg:pon('spyglass_request');
+end)
+
+-- Локация
 tower_stage2_stock = room {
 	nam = 'Склад';
 	dsc = [[
@@ -14,6 +20,8 @@ tower_stage2_stock = room {
 	};
 }
 
+-- Объекты
+-- Кладовщик
 tower_stage2_stock_elder = obj {
 	nam = 'Старец';
 	dsc = [[
@@ -21,10 +29,20 @@ tower_stage2_stock_elder = obj {
 		за которым дремлет {усатый старик.}
 	]];
 	act = function()
-		walk 'tower_stage2_stock_elder_dlg'
+		walk 'tower_stage2_stock_elder_dlg';
 	end;
 }
 
+-- Подзорная труба
+tower_spyglass = obj {
+	nam = 'Подзорная труба';
+	inv = [[
+		Ты внимательно рассматриваешь подзорную трубу. Ты не специалист по таким
+		вещам, но она явно не людской работы.
+	]];
+}
+
+-- Диалог с кладовщиком
 tower_stage2_stock_elder_dlg = dlg {
 	nam = 'Зав. складом';
 	hideinv = true;
@@ -49,30 +67,24 @@ tower_stage2_stock_elder_dlg = dlg {
 				Вечно у вас всё секретно, вечно от старого Руаки всё утаивают...
 				Как всегда. Время идёт, а ничего не меняется. Держите свою
 				трубу. И распишитесь вот тут. И вот тут.
+^
+			-- Так уж ли много на свете правдивых историй. Память и ограниченность человеческого восприятия;
+			^
+			-- Насколько ты охвачен течением, и что за сила тобой движет? Не использует ли тебя какая-либо
+			сила? Сумеешь ли ты отвести Рок?
+
 			]];
 			function()
-				inv():del 'tower_spyglass_paper'
-				inv():add 'tower_spyglass'
+				inv():del 'tower_spyglass_paper';
+				inv():add 'tower_spyglass';
 			end;
 		};
 		{
 			always = true;
 			'Я пойду.';
 			function()
-				back()
+				back();
 			end;
 		};
 	};
-}
-
-on_event('got spyglass paper', function()
-	tower_stage2_stock_elder_dlg:pon('spyglass_request');
-end)
-
-tower_spyglass = obj {
-	nam = 'Подзорная труба';
-	inv = [[
-		Ты внимательно рассматриваешь подзорную трубу. Ты не специалист по таким
-		вещам, но она явно не людской работы.
-	]];
 }
