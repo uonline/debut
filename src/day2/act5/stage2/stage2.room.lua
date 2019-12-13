@@ -16,7 +16,7 @@ tower_stage2 = room {
 
 		-- Описание этажа
 		tower_stage2_def=[[
-			
+			...
 		]];
 
 		-- Проверяем не пропал ли ещё главарь
@@ -28,12 +28,15 @@ tower_stage2 = room {
 				Пока вы поднимались, ты был абсолютно уверен, что она идёт за тобой. Даже чувствовал, как
 				она подталкивает тебя в спину.
 				^
-				В замешательстве ты возвращаешься на лестницу, но там тебя ждёт лишь тишина.
+				В замешательстве ты отступаешь на лестницу, но там тебя ждёт лишь тишина. Ты возвращаешься
+				к главарю.
 			]];
 		end
 	end;
 	obj = {
+		'tower_stage2_windows';
 		'tower_stage2_thieves_leader';
+		'tower_stage2_some_stuff';
 	};
 	way = {
 		'tower_stage2_stock_room';
@@ -48,18 +51,34 @@ tower_stage2_stock_room = room {
 	enter = function()
 		-- Главарь подполья не даёт нам проверить склад
 		if tower_stage2_thieves_leader:disabled() then
+			-- Переходим в склад
 			walk 'tower_stage2_stock';
 		else
 			return [[
-				-- У нас нет на это времени. Нужно подняться выше.
+				-- Похоже эта дверь ведёт на какой-то склад, -- замечаешь ты.
 				^
-				-- Похоже эта дверь ведёт на какой-то склад.
+				-- У нас нет на это времени, -- нетерпеливо отзывается главарь,
+				-- нужно подниматься выше.
+				^
 			]], false
 		end;
 	end;
 }
 
 -- Объекты локации
+-- Окна под потолком
+tower_stage2_windows = obj {
+	nam = 'Окна';
+	dsc = [[
+		{Окна} под потолком.
+	]];
+	act = function()
+		return [[
+			Как и на первом этаже они украшены витражами...
+		]];
+	end;
+}
+
 -- Главарь подполья
 tower_stage2_thieves_leader = obj {
 	nam = 'Главарь подполья';
@@ -71,7 +90,30 @@ tower_stage2_thieves_leader = obj {
 	end;
 }
 
--- Окна под потолком, как и на первом этаже они украшены витражами...
+-- Ящики
+tower_stage2_some_stuff = obj {
+	nam = 'Ящики';
+	dsc = [[
+		{Покрытые пылью ящики}...
+	]];
+	act = function()
+		objs('tower_stage2'):add('tower_stage2_skeleton');
+		return [[
+			...
+		]];
+	end;
+}
+
+-- Скелет
+tower_stage2_skeleton = obj {
+	nam = 'Скелет';
+	dsc = [[
+		{Скелет}...
+	]];
+	act = [[
+		Скелет неизвестного существа.
+	]];
+}
 
 -- Диалог с главарём подполья
 tower_stage2_thieves_leader_dlg = dlg {
@@ -98,7 +140,8 @@ tower_stage2_thieves_leader_dlg = dlg {
 			'Будем её искать?';
 			[[
 				-- Тогда мы отсюда никогда не выберемся, -- ...
-				-- нам нужно найти советника. Полукровка не пропадёт.
+				-- нам нужно найти советника. Уж кто-то, а Полукровка
+				точно не пропадёт.
 			]];
 			function()
 				_tower_stage2_where_is_halfblood = false;
@@ -111,15 +154,15 @@ tower_stage2_thieves_leader_dlg = dlg {
 			false;
 			'Куда дальше?';
 			[[
-				-- Я думаю -- покои советнка на самом вреху башни. Но на всякий случай можешь
-				проверить, что за той дверью.
+				-- Покои советнка должны быть на самом верху башни. Поднимаемся дальше.
 			]];
 			function()
 				tower_stage2_thieves_leader_dlg:pon('about_religion');
+				tower_stage2_thieves_leader_dlg:pon('go_go_go');
 				tower_stage2_thieves_leader_dlg:poff('new_way');
 			end;
 		};
-		-- О религии благих
+		-- О религии Благих
 		{
 			tag = 'about_religion';
 			false;
@@ -136,9 +179,12 @@ tower_stage2_thieves_leader_dlg = dlg {
 		};
 		-- Уходим
 		{
-			tag='go_go_go';
+			tag = 'go_go_go';
 			false;
 			'Думаю, нам пора.';
+			[[
+				Вперёд.
+			]];
 			function()
 				tower_stage2_thieves_leader_dlg:poff('about_religion');
 				tower_stage2_thieves_leader_dlg:pon('go_go_go');
