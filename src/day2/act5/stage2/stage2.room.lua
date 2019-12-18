@@ -70,7 +70,7 @@ tower_stage2_stock_room = room {
 tower_stage2_windows = obj {
 	nam = 'Окна';
 	dsc = [[
-		{Окна} под потолком.
+		{Окна} под потолком. Одно из них раскрыто.
 	]];
 	act = function()
 		return [[
@@ -97,6 +97,7 @@ tower_stage2_some_stuff = obj {
 		{Покрытые пылью ящики}...
 	]];
 	act = function()
+		-- Находим скелет
 		objs('tower_stage2'):add('tower_stage2_skeleton');
 		return [[
 			...
@@ -110,9 +111,16 @@ tower_stage2_skeleton = obj {
 	dsc = [[
 		{Скелет}...
 	]];
-	act = [[
-		Скелет неизвестного существа.
-	]];
+	act = function()
+		-- Скелет неизвестного существа.
+		--
+		-- Выпускаем птицу
+		event 'freedom for black bird';
+		return [[
+			Ты ломаешь камнем рёбра скелета и птица вырывается наружу.
+			Покружив у тебя над говой, она вылетает в раскрытое окно под потолком.
+		]];
+	end;
 }
 
 -- Диалог с главарём подполья

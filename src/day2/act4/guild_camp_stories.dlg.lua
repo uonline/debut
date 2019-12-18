@@ -1,7 +1,7 @@
 -- Переменные диалога
 local _mage_greeting = false
 
--- Диалог с продавцом пряностей
+-- Диалог с беглым магом
 guild_camp_stories = dlg {
 	nam = 'Беглый маг';
 	hideinv = true;

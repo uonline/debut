@@ -35,4 +35,3 @@ tower_stage3_archive_small_letters = obj {
 		end
 	end;
 }
-
