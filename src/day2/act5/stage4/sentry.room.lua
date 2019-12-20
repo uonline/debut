@@ -79,3 +79,15 @@ sentry_black_bird = obj {
 		walk 'sentry_black_bird_dlg';
 	end;
 }
+
+-- TODO
+-- Test
+tower_stone = obj {
+	nam = 'Камень';
+	dsc = [[
+		{Камень}.
+	]];
+	tak = [[
+		Кусок стены башни.
+	]];
+}

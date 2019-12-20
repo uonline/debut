@@ -1,5 +1,7 @@
 -- Переменные локации
 _tower_stage2_where_is_halfblood = true;
+_tower_stage2_skeleton_is_bewitched = false;
+_tower_stage2_skeleton_is_broken = false;
 
 -- События
 on_event('thieves leader disappeared', function()
@@ -32,6 +34,11 @@ tower_stage2 = room {
 				к главарю.
 			]];
 		end
+	end;
+	entered = function()
+		-- Test
+		inv():add 'tower_stone';
+		inv():add 'tower_dagger';
 	end;
 	obj = {
 		'tower_stage2_windows';
@@ -112,14 +119,69 @@ tower_stage2_skeleton = obj {
 		{Скелет}...
 	]];
 	act = function()
-		-- Скелет неизвестного существа.
-		--
-		-- Выпускаем птицу
-		event 'freedom for black bird';
+		-- Разбитый скелет
+		if _tower_stage2_skeleton_is_broken then
+			return [[
+				Разбитый скелет
+			]];
+		end;
+
+		-- Расколдованный скелет
+		if _tower_stage2_skeleton_is_bewitched then
+			return [[
+				Расколдованный скелет.
+			]];
+		end;
+
+		-- Изначальное описание скелета
 		return [[
-			Ты ломаешь камнем рёбра скелета и птица вырывается наружу.
-			Покружив у тебя над говой, она вылетает в раскрытое окно под потолком.
+			Скелет неизвестного существа.
 		]];
+	end;
+	-- Test
+	used = function(self, what)
+		-- Проверяем не сломан ли уже скелет
+		if _tower_stage2_skeleton_is_broken then
+			return [[
+				Всё уже сделано до нас.
+			]];
+		end;
+
+		-- Проверяем воздействуем ли кинжалом, ломающим заклятья
+		if what == tower_dagger then
+			-- Проверяем, не расколдован ли уже скелет
+			if _tower_stage2_skeleton_is_bewitched then
+				return [[
+					Скелет уже расколдован.
+				]];
+			end;
+
+			-- Расколдовываем скелет
+			_tower_stage2_skeleton_is_bewitched = true;
+			return [[
+				Скелет расколдован.
+			]];
+		end;
+
+		-- Проверяем воздействуем ли каменем
+		if what == tower_stone then
+			-- Проверяем расколдован ли скелет
+			if _tower_stage2_skeleton_is_bewitched then
+				-- Ломаем скелет
+				_tower_stage2_skeleton_is_broken = true;
+				-- Выпускаем птицу
+				event 'freedom for black bird';
+				return [[
+					Ты ломаешь камнем рёбра скелета и птица вырывается наружу.
+					Покружив у тебя над говой, она вылетает в раскрытое окно под потолком.
+				]];
+			else
+				-- Намекаем, что сначала нужно расколодовать
+				return [[
+					Ничего не выходит, скелет заколдован.
+				]];
+			end;
+		end;
 	end;
 }
 

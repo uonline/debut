@@ -42,6 +42,15 @@ tower_spyglass = obj {
 	]];
 }
 
+-- Test
+-- Кинжал для взлома заклятий
+tower_dagger = obj {
+	nam = 'Кинжал';
+	inv = [[
+		Ты внимательно рассматриваешь кинжал...
+	]];
+}
+
 -- Диалог с кладовщиком
 tower_stage2_stock_elder_dlg = dlg {
 	nam = 'Зав. складом';
