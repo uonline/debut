@@ -43,7 +43,7 @@ tower_spyglass = obj {
 }
 
 -- Test
--- Кинжал для взлома заклятий
+-- Разрушитель чар в виде кинжала
 tower_dagger = obj {
 	nam = 'Кинжал';
 	inv = [[
