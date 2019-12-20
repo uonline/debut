@@ -1,5 +1,6 @@
 -- Переменные локации
 _tower_stage2_where_is_halfblood = true;
+_tower_stage2_skeleton_is_dropped = false;
 _tower_stage2_skeleton_is_bewitched = false;
 _tower_stage2_skeleton_is_broken = false;
 
@@ -90,7 +91,7 @@ tower_stage2_windows = obj {
 tower_stage2_thieves_leader = obj {
 	nam = 'Главарь подполья';
 	dsc = [[
-		{Бывший торгаш} нервно потирает щетину, уставившись в пол.
+		{Бывший торгаш} нервно потирает щетину, уставившись на
 	]];
 	act = function()
 		walk 'tower_stage2_thieves_leader_dlg';
@@ -101,11 +102,27 @@ tower_stage2_thieves_leader = obj {
 tower_stage2_some_stuff = obj {
 	nam = 'Ящики';
 	dsc = [[
-		{Покрытые пылью ящики}...
+		 груду покрытых пылью {ящиков}.
 	]];
 	act = function()
-		-- Находим скелет
-		objs('tower_stage2'):add('tower_stage2_skeleton');
+		-- Главарь подполья не даёт нам ознакомиться с ящиками
+		if not tower_stage2_thieves_leader:disabled() then
+			return [[
+				-- Оставь их в покое, -- нервно бросает главарь бандитов в твою
+				сторону, -- нам нужно идти дальше.
+			]];
+		end;
+
+		-- Находим скелет, если ещё нет
+		if not _tower_stage2_skeleton_is_dropped then
+			objs('tower_stage2'):add('tower_stage2_skeleton');
+			return [[
+				Ты решаешь попробовать ознакомиться с содержимым ящиков и подходишь ближе.
+				Крышка не поддаётся...
+			]];
+		end;
+
+		-- Описание ящиков без скелета
 		return [[
 			...
 		]];
@@ -116,7 +133,7 @@ tower_stage2_some_stuff = obj {
 tower_stage2_skeleton = obj {
 	nam = 'Скелет';
 	dsc = [[
-		{Скелет}...
+		На полу распростёрт {скелет}.
 	]];
 	act = function()
 		-- Разбитый скелет
