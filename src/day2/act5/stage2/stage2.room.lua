@@ -42,6 +42,7 @@ tower_stage2 = room {
 		-- Test
 		inv():add 'tower_stone';
 		inv():add 'tower_dagger';
+		inv():add 'capitan_docs';
 	end;
 	obj = {
 		'tower_stage2_windows';
