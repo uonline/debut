@@ -13,6 +13,7 @@ tower_stage2_stock = room {
 		швабры, рулоны разноцветной ткани и даже наборы масляных красок.
 	]];
 	obj = {
+		'tower_dagger';
 		'tower_stage2_stock_elder';
 	};
 	way = {
