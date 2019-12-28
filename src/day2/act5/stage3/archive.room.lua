@@ -1,6 +1,8 @@
+-- Переходы
 tower_stage3_archive_to_secret_room = vroom('Потайная комната', 'tower_stage3_secret_room');
 tower_stage3_archive_to_secret_room:disable()
 
+-- Локация
 tower_stage3_archive = room {
 	nam = 'Архив';
 	dsc = [[
@@ -15,6 +17,8 @@ tower_stage3_archive = room {
 	};
 }
 
+-- Объекты локации
+-- Неразборчивые письмена
 tower_stage3_archive_small_letters = obj {
 	nam = 'Неразборчивые письмена';
 	dsc = [[
@@ -35,6 +39,13 @@ tower_stage3_archive_small_letters = obj {
 		end
 	end;
 }
+
+-- Некоторые книги привлекают твоё внимание
+-- Книга 1
+-- Книга 2
+-- Не забыть добавить объект с описанием чёрной птицы
+-- Краткая история древнего государства людей, легенды о чёрных птицах- Книга 3
+-- Книга 4
 
 -- TODO
 -- Страж с загадками (статуя, книга, библиотека?)
