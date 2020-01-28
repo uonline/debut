@@ -1,3 +1,10 @@
+-- События
+-- Узнаеём где спрятана книга о башне
+on_event('got tower book location', function()
+	tower_book:enable()
+end)
+
+-- Локация
 tower_stage3_secret_room = room {
 	nam = 'Потайная комната';
 	dsc = [[
@@ -11,6 +18,8 @@ tower_stage3_secret_room = room {
 	};
 }
 
+-- Объекты локации
+-- Книга о башне
 tower_book = obj {
 	nam = 'Книга о башне';
 	dsc = [[
@@ -25,9 +34,4 @@ tower_book = obj {
 		]]
 	end;
 }
-tower_book:disable()
-
-on_event('got tower book location', function()
-	tower_book:enable()
-end)
-
+tower_book:disable() -- Прячем книгу о башне
