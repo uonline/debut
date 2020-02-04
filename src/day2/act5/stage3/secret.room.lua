@@ -1,4 +1,6 @@
 -- События
+tower_book:disable() -- Прячем книгу о башне
+
 -- Узнаеём где спрятана книга о башне
 on_event('got tower book location', function()
 	tower_book:enable()
@@ -34,4 +36,3 @@ tower_book = obj {
 		]]
 	end;
 }
-tower_book:disable() -- Прячем книгу о башне
