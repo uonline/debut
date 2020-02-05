@@ -2,6 +2,9 @@
 tower_stage3_archive_to_secret_room = vroom('Потайная комната', 'tower_stage3_secret_room');
 tower_stage3_archive_to_secret_room:disable()
 
+-- Переменные
+tower_stage3_archive_guard_on = false -- переменная для включения загадок стража архива
+
 -- Локация
 tower_stage3_archive = room {
 	nam = 'Архив';
@@ -12,6 +15,10 @@ tower_stage3_archive = room {
 		обращают на себя твоё внимание, и ты по наитию достаёшь их с полок и кладёшь на
 		одинокий стол.
 	]];
+	entered = function()
+		-- Включаем загадки стража архива
+		tower_stage3_archive_guard_on = true;
+	end;
 	obj = {
 		'tower_stage3_archive_table';
 		'tower_stage3_archive_book_1';
@@ -113,7 +120,248 @@ tower_stage3_archive_guard = obj {
 	dsc = [[
 		{Большая книга} на алтаре.
 	]];
-	act = [[
-		Напоминает алтарь на котором лежит внушительная книга. Ты листаешь книгу и неожиданно обнаруживаешь на ней проступающие на чистой бумаге надписи
-	]];
+	act = function()
+		walk 'tower_stage3_archive_guard_dlg';
+	end;
+}
+
+-- Функция для выключения ответов на загадки
+turn_off_puzzle = function(puzzle_number)
+	-- Выключаем загадки
+	tower_stage3_archive_guard_on = false;
+	-- Выставляем признак, что мы уже попытались пройти загадки в этом прохождении цикла башни
+	_tower_stage2_new_loop_puzzle = false;
+
+	-- Выключаем ответы на загадки
+	if puzzle_number == 1 then
+		tower_stage3_archive_guard_dlg:poff('puzzle_1_answer_1');
+		tower_stage3_archive_guard_dlg:poff('puzzle_1_answer_2');
+		tower_stage3_archive_guard_dlg:poff('puzzle_1_answer_3');
+		-- Включаем следующую загадку
+		_tower_stage2_current_puzzle_number = 2;
+	end;
+	if puzzle_number == 2 then
+		tower_stage3_archive_guard_dlg:poff('puzzle_2_answer_1');
+		tower_stage3_archive_guard_dlg:poff('puzzle_2_answer_2');
+		tower_stage3_archive_guard_dlg:poff('puzzle_2_answer_3');
+		-- Включаем следующую загадку
+		_tower_stage2_current_puzzle_number = 3;
+	end;
+	if puzzle_number == 3 then
+		tower_stage3_archive_guard_dlg:poff('puzzle_3_answer_1');
+		tower_stage3_archive_guard_dlg:poff('puzzle_3_answer_2');
+		tower_stage3_archive_guard_dlg:poff('puzzle_3_answer_3');
+		tower_stage3_archive_guard_dlg:poff('puzzle_3_answer_4');
+		-- Включаем следующую загадку
+		_tower_stage2_current_puzzle_number = 1;
+	end;
+end
+
+-- Диалог со стражем архива
+tower_stage3_archive_guard_dlg = dlg {
+	nam = 'Ветхая книга';
+	hideinv = true;
+	entered = function()
+		-- Загадка 1
+		-- Включаем ответы на первую загадку, если сейчас её очередь и мы первый раз пытаемся отгадать загадку в текущем цикле прохождения башни
+		if _tower_stage2_current_puzzle_number == 1 and tower_stage3_archive_guard_on and _tower_stage2_new_loop_puzzle then
+			tower_stage3_archive_guard_dlg:pon('puzzle_1_answer_1');
+			tower_stage3_archive_guard_dlg:pon('puzzle_1_answer_2');
+			tower_stage3_archive_guard_dlg:pon('puzzle_1_answer_3');
+		end;
+
+		-- Загадка 2
+		-- Включаем ответы на вторую загадку
+		if _tower_stage2_current_puzzle_number == 2 and tower_stage3_archive_guard_on and _tower_stage2_new_loop_puzzle then
+			tower_stage3_archive_guard_dlg:pon('puzzle_2_answer_1');
+			tower_stage3_archive_guard_dlg:pon('puzzle_2_answer_2');
+			tower_stage3_archive_guard_dlg:pon('puzzle_2_answer_3');
+		end;
+
+		-- Загадка 3
+		-- Включаем ответы на третью загадку
+		if _tower_stage2_current_puzzle_number == 3 and tower_stage3_archive_guard_on and _tower_stage2_new_loop_puzzle then
+			tower_stage3_archive_guard_dlg:pon('puzzle_3_answer_1');
+			tower_stage3_archive_guard_dlg:pon('puzzle_3_answer_2');
+			tower_stage3_archive_guard_dlg:pon('puzzle_3_answer_3');
+			tower_stage3_archive_guard_dlg:pon('puzzle_3_answer_4');
+		end;
+
+		-- Загадки разгаданы
+		return [[
+			Напоминает алтарь на котором лежит внушительная книга. Ты листаешь книгу и неожиданно обнаруживаешь на ней проступающие на чистой бумаге надписи
+			Перед тобой лежит огромная пыльная книга.
+		]];
+	end;
+	phr = {
+		-- Ответы на первую загадку
+		-- Ответ 1.1
+		{
+			tag = 'puzzle_1_answer_1';
+			false;
+			'1.1';
+			[[
+				Ты берёшь перо и пишешь свой ответ.
+				-- Верно!
+			]];
+			function()
+				turn_off_puzzle(1);
+				--_tower_stage2_where_is_halfblood = false;
+				--tower_stage2_thieves_leader_dlg:pon('new_way');
+			end;
+		};
+		-- Ответ 1.2
+		{
+			tag = 'puzzle_1_answer_2';
+			false;
+			'1.2';
+			[[
+				Ты берёшь перо и пишешь свой ответ.
+				-- Верно!
+			]];
+			function()
+				turn_off_puzzle(1);
+				--_tower_stage2_where_is_halfblood = false;
+				--tower_stage2_thieves_leader_dlg:pon('new_way');
+			end;
+		};
+		-- Ответ 1.3
+		{
+			tag = 'puzzle_1_answer_3';
+			false;
+			'1.3';
+			[[
+				Ты берёшь перо и пишешь свой ответ.
+				-- Верно!
+			]];
+			function()
+				turn_off_puzzle(1);
+				--_tower_stage2_where_is_halfblood = false;
+				--tower_stage2_thieves_leader_dlg:pon('new_way');
+			end;
+		};
+
+		-- Ответы на вторую загадку
+		-- Ответ 2.1
+		{
+			tag = 'puzzle_2_answer_1';
+			false;
+			'2.1';
+			[[
+				Ты берёшь перо и пишешь свой ответ.
+				-- Верно!
+			]];
+			function()
+				turn_off_puzzle(2);
+				--_tower_stage2_where_is_halfblood = false;
+				--tower_stage2_thieves_leader_dlg:pon('new_way');
+			end;
+		};
+		-- Ответ 2.2
+		{
+			tag = 'puzzle_2_answer_2';
+			false;
+			'2.2';
+			[[
+				Ты берёшь перо и пишешь свой ответ.
+				-- Верно!
+			]];
+			function()
+				turn_off_puzzle(2);
+				--_tower_stage2_where_is_halfblood = false;
+				--tower_stage2_thieves_leader_dlg:pon('new_way');
+			end;
+		};
+		-- Ответ 2.3
+		{
+			tag = 'puzzle_2_answer_3';
+			false;
+			'2.3';
+			[[
+				Ты берёшь перо и пишешь свой ответ.
+				-- Верно!
+			]];
+			function()
+				turn_off_puzzle(2);
+				--_tower_stage2_where_is_halfblood = false;
+				--tower_stage2_thieves_leader_dlg:pon('new_way');
+			end;
+		};
+
+		-- Ответы на третью загадку
+		-- Ответ 3.1
+		{
+			tag = 'puzzle_3_answer_1';
+			false;
+			'3.1';
+			[[
+				Ты берёшь перо и пишешь свой ответ.
+				-- Верно!
+			]];
+			function()
+				turn_off_puzzle(3);
+				--_tower_stage2_where_is_halfblood = false;
+				--tower_stage2_thieves_leader_dlg:pon('new_way');
+			end;
+		};
+		-- Ответ 3.2
+		{
+			tag = 'puzzle_3_answer_2';
+			false;
+			'3.2';
+			[[
+				Ты берёшь перо и пишешь свой ответ.
+				-- Верно!
+			]];
+			function()
+				turn_off_puzzle(3);
+				--_tower_stage2_where_is_halfblood = false;
+				--tower_stage2_thieves_leader_dlg:pon('new_way');
+			end;
+		};
+		-- Ответ 3.3
+		{
+			tag = 'puzzle_3_answer_3';
+			false;
+			'3.3';
+			[[
+				Ты берёшь перо и пишешь свой ответ.
+				-- Верно!
+			]];
+			function()
+				turn_off_puzzle(3);
+				--_tower_stage2_where_is_halfblood = false;
+				--tower_stage2_thieves_leader_dlg:pon('new_way');
+			end;
+		};
+		-- Ответ 3.4
+		{
+			tag = 'puzzle_3_answer_4';
+			false;
+			'3.4';
+			[[
+				Ты берёшь перо и пишешь свой ответ.
+				-- Верно!
+			]];
+			function()
+				turn_off_puzzle(3);
+				--_tower_stage2_where_is_halfblood = false;
+				--tower_stage2_thieves_leader_dlg:pon('new_way');
+			end;
+		};
+
+		-- Уходим
+		{
+			tag = 'away';
+			always = true;
+			'Закрыть книгу.';
+			[[
+				Ты закрываешь книгу и отходишь.
+			]];
+			function()
+				--tower_stage2_thieves_leader_dlg:poff('plans');
+				back();
+			end;
+		};
+	};
 }

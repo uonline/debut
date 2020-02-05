@@ -9,9 +9,22 @@ tower_stage4 = room {
 	]];
 	way = {
 		'tower_stage4_sentry';
-		tower_stage4_to_stage2;
+		--tower_stage4_to_stage2;
+		'tower_stage4_back_to_stage2';
 		tower_stage4_to_stage5;
 	};
+}
+
+-- Переходы
+-- Возврат на второй этаж
+tower_stage4_back_to_stage2 = room {
+	nam = 'Лестница';
+	enter = function()
+		-- Включаем признак начала нового цикла прохождения по этажам
+		_tower_stage2_new_loop_puzzle = true;
+		-- Возвращаемся на второй этаж
+		walk 'tower_stage2'
+	end;
 }
 
 on_event('learned stairway symbols', function()
