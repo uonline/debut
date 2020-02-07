@@ -9,7 +9,7 @@ tower_stage3_archive_first_enter = true; -- признак первого пос
 tower_stage3_archive = room {
 	nam = 'Архив';
 	dsc = function()
-		archive_definition = [[
+		archive_description = [[
 				Ты оказываешься в затхлом помещении заставленным стелажами с книгами. Здесь
 				неожиданно темно, что несколько отрезвляет тебя. С десяток чадащих свечей
 				в канделябрах служат ориентирами в этом книжном лабиринте. Темнота лишает
@@ -19,14 +19,14 @@ tower_stage3_archive = room {
 
 		if tower_stage3_archive_first_enter then
 			tower_stage3_archive_first_enter = false;
-			return archive_definition .. [[
+			return archive_description .. [[
 				^
 				Затаив дыхание, ты напрягаешь слух, но различаешь лишь шипение разогретого
 				воска. Тебе остаётся гадать, кто следит за свечами и всеми этими книгами.
 			]];
 		end;
 
-		return archive_definition;
+		return archive_description;
 	end;
 	obj = {
 		'tower_stage3_archive_table';
@@ -142,7 +142,7 @@ tower_stage3_archive_small_letters = obj {
 			event 'got tower book location'
 			tower_stage3_archive_small_letters:disable()
 			return [[
-				Ты пробегаешься глазами по дальнейшему тексту.
+				Ты осторожно подносишь подзорную трубу к глазу.
 				^
 				Написано, что в потайной комнате есть некая книга, описывающая магические особенности башни.
 				^
@@ -167,6 +167,7 @@ tower_stage3_archive_guard = obj {
 		покоится {большая книга} в окружении полукруга свечей.
 	]];
 	act = function()
+		-- Проверяем взяли ли мы квест на кинжал
 		walk 'tower_stage3_archive_guard_dlg';
 	end;
 }
@@ -228,17 +229,25 @@ tower_stage3_archive_guard_dlg = dlg {
 	nam = 'Ветхая книга';
 	hideinv = true;
 	entered = function()
-		-- Осматриваем книгу
-		book_guard_definition = [[
-		]];
-
-		-- Пишем название вещи, которая нам нужна
-		book_guard_wish = [[ Ты листаешь книгу и неожиданно обнаруживаешь на ней проступающие на чистой бумаге надписи
-			Перед тобой лежит огромная пыльная книга.
-		]];
-
 		-- Проверяем не разгадывали ли мы загадок в это прохождение башни
 		if _tower_stage2_new_loop_puzzle then
+			-- Осматриваем книгу
+			book_guard_description = [[
+				Перед тобой лежит внушительных размеров книга в кожанном переплёте.
+				Книга открыта примерно на середине, но её страницы пусты. Рядом стоит
+				большая чернильница с пером.
+			]];
+
+			-- Пишем название вещи, которая нам нужна
+			book_guard_wish = [[
+				Ты мокаешь перо в чернила и осторожно выводишь в начале страницы:
+				^
+				? Свиток Ваалама.
+				^
+				Через мгновение чернила впитываются в бумагу и на месте твоей надписи
+				появляется новая:
+			]];
+
 			-- Загадка 1
 			-- Включаем ответы на первую загадку, если сейчас её очередь и мы первый раз пытаемся отгадать загадку в текущем цикле прохождения башни
 			if _tower_stage2_current_puzzle_number == 1 and _tower_stage2_new_loop_puzzle then
@@ -246,7 +255,7 @@ tower_stage3_archive_guard_dlg = dlg {
 				tower_stage3_archive_guard_dlg:pon('puzzle_1_answer_2');
 				tower_stage3_archive_guard_dlg:pon('puzzle_1_answer_3');
 				-- Выводим текст первой загадки
-				return book_guard_definition .. [[
+				return book_guard_description .. book_guard_wish ..[[
 					^
 					Первая загадка...
 				]];
@@ -259,7 +268,7 @@ tower_stage3_archive_guard_dlg = dlg {
 				tower_stage3_archive_guard_dlg:pon('puzzle_2_answer_2');
 				tower_stage3_archive_guard_dlg:pon('puzzle_2_answer_3');
 				-- Выводим текст второй загадки
-				return book_guard_definition .. [[
+				return book_guard_description .. book_guard_wish .. [[
 					^
 					Вторая загадка...
 				]];
@@ -273,15 +282,18 @@ tower_stage3_archive_guard_dlg = dlg {
 				tower_stage3_archive_guard_dlg:pon('puzzle_3_answer_3');
 				tower_stage3_archive_guard_dlg:pon('puzzle_3_answer_4');
 				-- Выводим текст третьей загадки
-				return book_guard_definition .. [[
+				return book_guard_description .. book_guard_wish .. [[
 					^
 					Третья загадка...
 				]];
 			end;
-		end;
+		else
 
-		-- Загадки разгаданы, выводим описание книги
-		return book_guard_definition;
+			-- Загадки разгаданы, выводим описание книги
+			return [[
+				Книга закрыта, ты пытаешься её открыть, но ничего не выходит.
+			]];
+		end;
 	end;
 	phr = {
 		-- Ответы на первую загадку
