@@ -3,6 +3,9 @@ on_event('got spyglass paper', function()
 	tower_stage2_stock_elder_dlg:pon('spyglass_request');
 end)
 
+-- Переменные локации
+_tower_stage2_stock_dagger_quest = false -- признак взятия квеста на кинжал
+
 -- Локация
 tower_stage2_stock = room {
 	nam = 'Склад';
@@ -108,13 +111,14 @@ tower_stage2_stock_elder_dlg = dlg {
 		};
 		{
 			tag = 'book_guard_quest';
-			false;
+			true;
 			'Что за кинжал?';
 			[[
 				Нужен кинжал? Могу дать если сходишь и пренесёшь мне один из свитков из архива.
 				Там будет одна книга, напишешь на ней: Мне нужен свиток Ваалама. И всё будет.
 			]];
 			function()
+				_tower_stage2_stock_dagger_quest = true;
 			end;
 		};
 		{

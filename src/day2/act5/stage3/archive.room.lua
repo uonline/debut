@@ -168,7 +168,16 @@ tower_stage3_archive_guard = obj {
 	]];
 	act = function()
 		-- Проверяем взяли ли мы квест на кинжал
-		walk 'tower_stage3_archive_guard_dlg';
+		if _tower_stage2_stock_dagger_quest then
+			walk 'tower_stage3_archive_guard_dlg';
+		else
+			return [[
+					Ты осматриваешь книгу. Внушительных размеров в кожанном переплёте
+					она оказывается заперта на странного вида замок.
+					Рядом стоит большая чернильница с пером.
+					Ты пытаешься открыть книгу, но ничего не выходит.
+			]];
+		end;
 	end;
 }
 
@@ -219,6 +228,8 @@ complete_puzzle = function()
 	tower_stage3_archive_guard_dlg:poff('puzzle_3_answer_4');
 	-- Разрываем цикл смены загадок
 	_tower_stage2_current_puzzle_number = 0;
+	-- Отмечаем квест на кинжал как пройденный
+	_tower_stage2_stock_dagger_quest = false;
 
 	-- Получаем нужную вещь
 	-- take
@@ -235,7 +246,7 @@ tower_stage3_archive_guard_dlg = dlg {
 			book_guard_description = [[
 				Перед тобой лежит внушительных размеров книга в кожанном переплёте.
 				Книга открыта примерно на середине, но её страницы пусты. Рядом стоит
-				большая чернильница с пером.
+				объёмная чернильница с пером.
 			]];
 
 			-- Пишем название вещи, которая нам нужна
@@ -244,7 +255,8 @@ tower_stage3_archive_guard_dlg = dlg {
 				^
 				? Свиток Ваалама.
 				^
-				Через мгновение чернила впитываются в бумагу и на месте твоей надписи
+				Похоже кладовщик сам не знал, чего ждать от этой книги.
+				Потому что через мгновение чернила впитываются в бумагу и на месте твоей надписи
 				появляется новая:
 			]];
 
@@ -288,10 +300,9 @@ tower_stage3_archive_guard_dlg = dlg {
 				]];
 			end;
 		else
-
-			-- Загадки разгаданы, выводим описание книги
+			-- Попытка разгадать загадку потрачена
 			return [[
-				Книга закрыта, ты пытаешься её открыть, но ничего не выходит.
+				Книга закрыта. Ты пытаешься её открыть, но ничего не выходит.
 			]];
 		end;
 	end;
@@ -334,6 +345,7 @@ tower_stage3_archive_guard_dlg = dlg {
 			]];
 			function()
 				complete_puzzle();
+				back();
 			end;
 		};
 
@@ -362,6 +374,7 @@ tower_stage3_archive_guard_dlg = dlg {
 			]];
 			function()
 				complete_puzzle();
+				back();
 			end;
 		};
 		-- Ответ 2.3
@@ -416,6 +429,7 @@ tower_stage3_archive_guard_dlg = dlg {
 			]];
 			function()
 				complete_puzzle();
+				back();
 			end;
 		};
 		-- Ответ 3.4
@@ -436,9 +450,9 @@ tower_stage3_archive_guard_dlg = dlg {
 		{
 			tag = 'away';
 			always = true;
-			'Закрыть книгу.';
+			'Нужно подумать.';
 			[[
-				Ты закрываешь книгу и отходишь.
+				Ты оставляешь книгу в пококе и отходишь.
 			]];
 			function()
 				back();
