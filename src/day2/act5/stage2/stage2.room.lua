@@ -1,6 +1,6 @@
 -- Переменные локации
 _tower_stage2_where_is_halfblood = true;
-_tower_stage2_skeleton_is_dropped = false;
+_tower_stage2_skeleton_is_dropped = false;   -- признак осмотра ящиков со скелетом
 _tower_stage2_skeleton_is_bewitched = false;
 _tower_stage2_skeleton_is_broken = false;
 _tower_stage2_new_loop_puzzle = false;       -- признак отслеживающий новое прохождение загадок в текущем цикле прохождения башни
