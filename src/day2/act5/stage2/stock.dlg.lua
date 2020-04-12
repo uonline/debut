@@ -161,12 +161,31 @@ tower_stage2_stock_storekeeper_dlg = dlg {
 				inv():add 'tower_spyglass';
 			end;
 		};
+		-- О кинжале
+		-- Доступен, если игрок взаимодействовал с кинжалом
+		{
+			tag = 'about_dagger';
+			false;
+			'Вы что-то говорили о том кинжале? О "разрушителе чар"?';
+			function()
+				return [[
+					...
+					-- Вы довольно много знаете об этом, -- ...
+					^
+					-- Я кладовщик, -- ... -- это моя работа, знать
+					много о разных вещах.
+				]];
+			end;
+		};
+		-- Квест на кинжал для освобождения птицы
 		{
 			tag = 'book_guard_quest';
 			false;
 			'Вы что-то говорили о том кинжале? О "разрушителе чар"?';
 			function()
+				-- Включаем квест
 				_tower_stage2_stock_dagger_quest = true;
+				-- Получаем ключ для книги
 				return [[
 					-- а можно получить его без прошения?
 					-- Хмм, думаю, да, это возможно.
@@ -186,13 +205,26 @@ tower_stage2_stock_storekeeper_dlg = dlg {
 				]];
 			end;
 		};
+		-- Забираем кинжал
+		{
+			tag = 'get_dagger';
+			false;
+			'Я пришёл за своим кинжалом';
+			function()
+				-- Отдаём свиток
+				-- Получаем кинжал
+				return [[
+				]];
+			end;
+		};
+		-- Уходим
 		{
 			always = true;
 			'Я пойду.';
 			function()
 				if not _tower_stage2_stock_dagger_quest then
 					if _tower_stage2_stock_dagger_quest then
-						-- Включаем этот диалог снова, по игрок не возьмёт квест
+						-- Включаем этот диалог снова, пока игрок не возьмёт квест
 						tower_stage2_stock_storekeeper_dlg:pon('book_guard_quest');
 					end;
 				end;
