@@ -11,6 +11,12 @@ on_event('thieves leader disappeared', function()
 	tower_stage2_thieves_leader:disable();
 end)
 
+on_event('skeleton was bited', function()
+	-- Включаем диалог о кинжале для квеста
+	tower_stage2_stock_storekeeper_dlg:pon('book_guard_quest');
+	_tower_stage2_stock_dagger_quest = true;
+end)
+
 -- Локация
 tower_stage2 = room {
 	nam = 'Башня';
@@ -295,6 +301,9 @@ tower_stage2_skeleton = obj {
 					в раскрытое окно.
 				]];
 			else
+				-- Включаем диалог у кладовщика для получения кинжала
+				event 'skeleton was bited';
+
 				-- Намекаем, что сначала нужно расколодовать
 				return [[
 					Вооружившись камнем, ты пытаешься разбить рёбра скелета.
