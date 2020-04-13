@@ -717,8 +717,8 @@ tower_stage3_archive_guard_dlg = dlg {
 	nam = 'Ветхая книга';
 	hideinv = true;
 	entered = function()
-		-- Проверяем не разгадывали ли мы загадок в это прохождение башни
-		if _tower_stage2_new_loop_puzzle then
+		-- Проверяем не разгадывали ли мы загадок в это прохождение башни и есть ли у нас ключ
+		if _tower_stage2_new_loop_puzzle and have 'tower_book_guard_key' then
 			-- Осматриваем книгу
 			book_guard_description = [[
 				Перед тобой лежит внушительных размеров книга в кожанном переплёте.
