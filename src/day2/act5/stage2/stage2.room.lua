@@ -49,7 +49,6 @@ tower_stage2 = room {
 	entered = function()
 		-- Test
 		inv():add 'tower_stone';
-		inv():add 'tower_dagger';
 		inv():add 'capitan_docs';
 	end;
 	obj = {
