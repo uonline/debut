@@ -80,6 +80,14 @@ sentry_black_bird = obj {
 	act = function()
 		walk 'sentry_black_bird_dlg';
 	end;
+	used = function(self,what)
+		-- Смотрим на птицу через трубу
+		if what == tower_spyglass then
+			return [[
+				Герой видит горящий город и своё будущее во тьме.
+			]];
+		end;
+	end;
 }
 
 -- TODO

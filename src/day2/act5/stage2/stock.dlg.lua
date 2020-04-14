@@ -265,7 +265,8 @@ tower_stage2_stock_storekeeper_dlg = dlg {
 				-- Отдаём свиток
 				inv():del 'tower_scroll';
 				-- Получаем кинжал
-				inv():add 'tower_dagger';
+				take 'tower_dagger';
+				objs('tower_stage2_stock'):del('tower_dagger');
 				return [[
 					-- Что ж, давайте, взглянем на него, -- кладовщик принимает свиток и
 					бегло просматривает его содержимое.
