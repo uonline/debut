@@ -24,26 +24,6 @@ sentry_black_bird_dlg = dlg {
 			function()
 				-- Включаем стандартные реплики
 				sentry_black_bird_dlg:pon('Kevraza_and_first_vicar');
-				sentry_black_bird_dlg:pon('Thieves_leader_and_Halfblood_about_relion');
-				sentry_black_bird_dlg:pon('Cave_memories');
-
-				-- Проверяем условия для включения дополнительных реплик
-				if _mage_dialogs then
-					sentry_black_bird_dlg:pon('Mage_and_vicar');
-				end;
-
-				if _captain_docs_full_memories  then
-					sentry_black_bird_dlg:pon('Kevraza_and_captain');
-				end;
-
-				if not _guild_camp_halfblood_greeting then
-					sentry_black_bird_dlg:pon('Thieves_leader_and_Halfblood');
-				end;
-
-				if _mage_dialogs and _captain_docs_full_memories and not _guild_camp_halfblood_greeting then
-					_bird_secrets_is_getted = true;
-					sentry_black_bird_dlg:pon('Secret_cave_memories');
-				end;
 			end;
 		};
 
@@ -59,6 +39,7 @@ sentry_black_bird_dlg = dlg {
 				История Кевразы;
 			]];
 			function()
+				sentry_black_bird_dlg:pon('Thieves_leader_and_Halfblood_about_relion');
 			end;
 		};
 		-- Главарь подполья и Полукровка про Религию Благих
@@ -74,6 +55,7 @@ sentry_black_bird_dlg = dlg {
 				про режим, его новую религию и эльфийское влияние:
 			]];
 			function()
+				sentry_black_bird_dlg:pon('Cave_memories');
 			end;
 		};
 		-- Птица цитирует стих из воспоминаний ГГ в пещере
@@ -85,6 +67,10 @@ sentry_black_bird_dlg = dlg {
 				Стихи из пещеры
 			]];
 			function()
+				-- Проверяем условия для включения дополнительных реплик
+				if _mage_dialogs then
+					sentry_black_bird_dlg:pon('Mage_and_vicar');
+				end;
 			end;
 		};
 
@@ -108,6 +94,9 @@ sentry_black_bird_dlg = dlg {
 				Фатализм и течение. Всем нужны чьм-то чудие руки или мозги. Магос;
 			]];
 			function()
+				if _captain_docs_full_memories  then
+					sentry_black_bird_dlg:pon('Kevraza_and_captain');
+				end;
 			end;
 		};
 		-- Если игрок прочитал все воспоминания ГГ о документах капитана: диалог Кевразы и капитана
@@ -129,6 +118,9 @@ sentry_black_bird_dlg = dlg {
 				Тогда-то они и научатся ценить дисцтплину.
 			]];
 			function()
+				if not _guild_camp_halfblood_greeting then
+					sentry_black_bird_dlg:pon('Thieves_leader_and_Halfblood');
+				end;
 			end;
 		};
 		-- Если игрок не взаимодействовал с Полукровкой в лагере гильдии: диалог главаря подполья и Полукровки
@@ -137,11 +129,21 @@ sentry_black_bird_dlg = dlg {
 			false;
 			'6.';
 			[[
-				* Созидать можно по разному, но вот разрушение и его результаты, всегда похожи. Это ли не общий знаменатель? Созидать разрушение; Отправная точка и точка невозврата. Балансируем между историей и забвением. Без забвения невозможно новое:
-      * Возможно слишком долго Тантикул считался родиной и незыблимым ориентиром человечества. Может будущее всех людей здесь в Приграничье. А возможно здесь наше прошлое, которое мы так усердно хотели забыть;
-Главарь и Полукровка
+				Главарь и Полукровка
+				* Созидать можно по разному, но вот разрушение и его результаты, всегда похожи.
+				Это ли не общий знаменатель? Созидать разрушение;
+				Отправная точка и точка невозврата. Балансируем между историей и забвением.
+				Без забвения невозможно новое:
+					* Возможно слишком долго Тантикул считался родиной и незыблимым ориентиром человечества.
+					Может будущее всех людей здесь в Приграничье.
+					А возможно здесь наше прошлое, которое мы так усердно хотели забыть;
 			]];
 			function()
+				if _mage_dialogs and _captain_docs_full_memories and not _guild_camp_halfblood_greeting then
+					_bird_secrets_is_getted = true;
+					sentry_black_bird_dlg:pon('Secret_cave_memories');
+				end;
+
 			end;
 		};
 		-- Если игрок выполнил все предыдущие условия: птица цитирует пятое четверостишье стиха из воспоминаний ГГ в пещере
