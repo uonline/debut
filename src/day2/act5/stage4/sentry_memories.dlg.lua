@@ -183,9 +183,22 @@ sentry_black_bird_dlg = dlg {
 				-- Проверяем условия для включения дополнительных реплик
 				if _mage_dialogs then
 					sentry_black_bird_dlg:pon('Mage_and_vicar');
+				else
+					sentry_black_bird_dlg:pon('stop_talking');
 				end;
 			end;
-		};
+		}
+		-- Диалог с птицей заканчивается, если не все секреты раскрыты;
+		{
+			tag = 'stop_talking';
+			false;
+			'Что ты ещё можешь рассказать?';
+			[[
+				Но птица лишь водит клювом из стороны в сторону в ответ.
+			]]
+			function()
+			end;
+		}
 
 		-- Расширенные реплики:
 		-- Если игрок прослушал все диалоги с крысой: диалог мага-крысы и первого городского наместника
@@ -209,6 +222,8 @@ sentry_black_bird_dlg = dlg {
 			function()
 				if _captain_docs_full_memories  then
 					sentry_black_bird_dlg:pon('Kevraza_and_captain');
+				else
+					sentry_black_bird_dlg:pon('stop_talking');
 				end;
 			end;
 		};
@@ -233,6 +248,8 @@ sentry_black_bird_dlg = dlg {
 			function()
 				if not _guild_camp_halfblood_greeting then
 					sentry_black_bird_dlg:pon('Thieves_leader_and_Halfblood');
+				else
+					sentry_black_bird_dlg:pon('stop_talking');
 				end;
 			end;
 		};
@@ -253,8 +270,9 @@ sentry_black_bird_dlg = dlg {
 			]];
 			function()
 				if _mage_dialogs and _captain_docs_full_memories and not _guild_camp_halfblood_greeting then
-					_bird_secrets_is_getted = true;
 					sentry_black_bird_dlg:pon('Secret_cave_memories');
+				else
+					sentry_black_bird_dlg:pon('stop_talking');
 				end;
 
 			end;
@@ -265,9 +283,21 @@ sentry_black_bird_dlg = dlg {
 			false;
 			'7.';
 			[[
-				Секретный стих
+				Расползается огонь,
+				^
+				порождает свет и боль,
+				^
+				но сгущается в ответ
+				^
+				покрывало тьмы и бед,
+				^
+				^
+				Кто сумеет сквозь века
+				^
+				разгадать судьбу Червя...
 			]];
 			function()
+				_bird_secrets_is_getted = true;
 			end;
 		};
 
