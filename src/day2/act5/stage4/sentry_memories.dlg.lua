@@ -197,6 +197,10 @@ sentry_black_bird_dlg = dlg {
 				Но птица лишь водит клювом из стороны в сторону в ответ.
 			]]
 			function()
+				-- Включаем изначальный диалог
+				sentry_black_bird_dlg:pon('Hello_world');
+				-- Уходим
+				back();
 			end;
 		}
 
@@ -320,25 +324,8 @@ sentry_black_bird_dlg = dlg {
 			]];
 			function()
 				_bird_secrets_is_getted = true;
-			end;
-		};
-
-		-- Уходишь
-		{
-			always = true;
-			''
-			'Птица провожает тебя внимательным взглядом.';
-			function()
 				-- Включаем изначальный диалог
 				sentry_black_bird_dlg:pon('Hello_world');
-				-- Выключаем все диалоги кроме изначального
-				sentry_black_bird_dlg:poff('Kevraza_and_first_vicar');
-				sentry_black_bird_dlg:poff('Thieves_leader_and_Halfblood_about_relion');
-				sentry_black_bird_dlg:poff('Cave_memories');
-				sentry_black_bird_dlg:poff('Mage_and_vicar');
-				sentry_black_bird_dlg:poff('Kevraza_and_captain');
-				sentry_black_bird_dlg:poff('Thieves_leader_and_Halfblood');
-				sentry_black_bird_dlg:poff('Secret_cave_memories');
 				-- Уходим
 				back();
 			end;
