@@ -1,7 +1,10 @@
+-- Локация
 tower_stage5 = room {
 	nam = 'Башня';
 	dsc = [[
-		Небольшой коридор, в нём четыре комнаты.
+		Ощущая зуд в ногах, ты преодолеваешь последний лестничный подъём
+		и выходишь на этаж отличающийся от предыдущих весьма скромной
+		обстановкой.
 	]];
 	way = {
 		'tower_stage5_room1';
@@ -9,8 +12,12 @@ tower_stage5 = room {
 		'tower_stage5_room3';
 		'tower_stage5_room4';
 	};
+	obj = {
+		'tower_stage5_window';
+	};
 }
 
+-- Переходы локации
 tower_stage5_room1 = vroom('Дальняя левая комната', 'tower_stage5_vicar_room');
 
 tower_stage5_room2 = vroom('Ближняя левая комната', 'tower_stage5_adviser_room');
@@ -29,3 +36,12 @@ tower_stage5_room4 = room {
 	end;
 }
 
+-- Объекты локации
+-- Окно
+tower_stage5_window = obj {
+	nam = 'Окно';
+	dsc = [[
+	]];
+	act = [[
+	]];
+}
