@@ -17,7 +17,7 @@ sentry_black_bird_dlg = dlg {
 	phr = {
 		-- Стартовая реплика для проверки доступности и включения остальных реплик
 		{
-			tag = 'Hello_world';
+			tag = 'hello_world';
 			true;
 			'Кажется, я схожу с ума...';
 			[[
@@ -31,14 +31,14 @@ sentry_black_bird_dlg = dlg {
 			]];
 			function()
 				-- Включаем стандартные реплики
-				sentry_black_bird_dlg:pon('Kevraza_and_first_vicar');
+				sentry_black_bird_dlg:pon('kevraza_and_first_vicar');
 			end;
 		};
 
 		-- Стандартные реплики:
 		-- Диалог Кевразы и первого городского наместника
 		{
-			tag = 'Kevraza_and_first_vicar';
+			tag = 'kevraza_and_first_vicar';
 			false;
 			'Это какая-то шутка?';
 			[[
@@ -82,12 +82,12 @@ sentry_black_bird_dlg = dlg {
 				Птица замолкает.
 			]];
 			function()
-				sentry_black_bird_dlg:pon('Thieves_leader_and_Halfblood_about_relion');
+				sentry_black_bird_dlg:pon('thieves_leader_and_Halfblood_about_relion');
 			end;
 		};
 		-- Главарь подполья и Полукровка про Религию Благих
 		{
-			tag = 'Thieves_leader_and_Halfblood_about_relion';
+			tag = 'thieves_leader_and_Halfblood_about_relion';
 			false;
 			'О, боги!';
 			[[
@@ -120,12 +120,12 @@ sentry_black_bird_dlg = dlg {
 				-- Проклятье, -- вырывается из птицы голос главаря, и она замолкает.
 			]];
 			function()
-				sentry_black_bird_dlg:pon('Cave_memories');
+				sentry_black_bird_dlg:pon('cave_memories');
 			end;
 		};
 		-- Птица цитирует стих из воспоминаний ГГ в пещере
 		{
-			tag = 'Cave_memories';
+			tag = 'cave_memories';
 			false;
 			'Проклятье!';
 			[[
@@ -182,7 +182,7 @@ sentry_black_bird_dlg = dlg {
 			function()
 				-- Проверяем условия для включения дополнительных реплик
 				if _mage_dialogs then
-					sentry_black_bird_dlg:pon('Mage_and_vicar');
+					sentry_black_bird_dlg:pon('mage_and_vicar');
 				else
 					sentry_black_bird_dlg:pon('stop_talking');
 				end;
@@ -198,7 +198,7 @@ sentry_black_bird_dlg = dlg {
 			]];
 			function()
 				-- Включаем изначальный диалог
-				sentry_black_bird_dlg:pon('Hello_world');
+				sentry_black_bird_dlg:pon('hello_world');
 				-- Уходим
 				back();
 			end;
@@ -207,7 +207,7 @@ sentry_black_bird_dlg = dlg {
 		-- Расширенные реплики:
 		-- Если игрок прослушал все диалоги с крысой: диалог мага-крысы и первого городского наместника
 		{
-			tag = 'Mage_and_vicar';
+			tag = 'mage_and_vicar';
 			false;
 			'Что же ещё ты можешь мне рассказать?';
 			[[
@@ -283,7 +283,7 @@ sentry_black_bird_dlg = dlg {
 			]];
 			function()
 				if _captain_docs_full_memories  then
-					sentry_black_bird_dlg:pon('Kevraza_and_captain');
+					sentry_black_bird_dlg:pon('kevraza_and_captain');
 				else
 					sentry_black_bird_dlg:pon('stop_talking');
 				end;
@@ -291,7 +291,7 @@ sentry_black_bird_dlg = dlg {
 		};
 		-- Если игрок прочитал все воспоминания ГГ о документах капитана: диалог Кевразы и капитана
 		{
-			tag = 'Kevraza_and_captain';
+			tag = 'kevraza_and_captain';
 			false;
 			'5.';
 			[[
@@ -307,7 +307,7 @@ sentry_black_bird_dlg = dlg {
 			]];
 			function()
 				if not _guild_camp_halfblood_greeting then
-					sentry_black_bird_dlg:pon('Thieves_leader_and_Halfblood');
+					sentry_black_bird_dlg:pon('thieves_leader_and_Halfblood');
 				else
 					sentry_black_bird_dlg:pon('stop_talking');
 				end;
@@ -315,7 +315,7 @@ sentry_black_bird_dlg = dlg {
 		};
 		-- Если игрок не взаимодействовал с Полукровкой в лагере гильдии: диалог главаря подполья и Полукровки
 		{
-			tag = 'Thieves_leader_and_Halfblood';
+			tag = 'thieves_leader_and_Halfblood';
 			false;
 			'6.';
 			[[
@@ -330,7 +330,7 @@ sentry_black_bird_dlg = dlg {
 			]];
 			function()
 				if _mage_dialogs and _captain_docs_full_memories and not _guild_camp_halfblood_greeting then
-					sentry_black_bird_dlg:pon('Secret_cave_memories');
+					sentry_black_bird_dlg:pon('secret_cave_memories');
 				else
 					sentry_black_bird_dlg:pon('stop_talking');
 				end;
@@ -339,7 +339,7 @@ sentry_black_bird_dlg = dlg {
 		};
 		-- Если игрок выполнил все предыдущие условия: птица цитирует пятое четверостишье стиха из воспоминаний ГГ в пещере
 		{
-			tag = 'Secret_cave_memories';
+			tag = 'secret_cave_memories';
 			false;
 			'Птица не отличается умом и сообразительностью.';
 			[[
@@ -381,7 +381,7 @@ sentry_black_bird_dlg = dlg {
 			function()
 				_bird_secrets_is_getted = true;
 				-- Включаем изначальный диалог
-				sentry_black_bird_dlg:pon('Hello_world');
+				sentry_black_bird_dlg:pon('hello_world');
 				-- Уходим
 				back();
 			end;
