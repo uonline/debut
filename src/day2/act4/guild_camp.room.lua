@@ -1177,13 +1177,3 @@ guild_camp_halfblood = obj {
 		]];
 	end;
 }
-
--- TODO
-todo = obj {
-	nam = 'TODO';
-	dsc = [[
-		{...}
-	]];
-	act = [[
-	]];
-}
