@@ -35,7 +35,7 @@ thieves_leader = obj {
 	]];
 	act = function()
 		-- Обыскиваем главаря подполья
-		if not have tower_adviser_room_key then
+		if not have 'tower_adviser_room_key' then
 			take 'tower_strange_notes';
 			take 'tower_adviser_room_key';
 			take 'tower_vicar_diary';
