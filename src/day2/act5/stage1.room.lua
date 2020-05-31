@@ -16,7 +16,7 @@ _tower_penetration = [[
 -- События
 -- Проникаем в башню на первый этаж
 on_event('tower penetration', function()
-	walk 'tower_stage1'
+	walk 'tower_stage1';
 end)
 
 -- Локация
@@ -31,7 +31,10 @@ tower_stage1 = room {
 		Все они закрыты, как и массивные ворота -- главный вход в башню.
 	]];
 	-- Описание дороги в башню
-	entered = _tower_penetration;
+	entered = function()
+	inv():add 'capitan_docs';
+		return _tower_penetration;
+	end;
 	obj = {
 		'tower_stage1_stained_glass_windows';
 		'tower_stage1_thieves_leader';
