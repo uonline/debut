@@ -8,8 +8,11 @@ _scaffold_position = 1; -- текущее состояние локации
 _scaffold_the_end = 3;  -- количество действий до концовки
 
 -- Функции локации
+-- Функция для обратного отсчёта до одной из концовок на эшафоте
+-- Вызывается при взаимодействиях с разными объектами локации, и генерирует разные события,
+-- зависящие от счётчика наступления концовки
 scaffold_action = function(act_text)
-	-- Если герой попал на эшафот, то включаем обратный отсчёт первой концовки
+	-- Если герой попал на эшафот по первой концовке, то включаем обратный отсчёт первой концовки
 	if _scaffold_position == 2 then
 		_scaffold_the_end = _scaffold_the_end - 1;
 
@@ -23,6 +26,36 @@ scaffold_action = function(act_text)
 		-- Казнь глашатая
 		if _scaffold_the_end == 1 then
 			event "propagandist execution"
+			return [[1^]] .. act_text;
+		end;
+
+		-- Казнь главного героя
+		if _scaffold_the_end <= 0 then
+			walk 'the_end_in_scaffold';
+			return [[0^]] .. act_text;
+		end;
+	end;
+
+	-- Если герой попал на эшафот по второй концовке, то включаем обратный отсчёт для второй концовки
+	if _scaffold_position == 3 then
+		_scaffold_the_end = _scaffold_the_end - 1;
+
+		-- Описание произошедшего действия
+		-- Казнь менестреля
+		if _scaffold_the_end == 3 then
+			event "signer execution"
+			return [[3^]] .. act_text;
+		end;
+
+		-- Казнь глашатая
+		if _scaffold_the_end == 2 then
+			event "propagandist execution"
+			return [[2^]] .. act_text;
+		end;
+
+		-- Казнь тюремщика
+		if _scaffold_the_end == 1 then
+			event "prison guard execution"
 			return [[1^]] .. act_text;
 		end;
 
@@ -379,6 +412,15 @@ on_event('go to scaffold', function()
 	scaffold_singer:enable();
 end)
 
+-- Поднимаемся на эшафот для второй концовки
+on_event('go to scaffold for escape', function()
+	_scaffold_position = 3;
+	_scaffold_the_end = 4;
+	scaffold_propagandist_and_singer:disable();
+	scaffold_propagandist:enable();
+	scaffold_singer:enable();
+end)
+
 -- Казнь менестреля
 on_event('signer execution', function()
 	scaffold_singer:disable();
@@ -389,9 +431,17 @@ on_event('propagandist execution', function()
 	scaffold_propagandist:disable();
 end)
 
--- Поднимаемся на эшафот для второй концовки
+-- Казнь стража тюрьмы штаба Режима
+on_event('prison guard execution', function()
+	scaffold_prison_guard:disable();
+end)
 
 -- Концовка на эшафоте
 on_event('the end in scaffold', function()
 	walk 'the_end_in_scaffold';
+end)
+
+-- Спасение с эшафота
+on_event('the escape from scaffold', function()
+	walk 'under_scaffold';
 end)
