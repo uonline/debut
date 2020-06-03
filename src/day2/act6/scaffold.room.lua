@@ -4,7 +4,37 @@
 -- 3. Обратный отсчёт действий до спасения (вторая концовка)
 
 -- Переменные локации
-_scaffold_position = 1;
+_scaffold_position = 1; -- текущее состояние локации
+_scaffold_the_end = 3;  -- количество действий до концовки
+
+-- Функции локации
+scaffold_action = function(act_text)
+	-- Если герой попал на эшафот, то включаем обратный отсчёт первой концовки
+	if _scaffold_position == 2 then
+		_scaffold_the_end = _scaffold_the_end - 1;
+
+		-- Описание произошедшего действия
+		-- Казнь менестреля
+		if _scaffold_the_end == 2 then
+			event "signer execution"
+			return [[2^]] .. act_text;
+		end;
+
+		-- Казнь глашатая
+		if _scaffold_the_end == 1 then
+			event "propagandist execution"
+			return [[1^]] .. act_text;
+		end;
+
+		-- Казнь главного героя
+		if _scaffold_the_end <= 0 then
+			walk 'the_end_in_scaffold';
+			return [[0^]] .. act_text;
+		end;
+	end;
+
+	return act_text;
+end
 
 -- Локация
 scaffold = room {
@@ -96,7 +126,7 @@ scaffold_guards = obj {
 			]];
 		};
 
-		return text[_scaffold_position];
+		return scaffold_action(text[_scaffold_position]);
 	end;
 }
 
@@ -130,7 +160,7 @@ scaffold_crown = obj {
 			]];
 		};
 
-		return text[_scaffold_position];
+		return scaffold_action(text[_scaffold_position]);
 	end;
 }
 
@@ -244,6 +274,9 @@ scaffold_singer = obj {
 		{Менестрель}.
 	]];
 	act = function()
+		local text = [[]];
+
+		return scaffold_action(text);
 	end;
 }
 -- TODO: последнее слово менестреля и его убийство Полукровкой
@@ -255,8 +288,11 @@ scaffold_propagandist = obj {
 	dsc = [[
 		{Глашатай}.
 	]];
-	act = [[
-	]];
+	act = function()
+		local text = [[]];
+
+		return scaffold_action(text);
+	end;
 }
 scaffold_propagandist:disable();
 
@@ -277,11 +313,13 @@ scaffold_prison_guard = obj {
 		return text[_scaffold_position];
 	end;
 	act = function()
-		return [[
+		local text = [[
 			-- А его-то за что?
 			^
 			-- Он употреблял субстрат на службе и упустил важного заключённого.
 		]];
+
+		return scaffold_action(text);
 	end;
 }
 
@@ -292,19 +330,16 @@ scaffold_priest = obj {
 		{Проповедник}
 	]];
 	act = function()
-		local text = {
-			[1] = '';
-			[2] = [[
-				^TODO
-				* Настоящие боги этого мира это идеи. Эти сушества симбионты немыслимы без людей,
-				но и люди не способны жить без них. Идеи способны бесконечно перерождаться, сквозь века.
-				Их мессии-проводники: люди искусства, философы, ученые. Люди их плоть и кровь,
-				они сражаются между собой за носителей;
-				* Проповедник на эшафоте смотрит на тебя со странным торжеством на лице.
-			]];
-		};
+		local text = [[
+			^TODO
+			* Настоящие боги этого мира это идеи. Эти сушества симбионты немыслимы без людей,
+			но и люди не способны жить без них. Идеи способны бесконечно перерождаться, сквозь века.
+			Их мессии-проводники: люди искусства, философы, ученые. Люди их плоть и кровь,
+			они сражаются между собой за носителей;
+			* Проповедник на эшафоте смотрит на тебя со странным торжеством на лице.
+		]];
 
-		return text[_scaffold_position];
+		return scaffold_action(text);
 	end;
 };
 scaffold_priest:disable();
@@ -326,9 +361,7 @@ scaffold_godchosen = obj {
 		return text[_scaffold_position];
 	end;
 	act = function()
-		if _scaffold_position == 2 then
-			event 'the end in scaffold';
-		end;
+		return scaffold_action "Test";
 	end;
 };
 
@@ -344,6 +377,16 @@ on_event('go to scaffold', function()
 	scaffold_propagandist_and_singer:disable();
 	scaffold_propagandist:enable();
 	scaffold_singer:enable();
+end)
+
+-- Казнь менестреля
+on_event('signer execution', function()
+	scaffold_singer:disable();
+end)
+
+-- Казнь глашатая
+on_event('propagandist execution', function()
+	scaffold_propagandist:disable();
 end)
 
 -- Поднимаемся на эшафот для второй концовки
