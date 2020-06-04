@@ -12,6 +12,20 @@ _scaffold_the_end = 3;  -- количество действий до концо
 -- Вызывается при взаимодействиях с разными объектами локации, и генерирует разные события,
 -- зависящие от счётчика наступления концовки
 scaffold_action = function(act_text)
+	local signer_execution_text = [[
+		-- Люди...
+		^
+		Речь менестреля резко обрывается, когда воздух разрезает
+		металлический блеск. Какое-то время менестрель ещё смотрит на
+		метательный нож, торчащий из его глазницы, но затем падает
+		замертво.
+		^
+		Толпа приходит в движение. Стройна фигура в плаще и капюшоне
+		отделяется от неё и устремляется в ближайший проулок.
+		Несколько стражей через бросаются в погоню, пробиваясь через
+		людей.
+	]];
+
 	-- Если герой попал на эшафот по первой концовке, то включаем обратный отсчёт первой концовки
 	if _scaffold_position == 2 then
 		_scaffold_the_end = _scaffold_the_end - 1;
@@ -20,19 +34,19 @@ scaffold_action = function(act_text)
 		-- Казнь менестреля
 		if _scaffold_the_end == 2 then
 			event "signer execution"
-			return [[2^]] .. act_text;
+			return act_text .. signer_execution_text;
 		end;
 
 		-- Казнь глашатая
 		if _scaffold_the_end == 1 then
 			event "propagandist execution"
-			return [[1^]] .. act_text;
+			return act_text .. [[1]];
 		end;
 
 		-- Казнь главного героя
 		if _scaffold_the_end <= 0 then
 			walk 'the_end_in_scaffold';
-			return [[0^]] .. act_text;
+			return act_text .. [[0]];
 		end;
 	end;
 
@@ -44,25 +58,25 @@ scaffold_action = function(act_text)
 		-- Казнь менестреля
 		if _scaffold_the_end == 3 then
 			event "signer execution"
-			return [[3^]] .. act_text;
+			return act_text .. signer_execution_text;
 		end;
 
 		-- Казнь глашатая
 		if _scaffold_the_end == 2 then
 			event "propagandist execution"
-			return [[2^]] .. act_text;
+			return act_text .. [[2]];
 		end;
 
 		-- Казнь тюремщика
 		if _scaffold_the_end == 1 then
 			event "prison guard execution"
-			return [[1^]] .. act_text;
+			return act_text .. [[1]];
 		end;
 
 		-- Казнь главного героя
 		if _scaffold_the_end <= 0 then
 			walk 'the_end_in_scaffold';
-			return [[0^]] .. act_text;
+			return act_text .. [[0]];
 		end;
 	end;
 
@@ -96,11 +110,15 @@ scaffold = room {
 				Повозчик телеги в чёрном балахоне с капюшоном здорово смахивает на смерть.
 			]];
 			[2] = [[
-				По глазам тебе бъет алеющий закат. Сам воздух словно пропитался кровью.
+				Ты стоищь на слегка пружинящих досках эшафота. Твои глаза жжёт пылающее зарево заката.
+				Воздух вокруг словно пропитался кровью, алый свет...
 				...
-				Ты стоищь на свежих досках эшафота.
 				...
 				Вороны и птичьи стаи.
+				^
+				^
+				Test
+				Чёрная птица появляется здесь при второй концовке.
 			]];
 		};
 
@@ -155,6 +173,10 @@ scaffold_guards = obj {
 				Похоже, стражники предпочли бы оказаться в другом месте.
 			]];
 			[2] = [[
+				^
+				Test
+				Бледные лица с глубокими тенями под глазами делают их похожими на черепа.
+				Армия мертвецов...
 				...
 			]];
 		};
@@ -189,7 +211,11 @@ scaffold_crown = obj {
 				Горожане встревожены.
 			]];
 			[2] = [[
+				^Test
 				Ты окидываешь взглядом море людей... Про реакцию толпы на преступников.
+				Стоит ли ждать сочувствия и помощи оттуда? Ты не веришь в это. И что
+				тебе сказать этим людям кроме оправданий? Предостережение? Тебе они
+				не поверят. Да и дадут ли они тебе, что-то сказать?
 			]];
 		};
 
@@ -307,12 +333,13 @@ scaffold_singer = obj {
 		{Менестрель}.
 	]];
 	act = function()
-		local text = [[]];
+		local text = [[
+			Если орки скоро нападут, то нам всего лишь нужно как-то потянуть время...
+		]];
 
 		return scaffold_action(text);
 	end;
 }
--- TODO: последнее слово менестреля и его убийство Полукровкой
 scaffold_singer:disable();
 
 -- Глашатай Благих
