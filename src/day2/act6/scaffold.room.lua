@@ -434,12 +434,19 @@ scaffold_prison_guard = obj {
 	end;
 	act = function()
 		local text = [[
-			-- А его-то за что?
+			Ты с удивлением смотришь на бывшего солдата Режима.
 			^
-			-- Он употреблял субстрат на службе и упустил важного заключённого.
+			-- А его-то за что? -- вопрошаешь ты неизвестно кого.
 		]];
 
-		-- if scaffold_propagandist:disable()
+		if not scaffold_propagandist:disabled() then
+			text = text .. [[
+				^
+				Неожиданно...
+				^
+				-- Он употреблял субстрат на службе и упустил важного заключённого
+		]];
+		end;
 
 		return scaffold_action(text);
 	end;
