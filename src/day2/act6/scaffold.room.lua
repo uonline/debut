@@ -224,6 +224,7 @@ scaffold = room {
 		local text = {
 			[1] = 'Площадь Режима';
 			[2] = 'Эшафот';
+			[3] = 'Эшафот';
 		};
 
 		return text[_scaffold_position];
@@ -267,6 +268,7 @@ scaffold = room {
 		'scaffold_guards';
 		'scaffold_crown';
 		'scaffold_propagandist_and_singer';
+		'scaffold_propagandist_and_singer_second';
 		'scaffold_singer';
 		'scaffold_propagandist';
 		'scaffold_prison_guard';
@@ -292,14 +294,16 @@ scaffold = room {
 scaffold_guards = obj {
 	nam = 'Стражники';
 	dsc = function()
+		local scaffold_dsc = [[
+			{Стражники} стоят плечом к плечу, окружив эшафот.
+		]];
 		local text = {
 			[1] = [[
 				{Стражники} стоят плечом к плечу и хмуро озираются по сторонам,
 				бросая косые взгляды то на зевак, то на заключённых.
 			]];
-			[2] = [[
-				{Стражники} стоят плечом к плечу, окружив эшафот.
-			]];
+			[2] = scaffold_dsc;
+			[3] = scaffold_dsc;
 		};
 
 		return text[_scaffold_position];
@@ -376,11 +380,7 @@ scaffold_propagandist_and_singer = obj {
 		Через шум до тебя доносятся обрывки перешёптываний двух приговорённых.
 		Ты узнаёшь {менестреля и глашатая Благих}.
 	]];
-	act = function()
-		-- Выключаем обратный отсчёт действий на эшафоте
-		-- Переходим на второе состояние эщафота
-		event 'go to scaffold';
-
+	act_text = function()
 		return [[
 			Озираясь на стражников, ты подходишь к своим утренним приятелям.
 			^
@@ -470,7 +470,24 @@ scaffold_propagandist_and_singer = obj {
 			Вслед за тобой толкают ещё двоих заключённых.
 		]];
 	end;
+	act = function()
+		-- Выключаем обратный отсчёт действий на эшафоте
+		-- Переходим на второе состояние эщафота
+		event 'go to scaffold';
+		return scaffold_propagandist_and_singer:act_text();
+	end;
 }
+
+-- Глашатай и менестрель для второй концовки
+scaffold_propagandist_and_singer_second = obj {
+	nam = scaffold_propagandist_and_singer.nam;
+	dsc = scaffold_propagandist_and_singer.dsc;
+	act = function()
+		event 'go to scaffold for escape';
+		return scaffold_propagandist_and_singer:act_text();
+	end;
+};
+scaffold_propagandist_and_singer_second:disable()
 
 -- Менестрель
 scaffold_singer = obj {
@@ -759,6 +776,13 @@ scaffold_godchosen = obj {
 -- События локации
 -- ?
 on_event('caught in action', function()
+	walk 'scaffold';
+end)
+
+-- Переходим на локацию эшафота для второй концовки
+on_event('left from black room', function()
+	scaffold_propagandist_and_singer:disable();
+	scaffold_propagandist_and_singer_second:enable();
 	walk 'scaffold';
 end)
 
