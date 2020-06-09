@@ -178,6 +178,30 @@ tower_stage5_corridor = room {
 		---- Теперь я оставлю тебя с мыслями об этом. Возможно мы ещё встретимся,
 		--[[дезертир. В этом мире возможно всё, когда речь идёт о смерти.]]
 	way = {
-		'scaffold';
+		'tower_stage5_to_scaffold';
+		'tower_stage5_to_black_room';
 	};
 }
+
+-- Локация для перехода на эшафот
+tower_stage5_to_scaffold = room {
+	nam = 'Площадь Режима';
+	enter = function()
+		walk 'scaffold';
+	end;
+}
+
+-- Локация для перехода в чёрную команту
+tower_stage5_to_black_room = room {
+	nam = 'Чёрная комната';
+	enter = function()
+		walk 'black_room';
+	end;
+}
+tower_stage5_to_black_room:disable();
+
+-- Событие для включения второй концовки
+on_event('black bird gift', function()
+	tower_stage5_to_scaffold:disable();
+	tower_stage5_to_black_room:enable();
+end)

@@ -17,7 +17,8 @@ local main_ways_debug = {
 	vroom('D2A4 (Коллектор)^', 'collector');
 	vroom('D2A5^', 'tower_stage1');
 	vroom('D2A5 (5 этаж без всего)^', 'tower_stage5');
-	vroom('D2A6 (ну такой)^', 'scaffold');
+	vroom('D2A6 (первая концовка)^', 'scaffold');
+	vroom('D2A6^', 'black_room');
 	vroom('D2A7^', 'under_scaffold');
 }
 
