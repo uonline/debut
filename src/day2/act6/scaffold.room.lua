@@ -118,7 +118,7 @@ scaffold_action = function(act_text)
 		...
 	]];
 
-	local hero_execution_text = [[
+	local hero_execution_start_text = [[
 		Когда тело бритоголового спускают с эшафота до тебя доходит, что твоя
 		казнь будет следующей.
 		^
@@ -139,7 +139,10 @@ scaffold_action = function(act_text)
 		видимо заготовленные специально на этого случая. Почему-то ты воспринимаешь
 		это как должное.
 		^
-		Богоизбранный отходит от тебя прикрывая голову рукой. Когда пара камней
+	]];
+
+	local hero_execution_text = hero_execution_start_text .. [[
+		Богоизбранный отходит от тебя, прикрывая голову рукой. Когда пара камней
 		скрежещет об его доспех, он внезапно заслоняет тебя собой. Толпа ревёт
 		ещё сильней. Через крики и проклятия до тебя едва доносится голос глашатая.
 		^
@@ -156,8 +159,10 @@ scaffold_action = function(act_text)
 		^
 		Ноги твои подкашиваются, шея ложится на плаху. Перед глазами оказывается
 		корзина, из которой на тебя смотрят стелянными глазами глашатай и менестрель.
-		^
+	]];
 
+	local orc_band_attack_text = hero_execution_start_text .. [[
+		Но тут крики ненависти сменяются криками ужаса и боли...
 	]];
 
 	act_text = act_text .. "^";
@@ -212,12 +217,12 @@ scaffold_action = function(act_text)
 		-- Казнь главного героя и нападение орков
 		if _scaffold_the_end_counter <= 0 then
 			walk 'under_scaffold';
-			return act_text .. hero_execution_text;
+			return act_text .. orc_band_attack_text;
 		end;
 	end;
 
 	return act_text;
-end
+end;
 
 -- Локация
 scaffold = room {
