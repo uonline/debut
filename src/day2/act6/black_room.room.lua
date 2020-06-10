@@ -123,7 +123,7 @@ black_room_she_dlg = dlg {
 			function()
 				walk 'scaffold';
 				-- Переходим на эшафот для второй концовки
-				event 'left from black room';
+				event 'leave from black room';
 			end;
 		};
 	}
