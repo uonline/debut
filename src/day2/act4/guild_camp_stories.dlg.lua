@@ -8,6 +8,8 @@ guild_camp_stories = dlg {
 	entered = function()
 		-- Приветствие
 		if not _mage_greeting then
+			-- ГГ узнаём мага в Чёрной комнате
+			event 'familiar mage face';
 			_mage_greeting = true;
 			return [[
 				Ты долго не можешь решить, подходить тебе к этому странному
