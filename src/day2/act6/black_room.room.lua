@@ -27,7 +27,8 @@ black_room = room {
 		-- Clear inventory, add whitelisted items
 		inv():zap();
 
-		event 'familiar mage face';
+		-- For debug
+		-- event 'familiar mage face';
 
 		return [[
 			Со временем твои глаза привыкают ко мраку. Следом за зрением
