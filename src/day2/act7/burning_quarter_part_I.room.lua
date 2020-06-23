@@ -2,15 +2,54 @@
 local burning_quarter_counter = 4;
 
 -- Функции локации
+-- Функция для обратного отсчёта до завершения игры в горящем квартале
+-- Вызывается при взаимодействиях с разными объектами локации, и генерирует разные события,
+-- зависящие от счётчика наступления завершения игры
+burning_quarter_action = function(act_text)
+	act_text = act_text .. "^";
+
+	-- Переводим счётчик
+	burning_quarter_counter = burning_quarter_counter - 1;
+
+	-- Время вышло, отряд Кевразы попадает в квартал
+	if burning_quarter_counter <= 0 then
+		-- Gameover
+		walk 'killed_by_kevraza_spear';
+		return act_text .. [[
+			Кевраза бросает копьё...
+		]], true
+	end;
+
+	-- Герой слышит приближение отряда Кевразы
+	if burning_quarter_counter == 3 then
+		act_text = act_text .. [[
+			3...
+		]];
+	end;
+
+	-- Герой слышит приближение орков
+	if burning_quarter_counter == 2 then
+		act_text = act_text .. [[
+			2...
+		]];
+	end;
+
+	-- Отряд Кевразы побеждает орков
+	if burning_quarter_counter == 1 then
+		act_text = act_text .. [[
+			1...
+		]];
+	end;
+
+	return act_text, false;
+end;
 
 -- Переходы локации
 burning_quarter_to_lane_fail_room = room {
 	nam = 'Переулок';
 	enter = function()
 		-- Проверять есть ли в телеге бочки
-		return [[
-			Ты забираешься на телегу и пытаешься пролезть в переулок, но балка мешает.
-		]], false
+		return burning_quarter_action('Ты забираешься на телегу и пытаешься пролезть в переулок, но балка мешает.');
 	end;
 }
 
