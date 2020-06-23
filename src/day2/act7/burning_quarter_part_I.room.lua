@@ -11,15 +11,6 @@ burning_quarter_action = function(act_text)
 	-- Переводим счётчик
 	burning_quarter_counter = burning_quarter_counter - 1;
 
-	-- Время вышло, отряд Кевразы попадает в квартал
-	if burning_quarter_counter <= 0 then
-		-- Gameover
-		walk 'killed_by_kevraza_spear';
-		return act_text .. [[
-			Кевраза бросает копьё...
-		]], true
-	end;
-
 	-- Герой слышит приближение отряда Кевразы
 	if burning_quarter_counter == 3 then
 		act_text = act_text .. [[
@@ -41,6 +32,15 @@ burning_quarter_action = function(act_text)
 		]];
 	end;
 
+	-- Время вышло, отряд Кевразы попадает в квартал
+	if burning_quarter_counter <= 0 then
+		-- Gameover
+		walk 'killed_by_kevraza_spear';
+		return act_text .. [[
+			Кевраза бросает копьё...
+		]], true
+	end;
+
 	return act_text, false;
 end;
 
@@ -49,6 +49,19 @@ burning_quarter_to_lane_fail_room = room {
 	nam = 'Переулок';
 	enter = function()
 		-- Проверять есть ли в телеге бочки
+		if not burning_quarter_loaded_cart:disabled() then
+			return [[...]];
+		end;
+
+		-- Проверяем не укатилась ли телега
+		if burning_quarter_cart:disabled() then
+			return [[...]];
+		end;
+
+		-- 2 Залп стрел, может убить героя, если нет телеги
+		-- 1 Орки убивают героя, если телега скатилась негружённой
+
+		-- Пытаемся пробраться в переулок
 		return burning_quarter_action('Ты забираешься на телегу и пытаешься пролезть в переулок, но балка мешает.');
 	end;
 }
@@ -66,6 +79,7 @@ burning_quarter = room {
 		Здания у Переулка уже вовсю пылают.
 		^
 		Test
+		Базарная площадь...
 		^
 		Залиты солнечным светом город, теперь был залит светом зарева пожара.
 		Почему-то, тебе кажется, что именно этот вид города выглядит наиболее естественным.
@@ -76,10 +90,14 @@ burning_quarter = room {
 		Утренние воспоминания.
 	]];
 	obj = {
+		'burning_quarter_cart';
+		'burning_quarter_loaded_cart';
 		'burning_quarter_broken_cart';
 		'burning_quarter_cart_chain';
 		'burning_quarter_rolled_barrels';
 		'burning_quarter_dead_guardsmen';
+		'burning_quarter_dead_guardsmen_shifted';
+		'burning_quarter_salers_counter';
 	};
 	way = {
 		'burning_quarter_to_lane_fail_room';
@@ -90,10 +108,12 @@ burning_quarter = room {
 
 		if not have 'soldier_sword' then
 			walk 'halfed_by_panglolin'
-			return
+			return;
 		end;
+
 		drop 'soldier_sword';
 		take 'burning_quarter_hammer';
+
 		return [[
 			Ты идёшь в сторону тёмного переулка. Полуящер немедленно замечает
 			тебя, окидывает злобным взглядом и, видимо, придя к какому-то
@@ -115,18 +135,45 @@ burning_quarter = room {
 
 -- Объекты локации
 -- Огромная повозка
-burning_quarter_broken_cart = obj {
+burning_quarter_cart = obj {
 	nam = 'Огромная повозка';
 	dsc = [[
 		{Огромная повозка} преградила путь к Переулку.
+		Ты рассматриваешь повозку. За ней находится проход в переулок.
+		Балка позади телеги, не протиснуться.
 	]];
 	act = function()
 		return [[
-			Ты рассматриваешь повозку. За ней находится проход в переулок.
-			Балка позади телеги, не протиснуться.
+			...
 		]];
 	end;
 }
+
+-- Загруженная повозка
+burning_quarter_loaded_cart = obj {
+	nam = 'Загруженная повозка';
+	dsc = function()
+	end;
+	act = function()
+		return [[
+			Повозка с бочками.
+		]];
+	end;
+}
+burning_quarter_loaded_cart:disable()
+
+-- Сломанная повозка
+burning_quarter_broken_cart = obj {
+	nam = 'Сломанная повозка';
+	dsc = function()
+	end;
+	act = function()
+		return [[
+			...
+		]];
+	end;
+}
+burning_quarter_broken_cart:disable()
 
 -- Цепь, держащая повозку
 burning_quarter_cart_chain = obj {
@@ -142,23 +189,43 @@ burning_quarter_cart_chain = obj {
 	used = function(self, what)
 		-- Разбиваем цепь повозки
 		if what == burning_quarter_hammer then
-			drop 'burning_quarter_hammer';
-			burning_quarter_broken_cart:disable();
 			burning_quarter_cart_chain:disable();
 
-			-- Проверка повёрнута ли телега
-			if true then
-				-- Проверка наличия бочек в телеге
-				if true then
-					walk 'burning_quarter_fight';
-					return [[
-						Ты закидываешь молот на плечо и выдохнув
-						обрушиваешь его на крепление цепи к повозке.
-					]];
-				end;
+			-- Проверяем наличие трупов под колёсами телеги
+			if not burning_quarter_dead_guardsmen:disabled() then
+				-- Проверяем снесли ли мы палатку
+				if burning_quarter_salers_counter:disabled() then
+					-- Проверка наличия бочек в телеге
+					if not burning_quarter_loaded_cart:disabled() then
+						-- Убираем загруженную телегу
+						burning_quarter_loaded_cart:disable();
+						walk 'burning_quarter_fight';
+						return [[
+							Ты закидываешь молот на плечо и выдохнув
+							обрушиваешь его на крепление цепи к повозке.
+						]];
+					else
+						-- Телега без бочек скатывается и ломается
+						burning_quarter_broken_cart:enable();
 
+						return burning_quarter_action .. [[
+							Телега скатывается вниз и ломается.
+						]];
+					end;
+				else
+					-- Телега сносит палатку и ломается
+					-- Убираем загруженную и обычную повозки, если они есть
+					burning_quarter_cart:disable();
+					burning_quarter_loaded_cart:disable();
+
+						return burning_quarter_action .. [[
+							Телега сносит палатку, скатывается вниз и ломается.
+						]];
+				end;
+			else
+				-- У телеги под колёсами лежат трупы
 				return burning_quarter_action .. [[
-					Телега стоит на месте.
+					Колёса телеги упираются в трупы.
 				]];
 			end;
 
@@ -177,14 +244,23 @@ burning_quarter_rolled_barrels = obj {
 		Вокруг неё раскатились {бочки}.
 	]];
 	act = function()
-		-- Test
-		-- Если это первое действие, то герой просто разбрасывает бочки
-		burning_quarter_rolled_barrels:disable();
-		return [[
-			Ты пинаешь одну из бочек. Тяжёлая, зараза.
-			Но к счастью пустые, поэтому ты умудряешься поднять их.
-			Пыхтя, ты закидываешь в телегу бочки.
-		]];
+		-- Проверяем есть ли телега и, что это не первое действие на сцене
+		if not burning_quarter_cart:disabled() and burning_quarter_counter > 4 then
+			-- Если есть, то грузим в неё бочки
+			burning_quarter_rolled_barrels:disable();
+			burning_quarter_loaded_cart:enable();
+
+			return burning_quarter_action([[
+				Ты пинаешь одну из бочек. Тяжёлая, зараза.
+				Но к счастью пустые, поэтому ты умудряешься поднять их.
+				Пыхтя, ты закидываешь в телегу бочки.
+			]]);
+		end;
+
+		-- Разбрасываем бочки
+		return burning_quarter_action([[
+			...
+		]]);
 	end;
 }
 
@@ -195,12 +271,55 @@ burning_quarter_dead_guardsmen = obj {
 		По всему кварталу раскиданы {тела стражников}.
 	]];
 	act = function()
+		-- Меняем тела
+		burning_quarter_dead_guardsmen_shifted:enable();
+		burning_quarter_dead_guardsmen:disable();
+
+		-- Проверяем разорвана ли цепь
+		if not burning_quarter_cart_chain:disabled() then
+			-- Вытаскиваем трупы из-под телеги
+			return burning_quarter_action([[
+				Ты оттаскиваешь несколько трупов из-под колёс повозка немного
+				проезжает.
+				Повозка Цепь натягивается.
+			]]);
+		end;
+
+		-- Цепь разорвана
+		return burning_quarter_action([[
+			Ты кое-как вытаскиваешь из под колёс телеги трупы, чтобы в конце концов она
+			поехала вниз.
+		]]);
+	end;
+}
+
+-- Расбросанные тела
+burning_quarter_dead_guardsmen_shifted = obj {
+	nam = 'Тела стражников';
+	dsc = [[
+		По всему кварталу раскиданы {тела стражников}.
+	]];
+	act = [[...]];
+}
+
+-- Лоток торговца
+burning_quarter_salers_counter = obj {
+	nam = 'Лоток торговца';
+	dsc = [[{Палатка}, валяется полчья шкура в крови и перевёрнутый котелок...]];
+	act = function()
 		return [[
-			-- Test
-			Не придумав ничего лучше, ты перетаскиваешь несколько тел к телеге
-			и складываешь из них гору. Что ж, теперь можно попробовать перебраться
-			на ту сторону.
-		]]
+			...
+		]];
+	end;
+	used = function(self,what)
+		-- Разносим лоток молотом
+		if what == burning_quarter_hammer then
+			burning_quarter_shifted_cart:disable();
+
+			return burning_quarter_action .. [[
+				Ты разносишь лоток молотком.
+			]];
+		end;
 	end;
 }
 
@@ -219,7 +338,7 @@ burning_quarter_hammer = obj {
 -- Для этого нужно выполнить в нужной последовательности 4 действия, иначе Кевраза убивает героя
 -- броском копья.
 --
--- Правильная последовательность: достать из-под телеги трупы и взять молот, повернуть телегу, закинуть бочки в телегу, разбить цепь телеги
+-- Правильная последовательность: достать из-под телеги трупы и взять молот, снести лоток, закинуть бочки в телегу, разбить цепь телеги
 --
 -- После того как герой передвинул телегу из переулка выходит проповедник и начинается диалог и драка
 -- с ним.

@@ -11,9 +11,7 @@ burning_quarter_fight = room {
 	nam = 'Горящий квартал';
 	dsc = [[]];
 	obj = {
-		'burning_quarter_broken_cart';
-		'burning_quarter_rolled_barrels';
-		'burning_quarter_dead_guardsmen';
+		'burning_quarter_dead_guardsmen_shifted';
 	};
 	enter = function()
 		return [[
