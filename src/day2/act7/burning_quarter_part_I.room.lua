@@ -76,7 +76,8 @@ burning_quarter = room {
 		Утренние воспоминания.
 	]];
 	obj = {
-		'burning_quarter_broken_cart ';
+		'burning_quarter_broken_cart';
+		'burning_quarter_cart_chain';
 		'burning_quarter_rolled_barrels';
 		'burning_quarter_dead_guardsmen';
 	};
@@ -91,7 +92,8 @@ burning_quarter = room {
 			walk 'halfed_by_panglolin'
 			return
 		end;
-		--drop 'soldier_sword';
+		drop 'soldier_sword';
+		take 'burning_quarter_hammer';
 		return [[
 			Ты идёшь в сторону тёмного переулка. Полуящер немедленно замечает
 			тебя, окидывает злобным взглядом и, видимо, придя к какому-то
@@ -99,6 +101,12 @@ burning_quarter = room {
 			в противоположную сторону.
 			^
 			Test
+			^
+			Полуящер убегает в тёмный переулок. Шепча проклятия, ты бросаешься
+			следом за ним.
+			^
+			Нападение орка с молотом. Поломка меча. В шею орка впивается недобитый ящер.
+			Добиваешь ящера обломком меча и берёшь молот.
 			^
 			Обозначить цель для игрока: люк канализации в переулке.
 		]];
@@ -118,11 +126,25 @@ burning_quarter_broken_cart = obj {
 			Балка позади телеги, не протиснуться.
 		]];
 	end;
+}
+
+-- Цепь, держащая повозку
+burning_quarter_cart_chain = obj {
+	nam = 'Цепь повозки';
+	dsc = [[
+		{Цепь} держащая повозку.
+	]];
+	act = function()
+		return [[
+			Крепкая на вид.
+		]]
+	end;
 	used = function(self, what)
 		-- Разбиваем цепь повозки
 		if what == burning_quarter_hammer then
 			drop 'burning_quarter_hammer';
 			burning_quarter_broken_cart:disable();
+			burning_quarter_cart_chain:disable();
 
 			-- Проверка повёрнута ли телега
 			if true then
@@ -135,12 +157,12 @@ burning_quarter_broken_cart = obj {
 					]];
 				end;
 
-				return [[
+				return burning_quarter_action .. [[
 					Телега стоит на месте.
 				]];
 			end;
 
-			return [[
+			return burning_quarter_action .. [[
 				Телега скатывается вниз и врезается с треском в здание и
 				разваливается.
 			]];
@@ -173,13 +195,8 @@ burning_quarter_dead_guardsmen = obj {
 		По всему кварталу раскиданы {тела стражников}.
 	]];
 	act = function()
-		if not have 'burning_quarter_hammer' then
-			take 'burning_quarter_hammer';
-			return [[
-				Ты подбираешь молот.
-			]];
-		end;
 		return [[
+			-- Test
 			Не придумав ничего лучше, ты перетаскиваешь несколько тел к телеге
 			и складываешь из них гору. Что ж, теперь можно попробовать перебраться
 			на ту сторону.
