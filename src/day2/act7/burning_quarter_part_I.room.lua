@@ -38,10 +38,10 @@ burning_quarter_action = function(act_text)
 		walk 'killed_by_kevraza_spear';
 		return act_text .. [[
 			Кевраза бросает копьё...
-		]], true
+		]];
 	end;
 
-	return act_text, false;
+	return act_text;
 end;
 
 -- Переходы локации
@@ -50,19 +50,42 @@ burning_quarter_to_lane_fail_room = room {
 	enter = function()
 		-- Проверять есть ли в телеге бочки
 		if not burning_quarter_loaded_cart:disabled() then
-			return [[...]];
+			return [[Повозка забита бочками, не пролезть.]], false;
 		end;
 
 		-- Проверяем не укатилась ли телега
 		if burning_quarter_cart:disabled() then
-			return [[...]];
+			local fail_text = '';
+
+			-- 2 Залп стрел, может убить героя, если нет телеги
+			if burning_quarter_counter == 3 then
+				fail_text = [[
+					Залп стрел убивает героя.
+				]];
+			end;
+
+			-- 1 Орки убивают героя, если телега скатилась негружённой
+			if burning_quarter_counter == 2 then
+				fail_text = [[
+					Орки убивают героя.
+				]];
+			end;
+
+			-- Пытаемся пробраться в переулок
+			walk 'killed_by_kevraza_spear';
+
+			return [[
+				Путь открыт, и ты пытаешься сбежать в переулок
+				^
+			]] .. fail_text;
 		end;
 
-		-- 2 Залп стрел, может убить героя, если нет телеги
-		-- 1 Орки убивают героя, если телега скатилась негружённой
-
-		-- Пытаемся пробраться в переулок
-		return burning_quarter_action('Ты забираешься на телегу и пытаешься пролезть в переулок, но балка мешает.');
+		-- Пытаемся пролезть в переулок и теряем время
+		if burning_quarter_counter == 1 then
+			return burning_quarter_action('Ты забираешься на телегу и пытаешься пролезть в переулок, но балка мешает.'), true;
+		else
+			return burning_quarter_action('Ты забираешься на телегу и пытаешься пролезть в переулок, но балка мешает.'), false;
+		end;
 	end;
 }
 
@@ -153,6 +176,9 @@ burning_quarter_cart = obj {
 burning_quarter_loaded_cart = obj {
 	nam = 'Загруженная повозка';
 	dsc = function()
+		return [[
+			{Загруженная повозка}.
+		]];
 	end;
 	act = function()
 		return [[
@@ -166,6 +192,9 @@ burning_quarter_loaded_cart:disable()
 burning_quarter_broken_cart = obj {
 	nam = 'Сломанная повозка';
 	dsc = function()
+		return [[
+			Сломанная повозка.
+		]];
 	end;
 	act = function()
 		return [[
@@ -192,7 +221,7 @@ burning_quarter_cart_chain = obj {
 			burning_quarter_cart_chain:disable();
 
 			-- Проверяем наличие трупов под колёсами телеги
-			if not burning_quarter_dead_guardsmen:disabled() then
+			if burning_quarter_dead_guardsmen:disabled() then
 				-- Проверяем снесли ли мы палатку
 				if burning_quarter_salers_counter:disabled() then
 					-- Проверка наличия бочек в телеге
@@ -208,9 +237,9 @@ burning_quarter_cart_chain = obj {
 						-- Телега без бочек скатывается и ломается
 						burning_quarter_broken_cart:enable();
 
-						return burning_quarter_action .. [[
+						return burning_quarter_action([[
 							Телега скатывается вниз и ломается.
-						]];
+						]]);
 					end;
 				else
 					-- Телега сносит палатку и ломается
@@ -218,21 +247,21 @@ burning_quarter_cart_chain = obj {
 					burning_quarter_cart:disable();
 					burning_quarter_loaded_cart:disable();
 
-						return burning_quarter_action .. [[
+						return burning_quarter_action([[
 							Телега сносит палатку, скатывается вниз и ломается.
-						]];
+						]]);
 				end;
 			else
 				-- У телеги под колёсами лежат трупы
-				return burning_quarter_action .. [[
+				return burning_quarter_action([[
 					Колёса телеги упираются в трупы.
-				]];
+				]]);
 			end;
 
-			return burning_quarter_action .. [[
+			return burning_quarter_action([[
 				Телега скатывается вниз и врезается с треском в здание и
 				разваливается.
-			]];
+			]]);
 		end;
 	end;
 }
@@ -245,9 +274,10 @@ burning_quarter_rolled_barrels = obj {
 	]];
 	act = function()
 		-- Проверяем есть ли телега и, что это не первое действие на сцене
-		if not burning_quarter_cart:disabled() and burning_quarter_counter > 4 then
+		if not burning_quarter_cart:disabled() and burning_quarter_counter < 4 then
 			-- Если есть, то грузим в неё бочки
 			burning_quarter_rolled_barrels:disable();
+			burning_quarter_cart:disable();
 			burning_quarter_loaded_cart:enable();
 
 			return burning_quarter_action([[
@@ -259,8 +289,20 @@ burning_quarter_rolled_barrels = obj {
 
 		-- Разбрасываем бочки
 		return burning_quarter_action([[
-			...
+			Ты разбрасываешь бочки расчищая пространство вокруг повозки.
+			Последняя надежда пролезть под повозкой окончательно
+			развеивается. Там куча тел.
 		]]);
+	end;
+	used = function(self, what)
+		-- Разбиваем цепь повозки
+		if what == burning_quarter_hammer then
+			burning_quarter_rolled_barrels:disable();
+
+			return burning_quarter_action([[
+				Ты со злости ранзносишь бочки молотом.
+			]]);
+		end;
 	end;
 }
 
@@ -297,10 +339,11 @@ burning_quarter_dead_guardsmen = obj {
 burning_quarter_dead_guardsmen_shifted = obj {
 	nam = 'Тела стражников';
 	dsc = [[
-		По всему кварталу раскиданы {тела стражников}.
+		По всему кварталу раскиданы отодвинутые {тела стражников}.
 	]];
 	act = [[...]];
 }
+burning_quarter_dead_guardsmen_shifted:disable()
 
 -- Лоток торговца
 burning_quarter_salers_counter = obj {
@@ -314,11 +357,11 @@ burning_quarter_salers_counter = obj {
 	used = function(self,what)
 		-- Разносим лоток молотом
 		if what == burning_quarter_hammer then
-			burning_quarter_shifted_cart:disable();
+			burning_quarter_salers_counter:disable();
 
-			return burning_quarter_action .. [[
+			return burning_quarter_action([[
 				Ты разносишь лоток молотком.
-			]];
+			]]);
 		end;
 	end;
 }
