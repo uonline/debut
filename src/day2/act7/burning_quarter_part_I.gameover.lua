@@ -1,4 +1,4 @@
-killed_by_kevraza_spear = room {
+killed_in_burning_quarter = room {
 	nam = 'Игра окончена';
 	dsc = [[
 		Убит копьём Кевразы.

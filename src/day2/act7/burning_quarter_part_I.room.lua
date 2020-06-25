@@ -1,3 +1,18 @@
+-- Чтобы освободить проход к переулку и преградить улицу для Кевразы, герой должен столкнуть повозку
+-- в горящее здание, которое обрушившись перекроет улицу.
+-- Для этого нужно выполнить в определённой последовательности 4 действия, иначе Кевраза убивает героя
+-- броском копья.
+--
+-- Герой также умирает, если попытается убежать в Переулок, при отодвинутой повозке.
+--
+-- Правильная последовательность действий: достать из-под телеги трупы, снести лоток, закинуть бочки в телегу, разбить цепь телеги.
+--
+-- После того как герой выполнили эти действия из переулка выходит проповедник. Начинается диалог и драка с ним.
+-- Затем Кевраза убивает проповедника броском копья, спасая героя от смерти. Герой поднимает мистическое нечто,
+-- которое наделяет его силой проповедника.
+--
+-- Сначала нужно будет убегать от Кевразы в переулок, а там расчистить люк канализации.
+
 -- Переменные локации
 local burning_quarter_counter = 4;
 
@@ -34,8 +49,7 @@ burning_quarter_action = function(act_text)
 
 	-- Время вышло, отряд Кевразы попадает в квартал
 	if burning_quarter_counter <= 0 then
-		-- Gameover
-		walk 'killed_by_kevraza_spear';
+		walk 'killed_in_burning_quarter';
 		return act_text .. [[
 			Кевраза бросает копьё...
 		]];
@@ -45,6 +59,7 @@ burning_quarter_action = function(act_text)
 end;
 
 -- Переходы локации
+-- Попытка героя пробраться в Переулок
 burning_quarter_to_lane_fail_room = room {
 	nam = 'Переулок';
 	enter = function()
@@ -55,6 +70,7 @@ burning_quarter_to_lane_fail_room = room {
 
 		-- Проверяем не укатилась ли телега
 		if burning_quarter_cart:disabled() then
+			-- Пытаемся пробраться в переулок
 			local fail_text = '';
 
 			-- 2 Залп стрел, может убить героя, если нет телеги
@@ -71,8 +87,7 @@ burning_quarter_to_lane_fail_room = room {
 				]];
 			end;
 
-			-- Пытаемся пробраться в переулок
-			walk 'killed_by_kevraza_spear';
+			walk 'killed_in_burning_quarter';
 
 			return [[
 				Путь открыт, и ты пытаешься сбежать в переулок
@@ -101,9 +116,6 @@ burning_quarter = room {
 		"Если я задержусь здесь надолго, я просто сгорю", -- думаешь ты.
 		Здания у Переулка уже вовсю пылают.
 		^
-		Test
-		Базарная площадь...
-		^
 		Залиты солнечным светом город, теперь был залит светом зарева пожара.
 		Почему-то, тебе кажется, что именно этот вид города выглядит наиболее естественным.
 		Не тот что ты видел днём, со всеми теми людьми, копошащимися в своей иллюзии жизни.
@@ -118,8 +130,8 @@ burning_quarter = room {
 		'burning_quarter_broken_cart';
 		'burning_quarter_cart_chain';
 		'burning_quarter_rolled_barrels';
-		'burning_quarter_dead_guardsmen';
-		'burning_quarter_dead_guardsmen_shifted';
+		'burning_quarter_corpses';
+		'burning_quarter_corpses_shifted';
 		'burning_quarter_salers_counter';
 	};
 	way = {
@@ -157,17 +169,16 @@ burning_quarter = room {
 }
 
 -- Объекты локации
--- Огромная повозка
+-- Повозка
 burning_quarter_cart = obj {
-	nam = 'Огромная повозка';
+	nam = 'Повозка';
 	dsc = [[
 		{Огромная повозка} преградила путь к Переулку.
-		Ты рассматриваешь повозку. За ней находится проход в переулок.
-		Балка позади телеги, не протиснуться.
 	]];
 	act = function()
 		return [[
-			...
+			Ты рассматриваешь повозку. За ней находится проход в переулок.
+			Балка позади телеги, не протиснуться.
 		]];
 	end;
 }
@@ -221,7 +232,7 @@ burning_quarter_cart_chain = obj {
 			burning_quarter_cart_chain:disable();
 
 			-- Проверяем наличие трупов под колёсами телеги
-			if burning_quarter_dead_guardsmen:disabled() then
+			if burning_quarter_corpses:disabled() then
 				-- Проверяем снесли ли мы палатку
 				if burning_quarter_salers_counter:disabled() then
 					-- Проверка наличия бочек в телеге
@@ -306,16 +317,16 @@ burning_quarter_rolled_barrels = obj {
 	end;
 }
 
--- Мёртвые стражники
-burning_quarter_dead_guardsmen = obj {
-	nam = 'Тела стражников';
+-- Трупы
+burning_quarter_corpses = obj {
+	nam = 'Трупы';
 	dsc = [[
 		По всему кварталу раскиданы {тела стражников}.
 	]];
 	act = function()
 		-- Меняем тела
-		burning_quarter_dead_guardsmen_shifted:enable();
-		burning_quarter_dead_guardsmen:disable();
+		burning_quarter_corpses_shifted:enable();
+		burning_quarter_corpses:disable();
 
 		-- Проверяем разорвана ли цепь
 		if not burning_quarter_cart_chain:disabled() then
@@ -335,15 +346,15 @@ burning_quarter_dead_guardsmen = obj {
 	end;
 }
 
--- Расбросанные тела
-burning_quarter_dead_guardsmen_shifted = obj {
-	nam = 'Тела стражников';
+-- Разбросанные трупы
+burning_quarter_corpses_shifted = obj {
+	nam = 'Трупы';
 	dsc = [[
 		По всему кварталу раскиданы отодвинутые {тела стражников}.
 	]];
 	act = [[...]];
 }
-burning_quarter_dead_guardsmen_shifted:disable()
+burning_quarter_corpses_shifted:disable()
 
 -- Лоток торговца
 burning_quarter_salers_counter = obj {
@@ -374,17 +385,3 @@ burning_quarter_hammer = obj {
 		удерживаешь его двумя руками.
 	]];
 }
-
--- TODO
--- Чтобы освободить проход к переулку и преградить улицу для Кевразы, герой должен столкнуть телегу
--- в горящее здание, которое обрушившись перекроет улицу.
--- Для этого нужно выполнить в нужной последовательности 4 действия, иначе Кевраза убивает героя
--- броском копья.
---
--- Правильная последовательность: достать из-под телеги трупы и взять молот, снести лоток, закинуть бочки в телегу, разбить цепь телеги
---
--- После того как герой передвинул телегу из переулка выходит проповедник и начинается диалог и драка
--- с ним.
--- Затем Кевраза убивает проповедника броском копья спасая героя от смерти. Герой поднимает мистическое нечто,
--- которое наделяет его силой проповедника.
--- Сначала нужно будет убегать от Кевразы в переулок, а там расчистить люк канализации.
