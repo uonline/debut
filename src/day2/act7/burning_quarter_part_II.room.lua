@@ -15,6 +15,8 @@ burning_quarter_fight = room {
 	};
 	enter = function()
 		return [[
+			^
+			Небо как чёрная губка впитывает столбы дыма и пламя в себя.
 		]];
 	end;
 	way = {
