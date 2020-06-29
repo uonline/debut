@@ -415,7 +415,11 @@ burning_quarter_rolled_barrels = obj {
 			burning_quarter_rolled_barrels:disable();
 
 			return burning_quarter_action([[
-				Cо злости ns разносишь бочки молотом.
+				Поддавшись накатившей злобе, ты хватаешь молот и начинаешь
+				крушить бочки одну за другой. Они лопаются как перезрелые арбузы,
+				разбрасывая щепки и доски.
+				^
+				Полностью выдохшийся, ты вытираешь пот со лба.
 			]]);
 		end;
 	end;
@@ -473,10 +477,7 @@ burning_quarter_corpses = obj {
 burning_quarter_corpses_shifted = obj {
 	nam = 'Трупы';
 	dsc = [[
-		По всему склону раскиданы отодвинутые {тела стражников}.
-	]];
-	act = [[
-		...
+		Всюду можно увидеть трупы стражи, режимников и горожан.
 	]];
 }
 burning_quarter_corpses_shifted:disable()
@@ -506,7 +507,9 @@ burning_quarter_salers_counter = obj {
 			burning_quarter_salers_counter:disable();
 
 			return burning_quarter_action([[
-				Полный решимости, ты подходишь к палатке и...
+				Пару раз взмахнув молотом для разогрева, ты безжалостно громишь стойкую палатку.
+				Один удар поднимает полотнище в воздух словно порыв ураганного ветра. Второй
+				складывает палатку в кучу тряпья и шкур.
 			]]);
 		end;
 	end;
