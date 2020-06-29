@@ -124,7 +124,6 @@ burning_quarter = room {
 		'burning_quarter_place';
 		'burning_quarter_cart';
 		'burning_quarter_loaded_cart';
-		'burning_quarter_broken_cart';
 		'burning_quarter_cart_chain';
 		'burning_quarter_rolled_barrels';
 		'burning_quarter_corpses';
@@ -297,22 +296,6 @@ burning_quarter_loaded_cart = obj {
 }
 burning_quarter_loaded_cart:disable()
 
--- Сломанная повозка
-burning_quarter_broken_cart = obj {
-	nam = 'Сломанная повозка';
-	dsc = function()
-		return [[
-			Сломанная повозка.
-		]];
-	end;
-	act = function()
-		return [[
-			...
-		]];
-	end;
-}
-burning_quarter_broken_cart:disable()
-
 -- Цепь, держащая повозку
 burning_quarter_cart_chain = obj {
 	nam = 'Цепь повозки';
@@ -356,8 +339,6 @@ burning_quarter_cart_chain = obj {
 							обрушиваешь его на крепление цепи к повозке.
 						]];
 					else
-						-- Телега без бочек скатывается и ломается
-						burning_quarter_broken_cart:enable();
 
 						return burning_quarter_action([[
 							Телега скатывается вниз и ломается.
@@ -457,7 +438,7 @@ burning_quarter_corpses = obj {
 		if not burning_quarter_cart_chain:disabled() then
 			-- Вытаскиваем трупы из-под телеги
 			return burning_quarter_action([[
-				Ты осматриваешь трупы вокруг телеги.
+				Ты осматриваешь трупы орков сгрудившиеся вокруг повозки.
 				Здоровенные наплечники не защитили его от стрелы в шею.
 				Ты оттаскиваешь несколько трупов из-под колёс повозка немного
 				проезжает.
@@ -467,7 +448,7 @@ burning_quarter_corpses = obj {
 
 		-- Цепь разорвана
 		return burning_quarter_action([[
-			Ты начинаешь в спешке вытаскивать из-под колёс телеги трупы,
+			Ты начинаешь в спешке вытаскивать из-под колёс повозки трупы,
 			чтобы в конце концов она поехала вниз. Первое же тело становится проблемой.
 			Ухватившись за здоровенные наплечники урук-хай, и вдыхая вонь потного тела
 			и крови, ты с трудом сдвигаешь его с места. Тужась изо всех сил, ты переворачиваешь
@@ -491,7 +472,9 @@ burning_quarter_corpses_shifted = obj {
 	dsc = [[
 		По всему склону раскиданы отодвинутые {тела стражников}.
 	]];
-	act = [[...]];
+	act = [[
+		...
+	]];
 }
 burning_quarter_corpses_shifted:disable()
 
