@@ -9,7 +9,9 @@ burning_quarter_to_lane_room = vroom('Переулок', 'lane_room');
 -- Локация
 burning_quarter_fight = room {
 	nam = 'Горящий квартал';
-	dsc = [[]];
+	dsc = [[
+		Финальная битва...
+	]];
 	obj = {
 		'burning_quarter_corpses_shifted';
 	};
