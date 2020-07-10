@@ -14,6 +14,7 @@ burning_quarter_fight = room {
 	]];
 	obj = {
 		'burning_quarter_corpses_shifted';
+		-- Четырёхгранный кинжал проповедника
 	};
 	enter = function()
 		return [[
