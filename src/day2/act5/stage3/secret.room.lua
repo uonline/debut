@@ -53,7 +53,6 @@ tower_book = obj {
 		--^
 		--Где-то здесь, совсем рядом, лежит нужная тебе книга. Нужно только
 		--покопаться на {ближайших полках}.
-	--]];
 	tak = function()
 		tower_stage3_secret_room_book_shelves:enable();
 		event 'learned stairway symbols';
