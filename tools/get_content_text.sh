@@ -85,39 +85,51 @@ fFile_Insert_StringByNumber()
 # Переходим в каталог скрипта
 _this_script_path=`echo $_this_script | sed 's;\(.*\)\/.*;\1;'`
 # echo "script path = "$_this_script_path
-cd "$_this_script_path"
+cd "$_this_script_path"'/../'
 
-_src_dir="$(pwd)/../src"
-_file="$_src_dir/day2/act4/guild_camp.room.lua"
+_src_dir="$(pwd)/src"
+# Готовим выходной файл
 _out_file="$(pwd)/$_out_file"
 [ -f "$_out_file" ] && rm -rf "$_out_file"
 
-# Сравниваем число скобок [[ и ]]. Оно должно быть одинаковым
-if [ $(cat "$_file" | grep -c "$_c_BEGIN_STR") != $(cat "$_file" | grep -c "$_c_END_STR") ]
-then
-   echo "Error in src file!"
-   exit 1
-fi
-# Получаем список номеров строк c [[
-_begin_list=( $(cat "$_file" | grep -n "$_c_BEGIN_STR" | sed 's/:.*//g') )
-# Получаем список номеров строк c ]]
-_end_list=( $(cat "$_file" | grep -n "$_c_END_STR" | sed 's/:.*//g') )
+# Готовим список файлов
+_files=( $(find "$_src_dir" -type f | grep ".") )
+# echo "${_files[*]}"
 
-# Debug
-# echo "${_begin_list[*]}"
-# echo "${_end_list[*]}"
-
-# Проходим по обоим спискам и выводим искомые строки в файл
-for (( _counter = 0; _counter < ${#_begin_list[*]}; _counter++ ))
+# Обходим список файлов
+for _file in ${_files[*]}
 do
-   # Обходим диапазон строк
-   let _count=${_begin_list[$_counter]}+1
-   while [ $_count -lt ${_end_list[$_counter]} ]
+   # Сравниваем число скобок [[ и ]]. Оно должно быть одинаковым
+   if [ $(cat "$_file" | grep -c "$_c_BEGIN_STR") != $(cat "$_file" | grep -c "$_c_END_STR") ]
+   then
+      echo "Error in src file!"
+      exit 1
+   fi
+   # Получаем список номеров строк c [[
+   _begin_list=( $(cat "$_file" | grep -n "$_c_BEGIN_STR" | sed 's/:.*//g') )
+   # Получаем список номеров строк c ]]
+   _end_list=( $(cat "$_file" | grep -n "$_c_END_STR" | sed 's/:.*//g') )
+
+   # Debug
+   # echo "${_begin_list[*]}"
+   # echo "${_end_list[*]}"
+
+   # Проходим по обоим спискам и выводим искомые строки в файл
+   for (( _counter = 0; _counter < ${#_begin_list[*]}; _counter++ ))
    do
-      cat $_file | sed "$_count!D" | sed "s/{//g" | sed "s/}//g" | sed "s/--/-/g" >> "$_out_file"
-      let _count=$_count+1
+      # Обходим диапазон строк
+      let _count=${_begin_list[$_counter]}+1
+      while [ $_count -lt ${_end_list[$_counter]} ]
+      do
+         cat $_file | sed "$_count!D" | sed "s/{//g" | sed "s/}//g" | sed "s/--/-/g" | sed "s/\t//g" >> "$_out_file"
+         let _count=$_count+1
+      done
+      echo "^" >> "$_out_file"
    done
 done
+
+cat $_out_file | tr -s '\n' ' ' > $_out_file".temp"
+cat $_out_file".temp" | sed "s/\^/\r/g"  > $_out_file
 
 #-------------------------------------------------------------------------------------
 #EXAMPLE------------------------------------------------------------------------------
