@@ -39,45 +39,6 @@ _out_file="out.txt"
 
    #Implementation - реализация функции
 #}
-# Функция для записи строки в файл в указанную строку
-fFile_Insert_StringByNumber()
-{
-   # args
-   local arg_file="$1"
-   local arg_string="$2"
-   local arg_string_number="$3"
-   local arg_mode="$4"
-   # var
-   local text_fix="DDD"
-
-   # Для сохранения возможных пробелов перед текстом добавляем специальные символы
-   arg_string="$text_fix$arg_string"
-
-   # Проверяем режим вставки
-   if [ $(echo "$arg_mode" | grep -c "\-a\|\-i\|-c") -ne 1 ]
-   then
-      echo "Incorrect insert mode! Use -a for add after string or -i for insert before string!"
-      return 1
-   else
-      arg_mode="$(echo $arg_mode | sed 's/\-//g')"
-   fi
-
-   # Убеждаемся, что строка найдена
-   if [ ! -z "$arg_string_number" ]
-   then
-      # Строка с нужной датой нашлась! Вставляем в файл новую дату в файл
-      sed -r "$arg_string_number "$arg_mode" $arg_string" "$arg_file" > ./temp_file
-      sed -r "s/$text_fix//1" ./temp_file > "$arg_file"
-      rm -rf ./temp_file
-
-      # Возвращаем номер строки в которую добавили, анализируя режим
-      [ $arg_mode == "a" ] && echo $(( $arg_string_number + 1 )) || echo $arg_string_number
-      return 0
-   fi
-
-   # echo "String $arg_string don't founded!"
-   return 1
-}
 
 #-------------------------------------------------------------------------------------
 #MAIN---------------------------------------------------------------------------------
@@ -99,11 +60,18 @@ _files=( $(find "$_src_dir" -type f | grep ".") )
 # Обходим список файлов
 for _file in ${_files[*]}
 do
+   echo ""
+   echo "Grab $_file..."
+
+   echo "^" >> "$_out_file"
+   echo "$_file..." >> "$_out_file"
+   echo "^" >> "$_out_file"
+
    # Сравниваем число скобок [[ и ]]. Оно должно быть одинаковым
    if [ $(cat "$_file" | grep -c "$_c_BEGIN_STR") != $(cat "$_file" | grep -c "$_c_END_STR") ]
    then
-      echo "Error in src file!"
-      exit 1
+      echo "Error in src file ($_file)!"
+      continue
    fi
    # Получаем список номеров строк c [[
    _begin_list=( $(cat "$_file" | grep -n "$_c_BEGIN_STR" | sed 's/:.*//g') )
