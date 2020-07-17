@@ -77,8 +77,6 @@ lane_room = room {
 		take 'burning_quarter_knife';
 		take 'burning_quarter_ring';
 		return [[
-			Обрушиваешь балку, перекрыв проход для Кевразы.?
-			^
 			Либо герой должен обрушить балку первым действием, чтобы нейтрализовать Кевразу.
 			Иначе Кевраза его убивает.
 		]];
@@ -244,9 +242,9 @@ lane_huge_beam_shifted = obj {
 			-- Проверяем есть ли мистический артефакт у героя
 			if have 'lane_mystical_artifact' then
 				self:disable()
-				return [[
+				return lane_action([[
 					Ты без проблем сдвигаешь балку в сторону.
-				]]
+				]]);
 			end;
 
 			return lane_action([[
@@ -325,12 +323,14 @@ lane_spear = obj {
 			]];
 		end;
 
+		-- Проверяем есть ли у героя мистический артефакт
 		if have 'lane_mystical_artifact' then
 			lane_spear:disable();
 			return lane_action([[
 				Хватаешь копьё и ломаешь его...
 			]]), false;
 		end;
+
 		return lane_action([[
 			Ты выдёргиваешь копьё и берёшь его в руки.
 		]]);
@@ -349,6 +349,14 @@ lane_spear = obj {
 				]];
 			end;
 
+			-- Проверяем есть ли у героя мистический артефакт
+			if have 'lane_mystical_artifact' then
+				lane_spear:disable();
+				return lane_action([[
+					Хватаешь копьё и ломаешь его...
+				]]);
+			end;
+
 			take 'lane_spear';
 			return lane_action([[
 				...
@@ -364,6 +372,16 @@ lane_blockage = obj {
 		Кевраза под {завалом}.
 	]];
 	act = function()
+		local text = {
+			[1] = [[
+			]];
+			[2] = [[
+			]];
+			[3] = [[
+			]];
+			[4] = [[
+			]];
+		};
 		return [[
 			...
 		]];
