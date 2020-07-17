@@ -31,7 +31,9 @@ lane_room = room {
 		'lane_dead_citizen';
 	};
 	enter = function()
-		take 'lane_arms';
+		-- Debug
+		take 'burning_quarter_knife';
+		take 'burning_quarter_ring';
 		return [[
 			Обрушиваешь балку, перекрыв проход для Кевразы.?
 			^
@@ -65,12 +67,18 @@ lane_arms = obj {
 lane_wall = obj {
 	nam = 'Кладка стены';
 	dsc = [[
-		{.}
+		{Разваливающаяся стена}.
 	]];
 	act = [[
 		Бросаем в Кевразу...
 	]];
 	used = function(self, what)
+		if what == lane_arms then
+			self:disable();
+			return [[
+				Ты вытаскиваешь камень из стены и тут же бросаешь его в Кевразу.
+			]];
+		end;
 	end;
 }
 
@@ -81,6 +89,14 @@ lane_covered_hatch = obj {
 		Виднеется {люк}.
 	]];
 	act = function()
+	end;
+	used = function(self, what)
+		if what == lane_arms then
+			walk 'killed_in_lane';
+			return [[
+				Ты хочешь открыть люк, но ничего не выходит. Кевраза тебя убивает.
+			]];
+		end;
 	end;
 }
 
@@ -132,14 +148,36 @@ lane_covered_hatch_blocked:disable()
 lane_huge_beam = obj {
 	nam = 'Огромная балка';
 	dsc = [[
-		{.}
+		{Огромная балка} лежит...
 	]];
 	act = [[
 		Ты пытаешься хоть немного приподнять балку. Тщетно.
 	]];
 	used = function(self, what)
-	end;
-}
+		if what == lane_arms then
+			-- Проверяем разрушена ли кладка стены
+			if lane_wall:disabled() then
+				self:disable();
+				lane_huge_beam_shifted:enable();
+				lane_covered_hatch:disable();
+				lane_covered_hatch_blocked:enable();
+				lane_pile_of_boxes:enable();
+				lane_pile_of_trash:enable();
+				lane_godchosen:disable();
+				lane_godchosens_sword:disable();
+				lane_blockage:enable();
+				lane_dead_citizen:enable();
+				return [[
+					Тебе удаётся столкнуть балку на Кевразу. Всё рушиться.
+				]];
+			end;
+
+			walk 'killed_in_lane';
+			return [[
+				Ты пытаешься сдвинуть балку, но Кевраза уворачивается.
+			]];
+		end;
+	end;}
 
 -- Огромная сдвинутая балка
 lane_huge_beam_shifted = obj {
@@ -228,6 +266,21 @@ lane_spear = obj {
 		Неподалёку торчит пролетевшее мимо {копьё}.
 	]];
 	tak = function()
+		-- Проверяем не заняты ли у героя руки
+		if not have 'lane_arms' then
+			return [[
+				Руки заняты...
+			]], false;
+		end;
+
+		-- Проверяем есть ли на сцене Кевраза
+		if not lane_godchosen:disabled() then
+			walk 'killed_in_lane';
+			return [[
+				Копьё не помогает против меча...
+			]];
+		end;
+
 		if have 'lane_mystical_artifact' then
 			lane_spear:disable();
 			return [[
@@ -244,6 +297,14 @@ lane_spear = obj {
 	]];
 	used = function(self, what)
 		if what == lane_arms then
+			-- Проверяем не под завалом ли Кевраза
+			if not lane_godchosen:disabled() then
+				walk 'killed_in_lane';
+				return [[
+					Копьё не помогает против меча...
+				]];
+			end;
+
 			take 'lane_spear';
 			return self.tak;
 		end
@@ -254,7 +315,7 @@ lane_spear = obj {
 lane_blockage = obj {
 	nam = 'Завал';
 	dsc = [[
-		{}.
+		Кевраза под {завалом}.
 	]];
 	act = function()
 		return [[
@@ -265,9 +326,9 @@ lane_blockage:disable()
 
 -- Богоизбранный
 lane_godchosen = obj {
-	nam = '';
+	nam = 'Богоизбранный';
 	dsc = [[
-		{}.
+		{Богоизбранный} с
 	]];
 	act = function()
 		return [[
@@ -292,17 +353,46 @@ lane_godchosen = obj {
 			на том свете.
 		]];
 	end;
+	used = function(self, what)
+		if what == burning_quarter_knife then
+			inv():del 'burning_quarter_knife';
+			take 'lane_arms';
+			return [[
+				Бросаем кинжал в богоизбранного.
+			]];
+		end;
+		if what == lane_arms then
+			walk 'killed_in_lane';
+			return [[
+				Пытаемся отобрать меч из рук богоизбранного.
+			]];
+		end;
+	end;
 }
 
 -- Меч богоизбранного
 lane_godchosens_sword = obj {
 	nam = 'Меч';
 	dsc = [[
-		{}.
+		{мечом} в руке.
 	]];
 	act = function()
 		return [[
 		]];
+	end;
+	used = function(self, what)
+		if what == burning_quarter_knife then
+			walk 'killed_in_lane';
+			return [[
+				Пытаемся выбить меч из рук богоизбранного.
+			]];
+		end;
+		if what == lane_arms then
+			walk 'killed_in_lane';
+			return [[
+				Пытаемся отобрать меч из рук богоизбранного.
+			]];
+		end;
 	end;
 }
 
@@ -320,6 +410,7 @@ lane_dead_citizen = obj {
 		С прежней жизнью покончено. Её остатки сгорели вместе с этим городом.
 	]];
 }
+lane_dead_citizen:disable()
 
 -- Мистический артефакт
 lane_mystical_artifact = obj {

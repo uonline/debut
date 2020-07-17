@@ -117,7 +117,7 @@ burning_quarter_zombie_fighter = obj {
 burning_quarter_knife = obj {
 	nam = 'Нож головореза урук';
 	dsc = [[
-		{}.
+		{Нож}.
 	]];
 	act = function()
 		return [[
