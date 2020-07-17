@@ -1,4 +1,46 @@
+-- Переменные локации
+local lane_counter = 4;
+
 -- Функции локации
+-- Функция для обратного отсчёта до завершения игры в переулке
+-- Вызывается при взаимодействиях с разными объектами локации, и генерирует разные события,
+-- зависящие от счётчика наступления завершения игры
+lane_action = function(act_text)
+	act_text = act_text .. "^";
+
+	-- Переводим счётчик
+	lane_counter = lane_counter - 1;
+
+	-- Герою мерещится
+	if lane_counter == 3 then
+		act_text = act_text .. [[
+		]];
+	end;
+
+	-- Герой слышит шорох
+	if lane_counter == 2 then
+		act_text = act_text .. [[
+		]];
+	end;
+
+	-- Герой видит как завал "оживает"
+	if lane_counter == 1 then
+		act_text = act_text .. [[
+		]];
+	end;
+
+	-- Кевраза выбирается из-под завала
+	if lane_counter <= 0 then
+		walk 'killed_in_lane';
+		return act_text .. [[
+			GG WP!
+		]];
+	end;
+
+	return act_text;
+end;
+
+
 -- Функция проверки доступности люка
 function lane_hatch_is_covered()
 	return not lane_huge_beam_shifted:disabled() or not lane_pile_of_boxes:disabled();
@@ -133,10 +175,11 @@ lane_covered_hatch_blocked = obj {
 					Ты хочешь открыть люк, но пока что к нему не подобраться, слишком плотно он завален.
 				]];
 			elseif not lane_pile_of_trash:disabled() then
-				return [[
+				return lane_action([[
 					Ты пытаешься открыть люк, но даже напрягая все силы тебе не удаётся поднять крышку достаточно высоко.
-				]];
+				]]);
 			else
+				-- Конец
 				walk 'the_end';
 			end
 		end
@@ -191,24 +234,25 @@ lane_huge_beam_shifted = obj {
 	used = function(self, what)
 		if what == lane_spear then
 			self:disable()
-			return [[
+			return lane_action([[
 				Ты втиснул копьё под балку и, используя его как рычаг,
 				отодвинул балку в сторону.
-			]]
+			]]);
 		end
 
 		if what == lane_arms then
-			-- Проверяем нет ли мистического артефакта у героя
+			-- Проверяем есть ли мистический артефакт у героя
 			if have 'lane_mystical_artifact' then
 				self:disable()
 				return [[
 					Ты без проблем сдвигаешь балку в сторону.
 				]]
 			end;
-			return [[
+
+			return lane_action([[
 				Попытавшись сдвинуть балку, ты чувствуешь,
 				что сил всё-таки не достаёт.
-			]]
+			]]);
 		end;
 	end;
 }
@@ -226,10 +270,10 @@ lane_pile_of_boxes = obj {
 	]];
 	used = function(self, what)
 		if what == lane_arms then
-			self:disable()
-			return [[
+			self:disable();
+			return lane_action([[
 				Ты быстренько раскидываешь ящики в разные стороны.
-			]]
+			]]);
 		end
 	end;
 }
@@ -248,12 +292,12 @@ lane_pile_of_trash = obj {
 	]];
 	used = function(self, what)
 		if what == lane_arms then
-			self:disable()
+			self:disable();
 			take 'lane_mystical_artifact';
-			return [[
+			return lane_action([[
 				Немного пошарившись в куче, ты обнаруживаешь какой-то
 				удивительно знакомый предмет.
-			]]
+			]]);
 		end
 	end;
 }
@@ -283,13 +327,13 @@ lane_spear = obj {
 
 		if have 'lane_mystical_artifact' then
 			lane_spear:disable();
-			return [[
+			return lane_action([[
 				Хватаешь копьё и ломаешь его...
-			]], false;
+			]]), false;
 		end;
-		return [[
+		return lane_action([[
 			Ты выдёргиваешь копьё и берёшь его в руки.
-		]];
+		]]);
 	end;
 	inv = [[
 		Ты разглядываешь копьё. Кажется, человеческая работа, но очень грубо
@@ -306,7 +350,9 @@ lane_spear = obj {
 			end;
 
 			take 'lane_spear';
-			return self.tak;
+			return lane_action([[
+				...
+			]]), self.tak;
 		end
 	end;
 }
@@ -319,6 +365,7 @@ lane_blockage = obj {
 	]];
 	act = function()
 		return [[
+			...
 		]];
 	end;
 }
