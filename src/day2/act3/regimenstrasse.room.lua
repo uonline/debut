@@ -31,8 +31,6 @@ regimenstrasse = room {
 		regimenstrasse_to_berlinstrasse;
 	};
 	entered = function()
-		-- Clear inventory, add whitelisted items
-		inv():zap();
 	end;
 }
 

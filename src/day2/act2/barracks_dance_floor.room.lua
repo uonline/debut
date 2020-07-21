@@ -69,8 +69,10 @@ dance_floor_guards = obj {
 			]];
 		end
 
-		inv():zap();
+		-- Выходим из штаба Режима
 		walk 'regimenstrasse';
+		-- Очищаем инвентарь и добавляем необходимые вещи
+		inv():zap();
 		take 'capitan_docs';
 		take 'magic_substrate';
 		return [[
