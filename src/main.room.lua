@@ -17,8 +17,12 @@ local main_ways_debug = {
 	vroom('D2A4 (Коллектор)^', 'collector');
 	vroom('D2A5^', 'tower_stage1');
 	vroom('D2A5 (5 этаж без всего)^', 'tower_stage5');
-	vroom('D2A6 (ну такой)^', 'scaffold');
+	vroom('D2A6 (первая концовка)^', 'scaffold');
+	vroom('D2A6^', 'black_room');
 	vroom('D2A7^', 'under_scaffold');
+	vroom('D2A7 (Горящий квартал)^', 'burning_quarter');
+	vroom('D2A7 (Финальная битва)^', 'burning_quarter_fight');
+	vroom('D2A7 (Переулок)^', 'lane_room');
 }
 
 if DEBUG then
@@ -31,6 +35,14 @@ main = room {
 	nam = '';
 	dsc = [[
 		Привет! Это демоверсия, 6 актов, сборка ]]..BUILD_DATE..[[, коммит ]]..BUILD_COMMIT..[[. Принимать малыми дозами. Отпускается по рецепту врача
+		^
+		^
+		"Что вершит судьбу человека в этом мире? Некое незримое существо или закон,
+		подобный длани господней парящей над миром? По крайней мере, истина
+		-- то, что человек не властен даже над собственной волей."
+		^
+		^
+		Кэнтаро Миура.
 	]];
 	way = main_ways;
 }
