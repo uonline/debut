@@ -23,6 +23,13 @@ end;
 
 
 burning_quarter_dmz = function()
+	objs('burning_quarter_fight'):add('burning_quarter_priest');
+	objs('burning_quarter_fight'):add('burning_quarter_dagger');
+
+	objs('burning_quarter_fight'):del('burning_quarter_zombie_fighter');
+	objs('burning_quarter_fight'):del('burning_quarter_zombie_thug');
+	objs('burning_quarter_fight'):del('burning_quarter_zombie_guard');
+
 	return [[
 		^
 		Ты разворачиваешься, чтобы разделаться со вторым мертвецом,
@@ -39,7 +46,9 @@ burning_quarter_dmz = function()
 		грубого вида сандалии с подошвами, выглядящими как деревянные.
 		И ты узнаёшь этого человека.
 		^
-		"Что ж, вот мы и свиделись."
+		Из мертвеца вырывается бледная тень. Она закручивается спиралью чуть
+		поодаль, быстро приобретая очертания проповедника. Он шипит и ругается
+		сквозь зубы, но не похоже, что он настроен сдаваться.
 	]]
 end;
 
@@ -278,6 +287,16 @@ burning_quarter_zombie_fighter = obj {
 			]]
 		end
 
+		-- S9
+		if what == burning_quarter_halberd then
+			local s = burning_quarter_dmz()
+			return ([[
+				Ты бросаешься на ближайшего мертвеца с алебардой и сравнительно
+				легко выбиваешь из его рук оружие. Ещё один резкий замах --
+				и дело сделано.
+			]] .. s)
+		end
+
 		-- GO2
 		if what == burning_quarter_hands then
 			walk 'burning_quarter_part_II_gameover';
@@ -354,6 +373,19 @@ burning_quarter_zombie_thug = obj {
 				не умеешь обращаться с этим оружием. После пары неудачных
 				замахов ты теряешь равновесие, и удар алебарды рассекает тебе
 				артерию на шее. Смерть приходит быстро.
+			]]
+		end
+
+		-- GO5
+		if what == burning_quarter_halberd then
+			walk 'burning_quarter_part_II_gameover';
+			return [[
+				Ты бросаешься на ближайшего мертвеца с алебардой в руках,
+				но это оружие оказывается слишком тяжёлым, чтобы реагировать
+				на быстрые выпады ножа. Противнику хватает двух ударов, чтобы
+				ранить тебя. Ты пытаешься собраться и встать в боевую стойку,
+				несмотря на боль, но в это время второй мертвец наносит тебе удар
+				в спину. Смерть оказывается мучительной.
 			]]
 		end
 
