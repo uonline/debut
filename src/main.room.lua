@@ -21,8 +21,8 @@ local main_ways_debug = {
 	vroom('D2A6^', 'black_room');
 	vroom('D2A7^', 'under_scaffold');
 	vroom('D2A7 (Горящий квартал)^', 'burning_quarter');
-	vroom('D2A7 (Финальная битва)^', 'burning_quarter_fight');
-	vroom('D2A7 (Переулок)^', 'lane_room');
+	vroom('D2A8 (Финальная битва)^', 'burning_quarter_fight');
+	vroom('D2A9 (Переулок)^', 'lane_room');
 }
 
 if DEBUG then
