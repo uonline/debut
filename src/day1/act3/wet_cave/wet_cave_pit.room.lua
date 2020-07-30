@@ -111,8 +111,8 @@ totem_touch = function(i)
 end
 
 -- Локация
-wet_cave_pit = room {
-	nam = 'Яма';
+wet_cave_pit_room = room {
+	nam = 'Сырая пещера';
 	dsc = [[
 		Test.
 	]];
@@ -121,6 +121,7 @@ wet_cave_pit = room {
 		'totem2';
 		'totem3';
 		'totem4';
+		'wet_cave_pit_exit';
 	};
 	entered = function()
 		return [[
@@ -208,4 +209,19 @@ totems = obj {
 		Ты рассматриваешь тотемы, но больше не можешь найти в них отличий.
 		Краска и линии рисунков исчезли, оставив чёрную гладкую древесину.
 	]];
+}
+
+-- Выбраться из ямы
+wet_cave_pit_exit = obj {
+	nam = 'Пещера';
+	dsc = [[
+		^
+		{Выбраться из ямы}
+	]];
+	act = function()
+		walk 'wet_cave';
+		return [[
+			...
+		]];
+	end;
 }
