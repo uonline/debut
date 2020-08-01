@@ -137,6 +137,18 @@ burning_quarter_priest = obj {
 		]];
 	end;
 	used = function(self, what)
+		-- GOx
+		if what == burning_quarter_hands then
+			walk 'burning_quarter_part_II_gameover';
+			return [[
+				Ты решаешь напасть на проповедника с голыми руками.
+				Довольно безрассудная затея, но ты пытаешься компенсировать
+				недостаток стратегического
+				мышления энтузиазмом и красотой исполнения. Но тому хватает
+				двух ударов, чтобы нанести тебе две несовместимые с жизнью раны.
+			]]
+		end
+
 		-- S4
 		if what == burning_quarter_fight_hammer then
 			s = burning_quarter_en_garde()
@@ -178,6 +190,7 @@ burning_quarter_dagger = obj {
 	used = function(self, what)
 		if what == burning_quarter_fight_hammer then
 			drop 'burning_quarter_fight_hammer';
+			objs('burning_quarter_fight'):del('burning_quarter_fight_hammer')
 			return [[
 				Ты делаешь удар молотом, целясь супостату в руку, но тот без
 				особого труда перехватывает молот в полёте и одним движением
@@ -185,6 +198,18 @@ burning_quarter_dagger = obj {
 				успеваешь хоть что-то понять, молот рассыпается в прах.
 			]];
 		end;
+
+		-- GOx
+		if what == burning_quarter_hands then
+			walk 'burning_quarter_part_II_gameover';
+			return [[
+				Ты решаешь напасть на проповедника с голыми руками.
+				Довольно безрассудная затея, но ты пытаешься компенсировать
+				недостаток стратегического
+				мышления энтузиазмом и красотой исполнения. Но тому хватает
+				двух ударов, чтобы нанести тебе две несовместимые с жизнью раны.
+			]]
+		end
 
 		-- S10
 		if (what == burning_quarter_halberd) or (what == burning_quarter_knife) then
