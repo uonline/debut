@@ -297,7 +297,18 @@ burning_quarter_ring = obj {
 			end;
 
 			-- S11
-			-- TODO
+			objs('burning_quarter_fight'):del('burning_quarter_godchosen')
+			objs('burning_quarter_fight'):add('burning_quarter_godchosen_down')
+			return [[
+				Ты наклоняешься, чтобы подобрать кольцо, и в этот же момент
+				человек в плаще делает резкое движение, целясь оружием тебе
+				в плечо. Каким-то чудом ты успеваешь отбить удар. Схватив кольцо,
+				ты отпрыгиваешь и встаёшь в боевую стойку.
+
+				Твой противник наносит ещё два удара. Первый ты пропускаешь,
+				получив в качестве награды ссадину на лбу, но на втором тебе
+				удаётся удачно контратаковать, отбросив врага на землю.
+			]]
 		end;
 	end;
 }
@@ -628,6 +639,45 @@ burning_quarter_godchosen = obj {
 	end;
 }
 
+
+burning_quarter_godchosen_down = obj {
+	nam = 'Кевраза';
+	dsc = [[
+		^
+		{Человек в плаще}, чертыхаясь, встаёт на ноги.
+	]];
+	act = function()
+		return [[
+			Ты пытаешься вспомнить, но память отказывает тебе в этот момент.
+			Кто же он такой?..
+		]];
+	end;
+	used = function(self, what)
+		-- GO7
+		if (
+			(what == burning_quarter_knuckle) or
+			(what == burning_quarter_knife) or
+			(what == burning_quarter_halberd) or
+			(what == burning_quarter_hands) or
+			(what == burning_quarter_fight_hammer)
+		) then
+			walk 'burning_quarter_part_II_gameover';
+			return [[
+				Ты пытаешься напасть на человека в плаще, но быстро понимаешь,
+				что этот противник тебе не по зубам. Он виртуозно обращается
+				со своим оружием, настолько, что его движения больше
+				похожи на танец, а удары быстры и точны.
+				^
+				Бой длится не больше минуты, и ты успеваешь пропустить два удара
+				в голову. Пульс бешено стучит в висках, ты падаешь на землю,
+				не в силах продолжать. Твой противник что-то говорит, но ты
+				не в силах разобрать ни слова.
+			]]
+		end
+	end;
+}
+
+
 burning_quarter_away = obj {
 	nam = 'Путь в переулок';
 	dsc = [[
@@ -635,6 +685,35 @@ burning_quarter_away = obj {
 		^
 	]];
 	act = function()
+		-- GO10
+		local godchosen_present = false
+		for k, v in pairs(objs('burning_quarter_fight')) do
+			if v == burning_quarter_godchosen then
+				godchosen_present = true
+			end
+		end
+		if godchosen_present then
+			walk 'burning_quarter_part_II_gameover';
+			return [[
+				Ты пытаешься сбежать в переулок, но удар в спину немножко
+				мешает, а второй чёт вообще мешает очень сильно.
+			]]
+		end
+
+		-- S11
+		local godchosen_down_present = false
+		for k, v in pairs(objs('burning_quarter_fight')) do
+			if v == burning_quarter_godchosen_down then
+				godchosen_down_present = true
+			end
+		end
+		if godchosen_down_present then
+			walk 'lane_room';
+			return [[
+				Оставив супостата позади, ты быстро ретируешься в переулок.
+			]]
+		end
+
 		-- S2
 		if have('burning_quarter_fight_hammer') then
 			drop 'burning_quarter_fight_hammer';
@@ -648,8 +727,6 @@ burning_quarter_away = obj {
 				Молот валится из твоих рук на землю.
 			]]
 		end
-
-		------------------------------ TODO
 
 		-- in other cases, GO1
 		walk 'burning_quarter_part_II_gameover';
