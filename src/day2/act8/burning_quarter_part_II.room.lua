@@ -46,7 +46,18 @@ end;
 
 
 burning_quarter_weapon_change = function()
-	-- TODO
+	if have('burning_quarter_fight_hammer') then
+		if have('burning_quarter_knuckle') or have('burning_quarter_knife') or have('burning_quarter_halberd') then
+			drop 'burning_quarter_fight_hammer'
+			objs(burning_quarter_fight):del('burning_quarter_fight_hammer')
+			return [[
+				Решив, что молот не очень полезен в этой ситуации, ты бросаешь его
+				куда-то в сторону.
+				^
+			]]
+		end
+	end
+	return ''
 end
 
 
@@ -354,12 +365,12 @@ burning_quarter_knuckle = obj {
 			-- Взять оружие
 			objs('burning_quarter_fight'):del(self)
 			inv():add(self)
-			burning_quarter_weapon_change()
+			local s1 = burning_quarter_weapon_change()
 			-- Убрать одного зомбака
 			burning_quarter_zombie_fighter:disable()
 			-- Поднять остальных (S4 S5 S6 S7)
 			s = burning_quarter_en_garde()
-			return ([[
+			return (s1 .. [[
 				Ты подбираешь тяжёлый кастет.
 			]] .. s)
 		end
@@ -459,12 +470,12 @@ burning_quarter_knife = obj {
 			-- Взять оружие
 			objs('burning_quarter_fight'):del(self)
 			inv():add(self)
-			burning_quarter_weapon_change()
+			local s1 = burning_quarter_weapon_change()
 			-- Убрать одного зомбака
 			burning_quarter_zombie_thug:disable()
 			-- Поднять остальных (S4 S5 S6 S7)
 			s = burning_quarter_en_garde()
-			return ([[
+			return (s1 .. [[
 				Ты подбираешь нож. Он тяжеловат, как ты и ожидал, но зато
 				очень острый.
 			]] .. s)
@@ -550,12 +561,12 @@ burning_quarter_halberd = obj {
 			-- Взять оружие
 			objs('burning_quarter_fight'):del(self)
 			inv():add(self)
-			burning_quarter_weapon_change()
+			local s1 = burning_quarter_weapon_change()
 			-- Убрать одного зомбака
 			burning_quarter_zombie_guard:disable()
 			-- Поднять остальных (S4 S5 S6 S7)
 			s = burning_quarter_en_garde()
-			return ([[
+			return (s1 .. [[
 				Ты подбираешь алебарду и делаешь пару пробных замахов.
 				Ты довольно легко управляешься с ней, несмотря на вес.
 			]] .. s)
