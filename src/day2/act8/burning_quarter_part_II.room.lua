@@ -162,7 +162,7 @@ burning_quarter_priest = obj {
 
 		-- S4
 		if what == burning_quarter_fight_hammer then
-			s = burning_quarter_en_garde()
+			local s = burning_quarter_en_garde()
 			return ([[
 				Ты делаешь замах молотом, но проповедник даже не пытается
 				уклониться от удара.
@@ -369,7 +369,7 @@ burning_quarter_knuckle = obj {
 			-- Убрать одного зомбака
 			burning_quarter_zombie_fighter:disable()
 			-- Поднять остальных (S4 S5 S6 S7)
-			s = burning_quarter_en_garde()
+			local s = burning_quarter_en_garde()
 			return (s1 .. [[
 				Ты подбираешь тяжёлый кастет.
 			]] .. s)
@@ -474,7 +474,7 @@ burning_quarter_knife = obj {
 			-- Убрать одного зомбака
 			burning_quarter_zombie_thug:disable()
 			-- Поднять остальных (S4 S5 S6 S7)
-			s = burning_quarter_en_garde()
+			local s = burning_quarter_en_garde()
 			return (s1 .. [[
 				Ты подбираешь нож. Он тяжеловат, как ты и ожидал, но зато
 				очень острый.
@@ -565,7 +565,7 @@ burning_quarter_halberd = obj {
 			-- Убрать одного зомбака
 			burning_quarter_zombie_guard:disable()
 			-- Поднять остальных (S4 S5 S6 S7)
-			s = burning_quarter_en_garde()
+			local s = burning_quarter_en_garde()
 			return (s1 .. [[
 				Ты подбираешь алебарду и делаешь пару пробных замахов.
 				Ты довольно легко управляешься с ней, несмотря на вес.
