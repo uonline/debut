@@ -92,6 +92,8 @@ uhp_guardian_dlg = dlg {
 				Орк заходится смехом.
 			]];
 			function()
+				uhp_blacksmith.dsc = uhp_blacksmith.awaken_dsc;
+				uhp_blacksmith.act = uhp_blacksmith.awaken_act;
 				event 'may leave prison';
 			end;
 		};
