@@ -46,7 +46,18 @@ end;
 
 
 burning_quarter_weapon_change = function()
-	-- TODO
+	if have('burning_quarter_fight_hammer') then
+		if have('burning_quarter_knuckle') or have('burning_quarter_knife') or have('burning_quarter_halberd') then
+			drop 'burning_quarter_fight_hammer'
+			objs(burning_quarter_fight):del('burning_quarter_fight_hammer')
+			return [[
+				Решив, что молот не очень полезен в этой ситуации, ты бросаешь его
+				куда-то в сторону.
+				^
+			]]
+		end
+	end
+	return ''
 end
 
 
@@ -110,7 +121,7 @@ burning_quarter_fight_hammer = obj {
 	inv = [[
 		Ты с отвращением осматриваешь уродливый молот урук-хай.
 		Тупой кусок железа вместо навершия и грубая металлическая рукоять.
-		Наверняка, когда-то его урук-хозяин с лёгкостью проламывал им черепа
+		Наверняка когда-то его урук-хозяин с лёгкостью проламывал им черепа
 		одной рукой. Но ты с трудом удерживаешь это страшилище в двух.
 	]];
 	tak = function()
@@ -137,9 +148,21 @@ burning_quarter_priest = obj {
 		]];
 	end;
 	used = function(self, what)
+		-- GOx
+		if what == burning_quarter_hands then
+			walk 'burning_quarter_part_II_gameover';
+			return [[
+				Ты решаешь напасть на проповедника с голыми руками.
+				Довольно безрассудная затея, но ты пытаешься компенсировать
+				недостаток стратегического
+				мышления энтузиазмом и красотой исполнения. Но тому хватает
+				двух ударов, чтобы нанести тебе две несовместимые с жизнью раны.
+			]]
+		end
+
 		-- S4
 		if what == burning_quarter_fight_hammer then
-			s = burning_quarter_en_garde()
+			local s = burning_quarter_en_garde()
 			return ([[
 				Ты делаешь замах молотом, но проповедник даже не пытается
 				уклониться от удара.
@@ -178,6 +201,7 @@ burning_quarter_dagger = obj {
 	used = function(self, what)
 		if what == burning_quarter_fight_hammer then
 			drop 'burning_quarter_fight_hammer';
+			objs('burning_quarter_fight'):del('burning_quarter_fight_hammer')
 			return [[
 				Ты делаешь удар молотом, целясь супостату в руку, но тот без
 				особого труда перехватывает молот в полёте и одним движением
@@ -185,6 +209,18 @@ burning_quarter_dagger = obj {
 				успеваешь хоть что-то понять, молот рассыпается в прах.
 			]];
 		end;
+
+		-- GOx
+		if what == burning_quarter_hands then
+			walk 'burning_quarter_part_II_gameover';
+			return [[
+				Ты решаешь напасть на проповедника с голыми руками.
+				Довольно безрассудная затея, но ты пытаешься компенсировать
+				недостаток стратегического
+				мышления энтузиазмом и красотой исполнения. Но тому хватает
+				двух ударов, чтобы нанести тебе две несовместимые с жизнью раны.
+			]]
+		end
 
 		-- S10
 		if (what == burning_quarter_halberd) or (what == burning_quarter_knife) then
@@ -243,6 +279,24 @@ burning_quarter_dagger_dead = obj {
 			виден знак - что-то вроде змеи.
 		]];
 	end;
+	used = function(self, what)
+		-- GO8
+		if what == burning_quarter_hands then
+			walk 'burning_quarter_part_II_gameover';
+			return [[
+				Решив, что тебе нужно другое оружие, ты наклоняешься,
+				чтобы подобрать кинжал. В этот же момент
+				человек в плаще резким движением вонзает оружие тебе в плечо.
+				^
+				Несмотря на это, ты всё-таки хватаешь кинжал, отпрыгиваешь и
+				встаёшь в боевую стойку, но боль в плече отвлекает тебя и
+				замедляет движения. Противник не балует тебя особым разнообразием
+				техники -- сделав несколько пробных ударов, он наносит
+				неожиданно сильный удар в область сердца. Закрыться ты
+				не успеваешь.
+			]]
+		end
+	end;
 }
 
 -- Кольцо проповедника
@@ -255,6 +309,43 @@ burning_quarter_ring = obj {
 	act = function()
 		return [[
 		]];
+	end;
+	used = function(self, what)
+		if what == burning_quarter_hands then
+			-- GO9
+			if have('burning_quarter_halberd') then
+				walk 'burning_quarter_part_II_gameover';
+				return [[
+					Ты наклоняешься, чтобы подобрать кольцо, и в этот же момент
+					человек в плаще делает резкое движение, целясь оружием тебе
+					в плечо. Ты пытаешься отбить удар, но алебарда оказывается
+					слишком тяжёлой -- ты не успеваешь.
+					^
+					Ты отпрыгиваешь и
+					встаёшь в боевую стойку, но боль в плече отвлекает и
+					замедляет движения. Противник не балует тебя особым разнообразием
+					техники -- он снова и снова делает быстрые удары, которые
+					ты не успеваешь отбивать. Через несколько минут у тебя
+					на теле красуется с десяток свежих ран.
+					^
+					Не в силах продолжать бой, ты валишься на землю.
+				]]
+			end;
+
+			-- S11
+			objs('burning_quarter_fight'):del('burning_quarter_godchosen')
+			objs('burning_quarter_fight'):add('burning_quarter_godchosen_down')
+			return [[
+				Ты наклоняешься, чтобы подобрать кольцо, и в этот же момент
+				человек в плаще делает резкое движение, целясь оружием тебе
+				в плечо. Каким-то чудом ты успеваешь отбить удар. Схватив кольцо,
+				ты отпрыгиваешь и встаёшь в боевую стойку.
+
+				Твой противник наносит ещё два удара. Первый ты пропускаешь,
+				получив в качестве награды ссадину на лбу, но на втором тебе
+				удаётся удачно контратаковать, отбросив врага на землю.
+			]]
+		end;
 	end;
 }
 
@@ -274,12 +365,12 @@ burning_quarter_knuckle = obj {
 			-- Взять оружие
 			objs('burning_quarter_fight'):del(self)
 			inv():add(self)
-			burning_quarter_weapon_change()
+			local s1 = burning_quarter_weapon_change()
 			-- Убрать одного зомбака
 			burning_quarter_zombie_fighter:disable()
 			-- Поднять остальных (S4 S5 S6 S7)
-			s = burning_quarter_en_garde()
-			return ([[
+			local s = burning_quarter_en_garde()
+			return (s1 .. [[
 				Ты подбираешь тяжёлый кастет.
 			]] .. s)
 		end
@@ -290,7 +381,7 @@ burning_quarter_knuckle = obj {
 burning_quarter_zombie_fighter = obj {
 	nam = 'Зомби боец урук-хай';
 	dsc = [[
-		{Мёртвый урук} внимательно смотрит на тебя.
+		{Мёртвый урук} не спускает с тебя глаз.
 	]];
 	act = function()
 		return [[
@@ -379,12 +470,12 @@ burning_quarter_knife = obj {
 			-- Взять оружие
 			objs('burning_quarter_fight'):del(self)
 			inv():add(self)
-			burning_quarter_weapon_change()
+			local s1 = burning_quarter_weapon_change()
 			-- Убрать одного зомбака
 			burning_quarter_zombie_thug:disable()
 			-- Поднять остальных (S4 S5 S6 S7)
-			s = burning_quarter_en_garde()
-			return ([[
+			local s = burning_quarter_en_garde()
+			return (s1 .. [[
 				Ты подбираешь нож. Он тяжеловат, как ты и ожидал, но зато
 				очень острый.
 			]] .. s)
@@ -396,7 +487,7 @@ burning_quarter_knife = obj {
 burning_quarter_zombie_thug = obj {
 	nam = '';
 	dsc = [[
-		{Мёртвый головорез} изучает тебя.
+		{Мёртвый головорез} изучает тебя взглядом.
 	]];
 	act = function()
 		return [[
@@ -470,12 +561,12 @@ burning_quarter_halberd = obj {
 			-- Взять оружие
 			objs('burning_quarter_fight'):del(self)
 			inv():add(self)
-			burning_quarter_weapon_change()
+			local s1 = burning_quarter_weapon_change()
 			-- Убрать одного зомбака
 			burning_quarter_zombie_guard:disable()
 			-- Поднять остальных (S4 S5 S6 S7)
-			s = burning_quarter_en_garde()
-			return ([[
+			local s = burning_quarter_en_garde()
+			return (s1 .. [[
 				Ты подбираешь алебарду и делаешь пару пробных замахов.
 				Ты довольно легко управляешься с ней, несмотря на вес.
 			]] .. s)
@@ -487,7 +578,7 @@ burning_quarter_halberd = obj {
 burning_quarter_zombie_guard = obj {
 	nam = 'Зомби стражник';
 	dsc = [[
-		{Мёртвый стражник} смотрит внимательным взглядом, щёлкая тем, что
+		{Мёртвый стражник} следит за твоими движениями, щёлкая тем, что
 		осталось от челюстей.
 	]];
 	act = function()
@@ -559,7 +650,69 @@ burning_quarter_godchosen = obj {
 			Кто же он такой?..
 		]];
 	end;
+	used = function(self, what)
+		-- GO7
+		if (
+			(what == burning_quarter_knuckle) or
+			(what == burning_quarter_knife) or
+			(what == burning_quarter_halberd) or
+			(what == burning_quarter_hands) or
+			(what == burning_quarter_fight_hammer)
+		) then
+			walk 'burning_quarter_part_II_gameover';
+			return [[
+				Ты пытаешься напасть на человека в плаще, но быстро понимаешь,
+				что этот противник тебе не по зубам. Он виртуозно обращается
+				со своим оружием, настолько, что его движения больше
+				похожи на танец, а удары быстры и точны.
+				^
+				Бой длится не больше минуты, и ты успеваешь пропустить два удара
+				в голову. Пульс бешено стучит в висках, ты падаешь на землю,
+				не в силах продолжать. Твой противник что-то говорит, но ты
+				не в силах разобрать ни слова.
+			]]
+		end
+	end;
 }
+
+
+burning_quarter_godchosen_down = obj {
+	nam = 'Кевраза';
+	dsc = [[
+		^
+		{Человек в плаще}, чертыхаясь, встаёт на ноги.
+	]];
+	act = function()
+		return [[
+			Ты пытаешься вспомнить, но память отказывает тебе в этот момент.
+			Кто же он такой?..
+		]];
+	end;
+	used = function(self, what)
+		-- GO7
+		if (
+			(what == burning_quarter_knuckle) or
+			(what == burning_quarter_knife) or
+			(what == burning_quarter_halberd) or
+			(what == burning_quarter_hands) or
+			(what == burning_quarter_fight_hammer)
+		) then
+			walk 'burning_quarter_part_II_gameover';
+			return [[
+				Ты пытаешься напасть на человека в плаще, но быстро понимаешь,
+				что этот противник тебе не по зубам. Он виртуозно обращается
+				со своим оружием, настолько, что его движения больше
+				похожи на танец, а удары быстры и точны.
+				^
+				Бой длится не больше минуты, и ты успеваешь пропустить два удара
+				в голову. Пульс бешено стучит в висках, ты падаешь на землю,
+				не в силах продолжать. Твой противник что-то говорит, но ты
+				не в силах разобрать ни слова.
+			]]
+		end
+	end;
+}
+
 
 burning_quarter_away = obj {
 	nam = 'Путь в переулок';
@@ -568,6 +721,35 @@ burning_quarter_away = obj {
 		^
 	]];
 	act = function()
+		-- GO10
+		local godchosen_present = false
+		for k, v in pairs(objs('burning_quarter_fight')) do
+			if v == burning_quarter_godchosen then
+				godchosen_present = true
+			end
+		end
+		if godchosen_present then
+			walk 'burning_quarter_part_II_gameover';
+			return [[
+				Ты пытаешься сбежать в переулок, но удар в спину немножко
+				мешает, а второй чёт вообще мешает очень сильно.
+			]]
+		end
+
+		-- S11
+		local godchosen_down_present = false
+		for k, v in pairs(objs('burning_quarter_fight')) do
+			if v == burning_quarter_godchosen_down then
+				godchosen_down_present = true
+			end
+		end
+		if godchosen_down_present then
+			walk 'lane_room';
+			return [[
+				Оставив супостата позади, ты быстро ретируешься в переулок.
+			]]
+		end
+
 		-- S2
 		if have('burning_quarter_fight_hammer') then
 			drop 'burning_quarter_fight_hammer';
@@ -581,8 +763,6 @@ burning_quarter_away = obj {
 				Молот валится из твоих рук на землю.
 			]]
 		end
-
-		------------------------------ TODO
 
 		-- in other cases, GO1
 		walk 'burning_quarter_part_II_gameover';
