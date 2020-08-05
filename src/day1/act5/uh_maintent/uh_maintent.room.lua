@@ -1,17 +1,42 @@
-_got_dagger = false
-_maintent_countdown = 3
+-- Переменные
+local got_dagger = false
+local maintent_countdown = 3
 
-local deadly_act = function(text)
+-- Функции
+-- Функция для обратного отсчёта до завершения игры в шатре
+-- Вызывается при взаимодействиях с разными объектами локации, и генерирует разные события,
+-- зависящие от счётчика наступления завершения игры
+local deadly_act = function(act_text)
 	return function()
-		_maintent_countdown = _maintent_countdown - 1
-		if _maintent_countdown <= 0 then
-			walk 'assassinated'
-		else
-			return text
-		end
-	end
-end
+		act_text = act_text .. "^";
 
+		-- Переводим счётчик
+		maintent_countdown = maintent_countdown - 1
+
+		--
+		if maintent_countdown == 2 then
+			act_text = act_text .. [[
+				Осталось 2 хода
+			]];
+		end;
+
+		--
+		if maintent_countdown == 1 then
+			act_text = act_text .. [[
+				Остался один ход
+			]];
+		end;
+
+		-- Урук нападают на главаря
+		if maintent_countdown <= 0 then
+			walk 'assassinated';
+		end;
+
+		return act_text;
+	end;
+end;
+
+-- Локация
 uh_maintent = room {
 	nam = 'Шатёр главаря';
 	dsc = [[
@@ -35,6 +60,8 @@ uh_maintent = room {
 	end;
 }
 
+-- Объекты
+-- Кинжал
 dagger = obj {
 	nam = 'Кинжал';
 	inv = [[
@@ -44,6 +71,7 @@ dagger = obj {
 	]];
 }
 
+-- Стол
 big_table = obj {
 	nam = 'Большой стол';
 	dsc = [[
@@ -71,12 +99,12 @@ big_table = obj {
 			городах Приграничья после войны. Ты пытаешься вспомнить, как называется город, но
 			тщетно. На карте тоже не разобрать.
 		]]
-		if _got_dagger then
+		if got_dagger then
 			return ret .. ' ' .. [[
 				Дыра от кинжала красуется прямо на месте названия города.
 			]]
 		else
-			_got_dagger = true
+			got_dagger = true
 			inv():add('dagger')
 			return ret .. ' ' .. [[
 				Кинжал торчит прямо в названии.
@@ -88,12 +116,12 @@ big_table = obj {
 	end;
 }
 
+-- Главарь банды
 boss = obj {
 	nam = 'Главарь';
 	dsc = [[
 		Прямо за столом установлен помост, на котором спиной ко входу
 		неподвижно сидит {главарь банды}.
-
 	]];
 	act = deadly_act [[
 		Ты внимательно рассматриваешь главаря. Он застыл в довольно странной
@@ -161,6 +189,7 @@ boss = obj {
 	end
 }
 
+-- Стойка с доспехами
 maintent_rack = obj {
 	nam = 'Стойка';
 	dsc = [[
@@ -173,6 +202,7 @@ maintent_rack = obj {
 	]];
 }
 
+-- Сундук
 maintent_chest = obj {
 	nam = 'Сундук';
 	dsc = [[
@@ -184,8 +214,9 @@ maintent_chest = obj {
 	]];
 }
 
+-- Трофеи
 battle_trophies = obj {
-	nam = 'Главарь';
+	nam = 'Трофеи';
 	dsc = [[
 		Прямо перед главарём высится {огромная куча награбленного}.
 	]];
@@ -199,6 +230,7 @@ battle_trophies = obj {
 	]];
 }
 
+-- Телохранитель
 maintent_guard = obj {
 	nam = 'Телохранитель';
 	dsc = [[
