@@ -207,9 +207,6 @@ burning_quarter = room {
 		'burning_quarter_to_lane_fail_room';
 	};
 	enter = function()
-		-- Debug
-		take 'soldier_sword';
-
 		-- Если нет меча, то ящер убивает героя
 		if not have 'soldier_sword' then
 			walk 'halfed_by_panglolin'
@@ -277,6 +274,17 @@ burning_quarter = room {
 			К твоему сожалению переулок отказывает тебе в возможности сбежать в прохладную
 			темноту подземелий. Впереди разверзается пылающий ад.
 		]];
+	end;
+}
+
+-- Локация для отладки
+burning_quarter_debug_room = room {
+	nam = 'Отлада горящего квартала';
+	enter = function()
+		-- Берём меч, чтобы попасть в горящий квартал
+		take 'soldier_sword';
+
+		walk 'burning_quarter';
 	end;
 }
 
