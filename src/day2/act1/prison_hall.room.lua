@@ -1,5 +1,7 @@
-_guard_just_died = false
+-- Переменные
+local _guard_just_died = false
 
+-- Переходы
 prison_hall_to_prison_guards_room = vroom('Комната стражи', 'prison_guards_room');
 prison_hall_to_prison_guards_room:disable();
 
@@ -9,6 +11,7 @@ on_event('got his stuff back', function()
 	prison_hall_to_barracks_hall:enable();
 end)
 
+-- Локация
 prison_hall = room {
 	nam = 'Тюремный коридор';
 	dsc = [[
@@ -34,6 +37,8 @@ prison_hall = room {
 	};
 }
 
+-- Объекты
+-- Стражник
 prison_hall_guard = obj {
 	nam = 'Стражник';
 	dsc = function()
@@ -71,6 +76,7 @@ on_event('guard body is hidden', function()
 	prison_hall_guard:disable()
 end)
 
+-- Первый факел
 prison_hall_fire_first = obj {
 	nam = 'Факел';
 	dsc = [[
@@ -85,6 +91,7 @@ prison_hall_fire_first = obj {
 	]];
 }
 
+-- Стол
 prison_hall_table = obj {
 	nam = 'Стол';
 	dsc = [[
@@ -96,6 +103,7 @@ prison_hall_table = obj {
 	]];
 }
 
+-- Кружка
 prison_hall_cup = obj {
 	nam = 'Медная кружка';
 	dsc = [[
@@ -109,6 +117,7 @@ prison_hall_cup = obj {
 	]];
 }
 
+-- Доска с плакатами
 prison_hall_posters = obj {
 	nam = 'Доска с плакатами';
 	dsc = [[
@@ -122,6 +131,7 @@ prison_hall_posters = obj {
 	]];
 }
 
+-- Второй факел
 prison_hall_fire_second = obj {
 	nam = 'Факел';
 	dsc = [[
@@ -135,6 +145,7 @@ prison_hall_fire_second = obj {
 	]];
 }
 
+-- Бочки
 prison_hall_barrels = obj {
 	nam = "Бочки";
 	dsc = [[
@@ -147,6 +158,7 @@ prison_hall_barrels = obj {
 	]];
 }
 
+-- Дверь
 prison_hall_iron_door = obj {
 	nam = 'Дверь';
 	dsc = [[
@@ -157,6 +169,7 @@ prison_hall_iron_door = obj {
 	]];
 }
 
+-- Третий факел
 prison_hall_fire_third = obj {
 	nam = 'Факел';
 	dsc = [[
