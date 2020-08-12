@@ -14,9 +14,21 @@
 --       * Тогда разблокируется проход в комнату стражи;
 
 -- Переменные
-local _guard_just_died = false
+-- События
+-- Прячем тело стражника в камеру
+on_event('guard body is hidden', function()
+	prison_hall_guard_body:disable();
+	prison_cell_guard_body:enable();
+	prison_hall_to_prison_guards_room:enable();
+end)
 
 -- Переходы
+-- В камеру
+prison_hall_to_your_cell_room = vroom('Твоя камера', 'your_cell');
+on_event('close your cell', function()
+	prison_hall_to_your_cell_room:disable();
+end)
+
 -- В комнату стражи
 prison_hall_to_prison_guards_room = vroom('Комната стражи', 'prison_guards_room');
 prison_hall_to_prison_guards_room:disable();
@@ -38,6 +50,7 @@ prison_hall = room {
 	]];
 	obj = {
 		'prison_hall_guard';
+		'prison_hall_guard_body';
 		'prison_hall_fire_first';
 		'prison_hall_table';
 		'prison_hall_cup';
@@ -48,7 +61,7 @@ prison_hall = room {
 		'prison_hall_fire_third';
 	};
 	way = {
-		'your_cell';
+		prison_hall_to_your_cell_room;
 		prison_hall_to_prison_guards_room;
 		prison_hall_to_barracks_hall;
 	};
@@ -59,15 +72,10 @@ prison_hall = room {
 prison_hall_guard = obj {
 	nam = 'Стражник';
 	dsc = function()
-		if _guard_just_died then
-			return [[
-				У твоих ног лежит тело стражника.
-			]]
-		end
 		return [[
 			В десяти шагах от тебя, привалившись головой к стене, усердно кашляет
 			в кулак {стражник}.
-		]]
+		]];
 	end;
 	act = [[
 		Ты внимательно и с некоторым сочувствием рассматриваешь стражника.
@@ -76,22 +84,34 @@ prison_hall_guard = obj {
 	]];
 	used = function(self, what)
 		if what == prison_hall_cup then
-			_guard_just_died = true
-			prison_hall_to_prison_guards_room:enable()
-			inv():del 'prison_hall_cup'
+			prison_hall_guard:disable();
+			prison_hall_guard_body:enable();
+			inv():del 'prison_hall_cup';
 			return [[
 				Не придумав ничего лучше, ты подходишь к стражнику и с размаху
 				бьёшь его по голове кружкой. Кашель прекращается,
 				тюремщик мешком падает на пол.
 				^
 				Ты оттаскиваешь тело в свою камеру и возвращаешься в коридор.
-			]]
+			]];
 		end;
 	end;
 }
-on_event('guard body is hidden', function()
-	prison_hall_guard:disable()
-end)
+
+-- Тело стражника
+prison_hall_guard_body = obj {
+	nam = 'Тело стражника';
+	dsc = [[
+		У твоих ног лежит {тело стражника}.
+	]];
+	tak = [[
+		Ты берёшь тело стражника под мышки.
+	]];
+	inv = [[
+		Тяжёлый.
+	]];
+}
+prison_hall_guard_body:disable()
 
 -- Первый факел
 prison_hall_fire_first = obj {

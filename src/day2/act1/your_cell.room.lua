@@ -32,17 +32,46 @@ your_cell = room {
 				Вокруг темно и воняет.
 			]];
 		end;
-
 	obj = {
 		'window';
 		'hole';
 		'meal';
 		'your_cell_guard';
 		'rat';
+		'prison_cell_guard_body';
 	};
 	way = {
 		your_cell_to_prison_hall;
 	};
+	enter = function()
+		-- Если принесли тело стражника, то прячем его
+		if have 'prison_hall_guard_body' then
+			local hidden_guard_begin_text = [[
+				Ты прячешь тело стражника.
+			]];
+			local hidden_guard_end_text = [[
+				Запираешь камеру.
+			]];
+
+			event 'guard body is hidden';
+			if not have 'rat' then
+				take 'rat';
+				return hidden_guard_begin_text .. [[
+					Берёшь крысу, если ещё не взял.
+				]] .. hidden_guard_end_text;
+			end;
+			return hidden_guard_begin_text .. hidden_guard_end_text;
+		end;
+	end;
+	exit = function()
+		-- Запираем камеру, если принесли туда тело стражника
+		if not prison_cell_guard_body:disabled() then
+			event 'close your cell';
+			return [[
+				Запираешь камеру на ключ.
+			]];
+		end;
+	end;
 }
 
 window = obj {
@@ -307,10 +336,10 @@ your_cell_guard = obj {
 	]];
 	act = function()
 		if _wants_cocaine then
-			disable 'hole'
-			disable 'your_cell_guard'
-			enable 'rat'
-			enable 'your_cell_to_prison_hall'
+			disable 'hole';
+			disable 'your_cell_guard';
+			enable 'rat';
+			enable 'your_cell_to_prison_hall';
 			return [[
 				Ты подходишь к окошку со стальными прутьями и подзываешь стражника рукой.
 				Скучающий верзила небрежно подходит ближе.
@@ -397,3 +426,15 @@ your_cell_guard = obj {
 		end;
 	end;
 }
+
+-- Спрятанное тело стражника
+prison_cell_guard_body = obj {
+	nam = 'Спрятанное тело стражника';
+	dsc = [[
+		Посреди камеры лицом на животе лежит {стражник}.
+	]];
+	act = [[
+		Ты осматриваешь стражника. Его вполне можно спутать с заключённым.
+	]];
+};
+prison_cell_guard_body:disable();
