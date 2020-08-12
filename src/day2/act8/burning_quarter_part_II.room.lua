@@ -333,6 +333,7 @@ burning_quarter_ring = obj {
 			end;
 
 			-- S11
+			take 'burning_quarter_ring'
 			objs('burning_quarter_fight'):del('burning_quarter_godchosen')
 			objs('burning_quarter_fight'):add('burning_quarter_godchosen_down')
 			return [[
