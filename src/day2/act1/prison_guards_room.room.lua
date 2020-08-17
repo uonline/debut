@@ -25,16 +25,19 @@ prison_guards_room = room {
 		'prison_hall';
 	};
 	entered = function()
-		if _guard_just_died then
-			_guard_just_died = false
-			event 'guard body is hidden'
+		if prison_doc:disabled() then
+			prison_doc:enable();
 			return [[
 				Ты медленно открываешь дверь и осматриваешь небольшую каморку.
 				Пробравшись внутрь, ты едва не вскрикиваешь от испуга:
 				возле двери тебя поджидает ещё один стражник.
 				На твоё счастье он оказывается спящим.
-			]]
-		end
+			]];
+		end;
+
+		return [[
+			Ты пробираешься внутрь каморки стражи.
+		]];
 	end;
 }
 
@@ -52,6 +55,7 @@ prison_doc = obj {
 		Не обнаружив своего имени, ты возвращаешь бумагу назад в кипу.
 	]];
 }
+prison_doc:disable()
 
 -- Доска
 prison_board = obj {
