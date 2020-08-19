@@ -1,7 +1,8 @@
 -- Переменные локации
-_burning_quarter_walking_dead = false
+_burning_quarter_walking_dead = false;
 
 -- Функции локации
+-- Функция оживления проповедником мёртвых
 burning_quarter_en_garde = function()
 	_burning_quarter_walking_dead = true
 
@@ -18,15 +19,16 @@ burning_quarter_en_garde = function()
 
 	return [[
 		^
-		Проповедник внезапно превращается в тень
-		и радостно вселяется в ближайшие трупы. Они встают и
-		с энтузиазмом выдвигаются в твою сторону.
-	]]
+		-- Червь решает сражаться? -- шипит голос проповедника. Его тряпьё растворяется в ночи,
+		словно разлетевшаяся стая воронов, -- я уничтожу тебя!
+		^
+		Лоскуты-тени сгущаются в чёрном небе над трупами. Вихрем спустившись вниз они вгрызаются
+		в их лица. на твоих глазах мертецы оживают и поднимаются на ноги. Двое урук-хай и стражник.
+	]];
 end;
 
-
 burning_quarter_dmz = function()
-	_burning_quarter_walking_dead = false
+	_burning_quarter_walking_dead = false;
 
 	objs('burning_quarter_fight'):add('burning_quarter_priest');
 	objs('burning_quarter_fight'):add('burning_quarter_dagger');
@@ -46,25 +48,23 @@ burning_quarter_dmz = function()
 		Из мертвеца вырывается бледная тень. Она закручивается спиралью чуть
 		поодаль, быстро приобретая очертания проповедника. Он шипит и ругается
 		сквозь зубы, но не похоже, что он настроен сдаваться.
-	]]
+	]];
 end;
-
 
 burning_quarter_weapon_change = function()
 	if have('burning_quarter_fight_hammer') then
 		if have('burning_quarter_knuckle') or have('burning_quarter_knife') or have('burning_quarter_halberd') then
-			drop 'burning_quarter_fight_hammer'
-			objs(burning_quarter_fight):del('burning_quarter_fight_hammer')
+			drop 'burning_quarter_fight_hammer';
+			objs(burning_quarter_fight):del('burning_quarter_fight_hammer');
 			return [[
 				Решив, что молот не очень полезен в этой ситуации, ты бросаешь его
 				куда-то в сторону.
 				^
-			]]
-		end
-	end
+			]];
+		end;
+	end;
 	return ''
 end
-
 
 -- Переходы локации
 --burning_quarter_to_lane_room = vroom('Переулок', 'lane_room');
@@ -103,7 +103,8 @@ burning_quarter_fight = room {
 	};
 }
 
-
+-- Инвентарь
+-- Руки
 burning_quarter_hands = obj {
 	nam = 'Руки';
 	inv = [[
@@ -111,7 +112,7 @@ burning_quarter_hands = obj {
 	]];
 }
 
-
+-- Объекты локации
 -- Молот
 burning_quarter_fight_hammer = obj {
 	nam = 'Молот урук-хай';
@@ -130,14 +131,13 @@ burning_quarter_fight_hammer = obj {
 		одной рукой. Но ты с трудом удерживаешь это страшилище в двух.
 	]];
 	tak = function()
-		local s = burning_quarter_en_garde()
+		local s = burning_quarter_en_garde();
 		return ([[
 			Ты наклоняешься, чтобы подобрать молот.
-		]] .. s)
+		]] .. s);
 	end;
 }
 
--- Объекты локации
 -- Проповедник
 burning_quarter_priest = obj {
 	nam = 'Проповедник';
@@ -148,8 +148,11 @@ burning_quarter_priest = obj {
 		return [[
 			-- Червь, ничтожество, которое несмотря на это ставит себя в центр вселенной.
 			^
-			-- Ты когда-нибудь бывал на дне колодца. Когда весь мир сжимается в пятно белого
+			-- Ты когда-нибудь бывал на дне колодца? Когда весь мир сжимается в пятно белого
 			света в кольце тьмы?
+			^
+			-- Откуда ты всё это знаешь?
+			-- Тени вездесущи: их отбрасывает что угодно.
 		]];
 	end;
 	used = function(self, what)
@@ -162,15 +165,23 @@ burning_quarter_priest = obj {
 				недостаток стратегического
 				мышления энтузиазмом и красотой исполнения. Но тому хватает
 				двух ударов, чтобы нанести тебе две несовместимые с жизнью раны.
-			]]
-		end
+			]];
+		end;
 
 		-- S4
 		if what == burning_quarter_fight_hammer then
-			local s = burning_quarter_en_garde()
+			local s = burning_quarter_en_garde();
 			return ([[
-				Ты делаешь замах молотом, но проповедник даже не пытается
-				уклониться от удара.
+					Тебя обуревает неожиданный приступ ярости. Почувствовав вес молота тебе хочется
+					смести этот ворох рванья. Ты срываешься с места и пускаешь молот в боковой удар,
+					дав левой руке скользить по рукояти. Ты ожидаешь услышать звук ломающихся
+					костей, но вместо этого молот увлекает тебя за собой. Так и не столкнувшись
+					с препятствием, он срывает чёрные лоскуты рясы. Они охватывают тебя со всех сторон.
+					^
+					-- Неужели! В тебе есть гнев? Пожалуй мне стоит опасаться такого сильного противника,
+					-- слышишь ты смех проповедника. Несколько раз обернувшись, ты обнаруживаешь
+					себя в полной темноте,
+					-- посмотрим хватит ли твоей ярости надолго!
 			]] .. s);
 		end;
 
@@ -185,8 +196,8 @@ burning_quarter_priest = obj {
 				выпад снизу -- вспарывает тебе живот. Когда ты валишься на землю
 				от безумной боли, проповедник милосердным ударом отрубает тебе
 				голову.
-			]]
-		end
+			]];
+		end;
 	end;
 }
 
@@ -206,8 +217,18 @@ burning_quarter_dagger = obj {
 	used = function(self, what)
 		if what == burning_quarter_fight_hammer then
 			drop 'burning_quarter_fight_hammer';
-			objs('burning_quarter_fight'):del('burning_quarter_fight_hammer')
+			objs('burning_quarter_fight'):del('burning_quarter_fight_hammer');
 			return [[
+				Призрачное свечение кинжала натолкнуло тебя на мысль.
+				Хоть проповедник и выше тебя ростом, и руки у него явно длиннее, ты можешь
+				попробовать.
+				^
+				Не отрывая глаз от кольца, странным образом привлекающего твоё внимание,
+				ты бросаешся в атаку. Ты тычешь молотом как копьём, вкладывая в удар всю силу,
+				надеясь выбить кинжал. Но навершие молота словно натыкается на стену.
+				Рука проповедника перехватывает молот рукой.
+				И ты видишь, что кольцо стало блестеть ещё ярче;ть выбить из них кинжал.
+				^
 				Ты делаешь удар молотом, целясь супостату в руку, но тот без
 				особого труда перехватывает молот в полёте и одним движением
 				бледных пальцев переламывает его пополам. Прежде чем ты
@@ -224,19 +245,19 @@ burning_quarter_dagger = obj {
 				недостаток стратегического
 				мышления энтузиазмом и красотой исполнения. Но тому хватает
 				двух ударов, чтобы нанести тебе две несовместимые с жизнью раны.
-			]]
-		end
+			]];
+		end;
 
 		-- S10
 		if (what == burning_quarter_halberd) or (what == burning_quarter_knife) then
-			objs('burning_quarter_fight'):del('burning_quarter_priest')
-			objs('burning_quarter_fight'):del('burning_quarter_dagger')
+			objs('burning_quarter_fight'):del('burning_quarter_priest');
+			objs('burning_quarter_fight'):del('burning_quarter_dagger');
 
-			objs('burning_quarter_fight'):add('burning_quarter_priest_dead')
-			objs('burning_quarter_fight'):add('burning_quarter_dagger_dead')
-			objs('burning_quarter_fight'):add('burning_quarter_ring')
+			objs('burning_quarter_fight'):add('burning_quarter_priest_dead');
+			objs('burning_quarter_fight'):add('burning_quarter_dagger_dead');
+			objs('burning_quarter_fight'):add('burning_quarter_ring');
 
-			objs('burning_quarter_fight'):add('burning_quarter_godchosen')
+			objs('burning_quarter_fight'):add('burning_quarter_godchosen');
 
 			return [[
 				Ты бросаешься на проповедника и наносишь ему быстрый удар,
@@ -256,11 +277,12 @@ burning_quarter_dagger = obj {
 				Он делает шаг в твою сторону, и ты видишь на его ногах
 				грубого вида сандалии с подошвами, выглядящими как деревянные.
 				И ты узнаёшь этого человека.
-			]]
-		end
+			]];
+		end;
 	end;
 }
 
+-- Мёртвый проповедник
 burning_quarter_priest_dead = obj {
 	nam = 'Мёртвый проповедник';
 	dsc = [[
@@ -273,6 +295,7 @@ burning_quarter_priest_dead = obj {
 	end;
 }
 
+-- Кинжал мёртвого проповедника
 burning_quarter_dagger_dead = obj {
 	nam = 'Кинжал мёртвого проповедника';
 	dsc = [[
@@ -299,8 +322,8 @@ burning_quarter_dagger_dead = obj {
 				техники -- сделав несколько пробных ударов, он наносит
 				неожиданно сильный удар в область сердца. Закрыться ты
 				не успеваешь.
-			]]
-		end
+			]];
+		end;
 	end;
 }
 
@@ -334,13 +357,13 @@ burning_quarter_ring = obj {
 					на теле красуется с десяток свежих ран.
 					^
 					Не в силах продолжать бой, ты валишься на землю.
-				]]
+				]];
 			end;
 
 			-- S11
-			take 'burning_quarter_ring'
-			objs('burning_quarter_fight'):del('burning_quarter_godchosen')
-			objs('burning_quarter_fight'):add('burning_quarter_godchosen_down')
+			take 'burning_quarter_ring';
+			objs('burning_quarter_fight'):del('burning_quarter_godchosen');
+			objs('burning_quarter_fight'):add('burning_quarter_godchosen_down');
 			return [[
 				Ты наклоняешься, чтобы подобрать кольцо, и в этот же момент
 				человек в плаще делает резкое движение, целясь оружием тебе
@@ -350,7 +373,7 @@ burning_quarter_ring = obj {
 				Твой противник наносит ещё два удара. Первый ты пропускаешь,
 				получив в качестве награды ссадину на лбу, но на втором тебе
 				удаётся удачно контратаковать, отбросив врага на землю.
-			]]
+			]];
 		end;
 	end;
 }
@@ -369,17 +392,17 @@ burning_quarter_knuckle = obj {
 	used = function(self, what)
 		if what == burning_quarter_hands then
 			-- Взять оружие
-			objs('burning_quarter_fight'):del(self)
-			inv():add(self)
-			local s1 = burning_quarter_weapon_change()
+			objs('burning_quarter_fight'):del(self);
+			inv():add(self);
+			local s1 = burning_quarter_weapon_change();
 			-- Убрать одного зомбака
-			burning_quarter_zombie_fighter:disable()
+			burning_quarter_zombie_fighter:disable();
 			-- Поднять остальных (S4 S5 S6 S7)
-			local s = burning_quarter_en_garde()
+			local s = burning_quarter_en_garde();
 			return (s1 .. [[
 				Ты подбираешь тяжёлый кастет.
-			]] .. s)
-		end
+			]] .. s);
+		end;
 	end;
 }
 
@@ -403,8 +426,8 @@ burning_quarter_zombie_fighter = obj {
 				не умеешь обращаться с этим оружием. После пары неудачных
 				замахов ты теряешь равновесие, и удар алебарды рассекает тебе
 				артерию на шее. Смерть приходит быстро.
-			]]
-		end
+			]];
+		end;
 
 		-- GO4
 		if what == burning_quarter_knife then
@@ -419,18 +442,18 @@ burning_quarter_zombie_fighter = obj {
 				зрения. Разворачиваешься слишком поздно: острое лезвие
 				вспарывает тебе спину. Боль разливается по телу, и через
 				несколько секунд второй удар лишает тебя головы.
-			]]
-		end
+			]];
+		end;
 
 		-- S9
 		if what == burning_quarter_halberd then
-			local s = burning_quarter_dmz()
+			local s = burning_quarter_dmz();
 			return ([[
 				Ты бросаешься на ближайшего мертвеца с алебардой и сравнительно
 				легко выбиваешь из его рук оружие. Ещё один резкий замах --
 				и дело сделано.
-			]] .. s)
-		end
+			]] .. s);
+		end;
 
 		-- GO2
 		if what == burning_quarter_hands then
@@ -441,8 +464,9 @@ burning_quarter_zombie_fighter = obj {
 				мышления энтузиазмом и красотой исполнения. Тебе даже удаётся
 				отобрать оружие у одного мертвеца и отбросить его на землю,
 				но второй в этот же момент наносит удар тебе в спину.
-			]]
-		end
+			]];
+		end;
+
 		-- GO2
 		if what == burning_quarter_fight_hammer then
 			walk 'burning_quarter_part_II_gameover';
@@ -454,8 +478,8 @@ burning_quarter_zombie_fighter = obj {
 				и ссадинами. Ты не сдаёшься до последнего, но очередной удар
 				валит тебя на землю, а следующий отзывается болью в груди
 				и останавливает уставшее сердце.
-			]]
-		end
+			]];
+		end;
 	end;
 }
 
@@ -474,18 +498,18 @@ burning_quarter_knife = obj {
 	used = function(self, what)
 		if what == burning_quarter_hands then
 			-- Взять оружие
-			objs('burning_quarter_fight'):del(self)
-			inv():add(self)
-			local s1 = burning_quarter_weapon_change()
+			objs('burning_quarter_fight'):del(self);
+			inv():add(self);
+			local s1 = burning_quarter_weapon_change();
 			-- Убрать одного зомбака
-			burning_quarter_zombie_thug:disable()
+			burning_quarter_zombie_thug:disable();
 			-- Поднять остальных (S4 S5 S6 S7)
-			local s = burning_quarter_en_garde()
+			local s = burning_quarter_en_garde();
 			return (s1 .. [[
 				Ты подбираешь нож. Он тяжеловат, как ты и ожидал, но зато
 				очень острый.
-			]] .. s)
-		end
+			]] .. s);
+		end;
 	end;
 }
 
@@ -508,8 +532,8 @@ burning_quarter_zombie_thug = obj {
 				не умеешь обращаться с этим оружием. После пары неудачных
 				замахов ты теряешь равновесие, и удар алебарды рассекает тебе
 				артерию на шее. Смерть приходит быстро.
-			]]
-		end
+			]];
+		end;
 
 		-- GO5
 		if what == burning_quarter_halberd then
@@ -521,8 +545,8 @@ burning_quarter_zombie_thug = obj {
 				ранить тебя. Ты пытаешься собраться и встать в боевую стойку,
 				несмотря на боль, но в это время второй мертвец наносит тебе удар
 				в спину. Смерть оказывается мучительной.
-			]]
-		end
+			]];
+		end;
 
 		-- GO2
 		if what == burning_quarter_hands then
@@ -533,8 +557,9 @@ burning_quarter_zombie_thug = obj {
 				мышления энтузиазмом и красотой исполнения. Тебе даже удаётся
 				отобрать оружие у одного мертвеца и отбросить его на землю,
 				но второй в этот же момент наносит удар тебе в спину.
-			]]
-		end
+			]];
+		end;
+
 		-- GO2
 		if what == burning_quarter_fight_hammer then
 			walk 'burning_quarter_part_II_gameover';
@@ -546,8 +571,8 @@ burning_quarter_zombie_thug = obj {
 				и ссадинами. Ты не сдаёшься до последнего, но очередной удар
 				валит тебя на землю, а следующий отзывается болью в груди
 				и останавливает уставшее сердце.
-			]]
-		end
+			]];
+		end;
 	end;
 }
 
@@ -565,18 +590,18 @@ burning_quarter_halberd = obj {
 	used = function(self, what)
 		if what == burning_quarter_hands then
 			-- Взять оружие
-			objs('burning_quarter_fight'):del(self)
-			inv():add(self)
-			local s1 = burning_quarter_weapon_change()
+			objs('burning_quarter_fight'):del(self);
+			inv():add(self);
+			local s1 = burning_quarter_weapon_change();
 			-- Убрать одного зомбака
-			burning_quarter_zombie_guard:disable()
+			burning_quarter_zombie_guard:disable();
 			-- Поднять остальных (S4 S5 S6 S7)
-			local s = burning_quarter_en_garde()
+			local s = burning_quarter_en_garde();
 			return (s1 .. [[
 				Ты подбираешь алебарду и делаешь пару пробных замахов.
 				Ты довольно легко управляешься с ней, несмотря на вес.
-			]] .. s)
-		end
+			]] .. s);
+		end;
 	end;
 }
 
@@ -600,12 +625,12 @@ burning_quarter_zombie_guard = obj {
 				не умеешь обращаться с этим оружием. После пары неудачных
 				замахов ты теряешь равновесие, и удар алебарды рассекает тебе
 				артерию на шее. Смерть приходит быстро.
-			]]
-		end
+			]];
+		end;
 
 		-- S8
 		if what == burning_quarter_knife then
-			local s = burning_quarter_dmz()
+			local s = burning_quarter_dmz();
 			return ([[
 				Ты бросаешься на ближайшего мертвеца с мечом в руках
 				и делаешь несколько быстрых выпадов. Он пытается отбивать их
@@ -613,8 +638,8 @@ burning_quarter_zombie_guard = obj {
 				ему удаётся это с большим трудом. Несколько обманных выпадов,
 				изящно исполненный финт, удар, ещё удар -- и мертвец лишается
 				головы.
-			]] .. s)
-		end
+			]] .. s);
+		end;
 
 		-- GO2
 		if what == burning_quarter_hands then
@@ -625,8 +650,9 @@ burning_quarter_zombie_guard = obj {
 				мышления энтузиазмом и красотой исполнения. Тебе даже удаётся
 				отобрать оружие у одного мертвеца и отбросить его на землю,
 				но второй в этот же момент наносит удар тебе в спину.
-			]]
-		end
+			]];
+		end;
+
 		-- GO2
 		if what == burning_quarter_fight_hammer then
 			walk 'burning_quarter_part_II_gameover';
@@ -638,8 +664,8 @@ burning_quarter_zombie_guard = obj {
 				и ссадинами. Ты не сдаёшься до последнего, но очередной удар
 				валит тебя на землю, а следующий отзывается болью в груди
 				и останавливает уставшее сердце.
-			]]
-		end
+			]];
+		end;
 	end;
 }
 
@@ -676,12 +702,12 @@ burning_quarter_godchosen = obj {
 				в голову. Пульс бешено стучит в висках, ты падаешь на землю,
 				не в силах продолжать. Твой противник что-то говорит, но ты
 				не в силах разобрать ни слова.
-			]]
-		end
+			]];
+		end;
 	end;
 }
 
-
+-- Богоизрабнный после падения
 burning_quarter_godchosen_down = obj {
 	nam = 'Кевраза';
 	dsc = [[
@@ -714,12 +740,12 @@ burning_quarter_godchosen_down = obj {
 				в голову. Пульс бешено стучит в висках, ты падаешь на землю,
 				не в силах продолжать. Твой противник что-то говорит, но ты
 				не в силах разобрать ни слова.
-			]]
-		end
+			]];
+		end;
 	end;
 }
 
-
+-- Путь в переулок
 burning_quarter_away = obj {
 	nam = 'Путь в переулок';
 	dsc = [[
@@ -728,10 +754,10 @@ burning_quarter_away = obj {
 	]];
 	act = function()
 		-- GO10
-		local godchosen_present = false
+		local godchosen_present = false;
 		for k, v in pairs(objs('burning_quarter_fight')) do
 			if v == burning_quarter_godchosen then
-				godchosen_present = true
+				godchosen_present = true;
 			end
 		end
 		if godchosen_present then
@@ -739,22 +765,22 @@ burning_quarter_away = obj {
 			return [[
 				Ты пытаешься сбежать в переулок, но удар в спину немножко
 				мешает, а второй чёт вообще мешает очень сильно.
-			]]
-		end
+			]];
+		end;
 
 		-- S11
-		local godchosen_down_present = false
+		local godchosen_down_present = false;
 		for k, v in pairs(objs('burning_quarter_fight')) do
 			if v == burning_quarter_godchosen_down then
-				godchosen_down_present = true
-			end
-		end
+				godchosen_down_present = true;
+			end;
+		end;
 		if godchosen_down_present then
 			walk 'lane_room';
 			return [[
 				Оставив супостата позади, ты быстро ретируешься в переулок.
-			]]
-		end
+			]];
+		end;
 
 		-- S2
 		if have('burning_quarter_fight_hammer') and (not _burning_quarter_walking_dead) then
@@ -767,8 +793,8 @@ burning_quarter_away = obj {
 				удар его кинжала. Ты пытаешься отбить и второй удар,
 				но он оказывается настолько сильным, что бросает тебя навзничь.
 				Молот валится из твоих рук на землю.
-			]]
-		end
+			]];
+		end;
 
 		-- in other cases, GO1
 		walk 'burning_quarter_part_II_gameover';
@@ -779,38 +805,3 @@ burning_quarter_away = obj {
 		]];
 	end;
 }
-
--- TODO
--- Ударить молотом:
--- Призрачное свечение кинжала натолкнуло тебя на мысль.
--- Хоть проповедник и выше тебя ростом, и руки у него явно длиннее, ты можешь
--- попробовать выбить из них кинжал.
--- ^
--- Не отрывая глаз от кольца, странным образом привлекающего твоё внимание,
--- ты бросаешся в атаку. Ты тычешь молотом как копьём, вкладывая в удар всю силу,
--- надеясь выбить кинжал. Но навершие молота словно натыкается на стену.
--- Рука проповедника перехватывает молот рукой.
--- И ты видишь, что кольцо стало блестеть ещё ярче;
-
--- Ударить молотом:
--- Тебя обуревает неожиданный приступ ярости. Почувствовав вес молота тебе хочется
--- смести этот ворох рванья. Ты срываешься с места и пускаешь молот в боковой удар,
--- дав левой руке скользить по рукояти. Ты ожидаешь услышать звук ломающихся
--- костей, но вместо этого молот увлекает тебя за собой. Так и не столкнувшись
--- с препятствием, он срывает чёрные лоскуты рясы. Они охватывают тебя со всех сторон.
--- ^
--- -- Неужели! В тебе есть гнев? Пожалуй мне стоит опасаться такого сильного противника,
--- -- слышишь ты смех проповедника. Несколько раз обернувшись, ты обнаруживаешь
--- себя в полной темноте,
--- -- посмотрим хватит ли твоей ярости надолго!
-
--- Подбираешь оружие:
--- -- Червь решает сражаться? -- шипит голос проповедника. Его тряпьё растворяется в ночи,
--- словно разлетевшаяся стая воронов, -- я уничтожу тебя!
--- ^
--- Лоскуты-тени сгущаются в чёрном небе над трупами. Вихрем спустившись вниз они вгрызаются
--- в их лица. на твоих глазах мертецы оживают и поднимаются на ноги. Двое урук-хай и стражник.
-
--- Взаимодействие с проповедником:
--- -- Откуда ты всё это знаешь?
--- -- Тени вездесущи: их отбрасывает что угодно.
