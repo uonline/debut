@@ -27,6 +27,7 @@ burning_quarter_en_garde = function()
 	]];
 end;
 
+-- Разделываемся с мертвецами
 burning_quarter_dmz = function()
 	_burning_quarter_walking_dead = false;
 
@@ -51,6 +52,7 @@ burning_quarter_dmz = function()
 	]];
 end;
 
+-- Меняем молот на другое оружие
 burning_quarter_weapon_change = function()
 	if have('burning_quarter_fight_hammer') then
 		if have('burning_quarter_knuckle') or have('burning_quarter_knife') or have('burning_quarter_halberd') then
@@ -73,14 +75,16 @@ end
 burning_quarter_fight = room {
 	nam = 'Горящий квартал';
 	dsc = [[
-		Вокруг всё горит. Мечутся тени. Ото всяких там зданий отваливаются
-		разные части.
+		Ты стоишь посреди охваченного пламенем квартала.
+		Над тобой чёрная воронка неба впитывает в себя столбы дыма и языки огня.
+		Грохот и треск рушащихся зданий смешивается с рёвом бушующего пожара.
 	]];
 	obj = {
 		'burning_quarter_away';
 		'burning_quarter_priest';
 		'burning_quarter_dagger';
 		-- 'burning_quarter_ring';
+		'burning_quarter_armed_corpses';
 		'burning_quarter_knuckle';
 		-- 'burning_quarter_zombie_fighter';
 		'burning_quarter_knife';
@@ -93,10 +97,6 @@ burning_quarter_fight = room {
 		inv():zap();
 		take 'burning_quarter_hands';
 		take 'burning_quarter_fight_hammer';
-		return [[
-			^
-			Небо как чёрная губка впитывает столбы дыма и пламя в себя.
-		]];
 	end;
 	way = {
 		--burning_quarter_to_lane_room;
@@ -108,7 +108,9 @@ burning_quarter_fight = room {
 burning_quarter_hands = obj {
 	nam = 'Руки';
 	inv = [[
-		Кулаки чешутся.
+		Ты с волнением смотришь на свои измождённые руки.
+		Взмахи неприподъёмным орочьим молотом наполнили их свинцовой тяжестью.
+		Даёт о себе знать и накопившаяся за день усталось.
 	]];
 }
 
@@ -118,7 +120,7 @@ burning_quarter_fight_hammer = obj {
 	nam = 'Молот урук-хай';
 	dsc = [[
 		^
-		{Молот урук-хай} лежит на земле.
+		Громоздкий {молот урук-хай} врос в землю.
 	]];
 	act = [[
 		Ты с отвращением осматриваешь уродливый молот урук-хай.
@@ -133,8 +135,69 @@ burning_quarter_fight_hammer = obj {
 	tak = function()
 		local s = burning_quarter_en_garde();
 		return ([[
-			Ты наклоняешься, чтобы подобрать молот.
+			Ты наклоняешься, и выдохнув поднимаешь молот.
 		]] .. s);
+	end;
+}
+
+-- Путь в переулок
+burning_quarter_away = obj {
+	nam = 'Путь в переулок';
+	dsc = [[
+		Позади тебя сопротивляется пожирающему всё вокруг огню {проход в переулок}.
+		^
+	]];
+	act = function()
+		-- GO10
+		local godchosen_present = false;
+		for k, v in pairs(objs('burning_quarter_fight')) do
+			if v == burning_quarter_godchosen then
+				godchosen_present = true;
+			end
+		end
+		if godchosen_present then
+			walk 'burning_quarter_part_II_gameover';
+			return [[
+				Ты пытаешься сбежать в переулок, но удар в спину немножко
+				мешает, а второй чёт вообще мешает очень сильно.
+			]];
+		end;
+
+		-- S11
+		local godchosen_down_present = false;
+		for k, v in pairs(objs('burning_quarter_fight')) do
+			if v == burning_quarter_godchosen_down then
+				godchosen_down_present = true;
+			end;
+		end;
+		if godchosen_down_present then
+			walk 'lane_room';
+			return [[
+				Оставив супостата позади, ты быстро ретируешься в переулок.
+			]];
+		end;
+
+		-- S2
+		if have('burning_quarter_fight_hammer') and (not _burning_quarter_walking_dead) then
+			drop 'burning_quarter_fight_hammer';
+			objs('burning_quarter_fight'):add('burning_quarter_fight_hammer');
+			return [[
+				Ты пытаешься сбежать в переулок, но проповедник с неожиданной
+				прытью бросается за тобой вслед. Ты чувствуешь шаги прямо у себя
+				за спиной и разворачиваешься как раз вовремя, чтобы отбить
+				удар его кинжала. Ты пытаешься отбить и второй удар,
+				но он оказывается настолько сильным, что бросает тебя навзничь.
+				Молот валится из твоих рук на землю.
+			]];
+		end;
+
+		-- in other cases, GO1
+		walk 'burning_quarter_part_II_gameover';
+		return [[
+			Ты пытаешься сбежать в переулок, но холодок пробегает у тебя
+			по спине. Краем глаза ты видишь, как за тобой вслед бросается смутная
+			тень. Ну а дальше она хреначит тебя по хребту.
+		]];
 	end;
 }
 
@@ -142,7 +205,7 @@ burning_quarter_fight_hammer = obj {
 burning_quarter_priest = obj {
 	nam = 'Проповедник';
 	dsc = [[
-		{Проповедник} стоит вдали от тебя,
+		Перед тобой возвышается {проповедник},
 	]];
 	act = function()
 		return [[
@@ -205,7 +268,7 @@ burning_quarter_priest = obj {
 burning_quarter_dagger = obj {
 	nam = 'Кинжал проповедника';
 	dsc = [[
-		держа {кинжал в правой руке}.
+		стискивая {кинжал в руке}.
 		^
 	]];
 	act = function()
@@ -378,6 +441,25 @@ burning_quarter_ring = obj {
 	end;
 }
 
+-- Трупы с оружием
+burning_quarter_armed_corpses = obj {
+	nam = 'Трупы';
+	dsc = [[
+		Вокруг вас раскиданы {трупы} людей и орков.
+		Некоторые из них сжимают в окоченевших руках оружие.
+	]];
+	act = function()
+		burning_quarter_knuckle:enable();
+		burning_quarter_knife:enable();
+		burning_quarter_halberd:enable();
+		burning_quarter_armed_corpses:disable();
+
+		return [[
+			Ты отыскиваешь взглядом...
+		]];
+	end;
+}
+
 -- Кастет урук-хай
 burning_quarter_knuckle = obj {
 	nam = 'Кастет урук-хай';
@@ -405,6 +487,7 @@ burning_quarter_knuckle = obj {
 		end;
 	end;
 }
+burning_quarter_knuckle:disable();
 
 -- Зомби боец урук-хай
 burning_quarter_zombie_fighter = obj {
@@ -512,6 +595,7 @@ burning_quarter_knife = obj {
 		end;
 	end;
 }
+burning_quarter_knife:disable();
 
 -- Зомби головорез урук
 burning_quarter_zombie_thug = obj {
@@ -604,6 +688,7 @@ burning_quarter_halberd = obj {
 		end;
 	end;
 }
+burning_quarter_halberd:disable();
 
 -- Зомби стражник
 burning_quarter_zombie_guard = obj {
@@ -742,66 +827,5 @@ burning_quarter_godchosen_down = obj {
 				не в силах разобрать ни слова.
 			]];
 		end;
-	end;
-}
-
--- Путь в переулок
-burning_quarter_away = obj {
-	nam = 'Путь в переулок';
-	dsc = [[
-		Сзади тебя -- {переулок}.
-		^
-	]];
-	act = function()
-		-- GO10
-		local godchosen_present = false;
-		for k, v in pairs(objs('burning_quarter_fight')) do
-			if v == burning_quarter_godchosen then
-				godchosen_present = true;
-			end
-		end
-		if godchosen_present then
-			walk 'burning_quarter_part_II_gameover';
-			return [[
-				Ты пытаешься сбежать в переулок, но удар в спину немножко
-				мешает, а второй чёт вообще мешает очень сильно.
-			]];
-		end;
-
-		-- S11
-		local godchosen_down_present = false;
-		for k, v in pairs(objs('burning_quarter_fight')) do
-			if v == burning_quarter_godchosen_down then
-				godchosen_down_present = true;
-			end;
-		end;
-		if godchosen_down_present then
-			walk 'lane_room';
-			return [[
-				Оставив супостата позади, ты быстро ретируешься в переулок.
-			]];
-		end;
-
-		-- S2
-		if have('burning_quarter_fight_hammer') and (not _burning_quarter_walking_dead) then
-			drop 'burning_quarter_fight_hammer';
-			objs('burning_quarter_fight'):add('burning_quarter_fight_hammer');
-			return [[
-				Ты пытаешься сбежать в переулок, но проповедник с неожиданной
-				прытью бросается за тобой вслед. Ты чувствуешь шаги прямо у себя
-				за спиной и разворачиваешься как раз вовремя, чтобы отбить
-				удар его кинжала. Ты пытаешься отбить и второй удар,
-				но он оказывается настолько сильным, что бросает тебя навзничь.
-				Молот валится из твоих рук на землю.
-			]];
-		end;
-
-		-- in other cases, GO1
-		walk 'burning_quarter_part_II_gameover';
-		return [[
-			Ты пытаешься сбежать в переулок, но холодок пробегает у тебя
-			по спине. Краем глаза ты видишь, как за тобой вслед бросается смутная
-			тень. Ну а дальше она хреначит тебя по хребту.
-		]];
 	end;
 }
