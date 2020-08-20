@@ -6,6 +6,8 @@ _burning_quarter_walking_dead = false;
 burning_quarter_en_garde = function()
 	_burning_quarter_walking_dead = true
 
+	objs('burning_quarter_fight'):del('burning_quarter_armed_corpses');
+
 	objs('burning_quarter_fight'):del('burning_quarter_priest');
 	objs('burning_quarter_fight'):del('burning_quarter_dagger');
 
@@ -120,7 +122,7 @@ burning_quarter_fight_hammer = obj {
 	nam = 'Молот урук-хай';
 	dsc = [[
 		^
-		Громоздкий {молот урук-хай} врос в землю.
+		Громоздкий {молот урук-хай} у тебя под ногами будто бы врос в землю.
 	]];
 	act = [[
 		Ты с отвращением осматриваешь уродливый молот урук-хай.
@@ -144,17 +146,20 @@ burning_quarter_fight_hammer = obj {
 burning_quarter_away = obj {
 	nam = 'Путь в переулок';
 	dsc = [[
-		Позади тебя сопротивляется пожирающему всё вокруг огню {проход в переулок}.
+		Позади тебя -- {проход в переулок}, сопротивляется пожирающему всё вокруг огню.
 		^
 	]];
 	act = function()
 		-- GO10
 		local godchosen_present = false;
+		-- Проверяем, есть ли на сцене Богоизбранный
 		for k, v in pairs(objs('burning_quarter_fight')) do
 			if v == burning_quarter_godchosen then
 				godchosen_present = true;
+				break;
 			end
 		end
+		-- Если на сцене есть Богоизбранный, то он убивает героя, при попытке сбежать в Переулок
 		if godchosen_present then
 			walk 'burning_quarter_part_II_gameover';
 			return [[
@@ -164,12 +169,14 @@ burning_quarter_away = obj {
 		end;
 
 		-- S11
+		-- Проверяем есть ли на сцене "упавший Богоизбранный"
 		local godchosen_down_present = false;
 		for k, v in pairs(objs('burning_quarter_fight')) do
 			if v == burning_quarter_godchosen_down then
 				godchosen_down_present = true;
 			end;
 		end;
+		-- Если есть, то спасаемся бегством в Переулок
 		if godchosen_down_present then
 			walk 'lane_room';
 			return [[
@@ -178,20 +185,28 @@ burning_quarter_away = obj {
 		end;
 
 		-- S2
+		-- Если пытаемся сразу сбежать с молотом
 		if have('burning_quarter_fight_hammer') and (not _burning_quarter_walking_dead) then
 			drop 'burning_quarter_fight_hammer';
 			objs('burning_quarter_fight'):add('burning_quarter_fight_hammer');
 			return [[
-				Ты пытаешься сбежать в переулок, но проповедник с неожиданной
-				прытью бросается за тобой вслед. Ты чувствуешь шаги прямо у себя
-				за спиной и разворачиваешься как раз вовремя, чтобы отбить
-				удар его кинжала. Ты пытаешься отбить и второй удар,
-				но он оказывается настолько сильным, что бросает тебя навзничь.
-				Молот валится из твоих рук на землю.
+				Не долго думая, ты резко разворачиваешься на пятках и бросаешься в переулок.
+				Но непостижимым образом на месте чернеющего среди руин прохода, оказывается
+				жуткая фигура проповедника в изорванной рясе.
+				^
+				С разбегу ты натыкаешься грудью на кулак, и тут же повисаешь на нём, обмякнув.
+				Разом выпустив из лёгких весь воздух и по-рыбьи разевая рот,
+				ты всё же удерживаешь молот в руках.
+				И от этого безумная улыбка на бледном лице становится только шире.
+				^
+				Проповедник легонько толкает тебя в плечо,
+				но ты летишь на землю и проезжаешь метр на спине.
+				Молот вырывается из твоих пальцев, и падает в грязь.
 			]];
 		end;
 
 		-- in other cases, GO1
+		-- Умираем в Переулке
 		walk 'burning_quarter_part_II_gameover';
 		return [[
 			Ты пытаешься сбежать в переулок, но холодок пробегает у тебя
@@ -209,6 +224,7 @@ burning_quarter_priest = obj {
 		лохмотьев.
 	]];
 	act = function()
+		-- Условие, при котором проповедник говорит разные фразы
 		return [[
 			-- Червь, ничтожество, которое несмотря на это ставит себя в центр вселенной.
 			^
@@ -269,7 +285,7 @@ burning_quarter_priest = obj {
 burning_quarter_dagger = obj {
 	nam = 'Кинжал проповедника';
 	dsc = [[
-		На его лице играет хорошо знакомая тебе безумная улыбка.
+		На его белом как мел лице играет хорошо знакомая тебе безумная улыбка.
 		Хищно мерцает {кинжал в руке}.
 		^
 	]];
