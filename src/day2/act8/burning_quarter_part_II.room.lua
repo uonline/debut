@@ -287,7 +287,7 @@ burning_quarter_priest = obj {
 		end;
 
 		-- GO6
-		dagger_death_text = [[
+		local dagger_death_text = [[
 			^
 			Отвратительно улыбаясь, проповедник надвигается на тебя, занося клинок для удара.
 			Ты вскидываешь руки, чтобы закрыться, но бесполезно.
@@ -358,33 +358,35 @@ burning_quarter_dagger = obj {
 		if what == burning_quarter_hands then
 			walk 'burning_quarter_part_II_gameover';
 			return [[
-				Ты решаешь напасть на проповедника с голыми руками.
-				Довольно безрассудная затея, но ты пытаешься компенсировать
-				недостаток стратегического
-				мышления энтузиазмом и красотой исполнения. Но тому хватает
-				двух ударов, чтобы нанести тебе две несовместимые с жизнью раны.
+				Ты отбрасываешь оружие в сторону, и прикидываешь как отвлечь внимание
+				проповедника, чтобы отобрать у него кинжал.
+				Подняв в воздух столб пыли, ты хватаешь с земли камень и швыряешь его
+				прямо в оскал зубов.
+				^
+				Проповедник отмахивается от камня ладонью и подскакивает к тебе,
+				ударяя кинжалом сверху. Ты перехватываешь его руку с клинком и пытаешься её вывернуть.
+				Но лезвие продолжает сокращать расстояние к твоему сердцу.
+				Скрюченные пальцы удерживают тебя за плечо, не давая убежать.
+				Тебе остаётся только наблюдать, как серая полоса металла вгрызается тебе в грудь.
 			]];
 		end;
 
 		-- S10
-		-- Текст зависит от оружия
-		if (what == burning_quarter_halberd) or (what == burning_quarter_knife) then
-			objs('burning_quarter_fight'):del('burning_quarter_priest');
-			objs('burning_quarter_fight'):del('burning_quarter_dagger');
-
-			objs('burning_quarter_fight'):add('burning_quarter_priest_dead');
-			objs('burning_quarter_fight'):add('burning_quarter_dagger_dead');
-			objs('burning_quarter_fight'):add('burning_quarter_ring');
-
-			objs('burning_quarter_fight'):add('burning_quarter_godchosen');
-
-			return [[
-				Ты бросаешься на проповедника и наносишь ему быстрый удар,
-				целясь в кисть, держащую кинжал. Тот, похоже, ждал от тебя
-				совсем другого -- он пытается закрыться, но недостаточно
-				быстро, в результате чего подставляет руку под лезвие
-				и теряет несколько пальцев. Грязно ругаясь, он роняет кинжал
-				и отходит назад.
+		if (what == burning_quarter_halberd) then
+			local attack_text = [[
+				Нападаем с алебардой.
+			]];
+		end;
+		if (what == burning_quarter_knife) then
+			local attack_text = [[
+				Ты набрасываешься на проповедника, размахивая орочьим ножом.
+				Твой быстрый удар-обманка был нацелен в ногу,
+				но как только кинжал начинает парировать этот выпад,
+				ты резко уводишь орочий нож вверх, рассекая костяшки пальцев остриём.
+				Ты бьёшь снова, найскось, уже без обмана, и проповедник снова пытается парировать.
+				^
+				Шипя проклятья проповедник роняет на землю кинжал и несколько пальцев.
+				Он отходит назад, сжавшись от боли, и уже не кажется таким высоким.
 				^
 				Знакомый голос за спиной заставляет тебя вздрогнуть.
 				"Так-так. Какая интересная сцена."
@@ -398,6 +400,19 @@ burning_quarter_dagger = obj {
 				И ты узнаёшь этого человека.
 			]];
 		end;
+
+		if (what == burning_quarter_halberd) or (what == burning_quarter_knife) then
+			objs('burning_quarter_fight'):del('burning_quarter_priest');
+			objs('burning_quarter_fight'):del('burning_quarter_dagger');
+
+			objs('burning_quarter_fight'):add('burning_quarter_priest_dead');
+			objs('burning_quarter_fight'):add('burning_quarter_dagger_dead');
+			objs('burning_quarter_fight'):add('burning_quarter_ring');
+
+			objs('burning_quarter_fight'):add('burning_quarter_godchosen');
+
+			return attack_text;
+		end;
 	end;
 }
 
@@ -409,7 +424,8 @@ burning_quarter_priest_dead = obj {
 	]];
 	act = function()
 		return [[
-			Ты плюёшь на мертвеца. Кайф.
+			Ты смотришь на мертвеца в рваной рясе.
+			Свернувшийся на земле в своих лохмотьях, проповедник уже не кажется таким уж безумным.
 		]];
 	end;
 }
