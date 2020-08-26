@@ -2,6 +2,18 @@
 _burning_quarter_walking_dead = false;
 
 -- Функции локации
+-- Функция текста исчезновения проповедника
+burning_quarter_priest_disappear = function()
+	return [[
+		^
+		-- Червь решает сражаться? -- проповедник скрывает ухмылку за руковом рясы.
+		^
+		Его тряпьё растворяется в ночи, словно разлетевшаяся стая воронов.
+		^
+		-- Хорошо, давай сыграем в эту игру, -- шипит голос проповедника, -- пусть Они позабавятся!
+	]];
+end;
+
 -- Функция оживления проповедником мёртвых
 burning_quarter_en_garde = function()
 	_burning_quarter_walking_dead = true;
@@ -21,11 +33,11 @@ burning_quarter_en_garde = function()
 
 	return [[
 		^
-		-- Червь решает сражаться? -- шипит голос проповедника. Его тряпьё растворяется в ночи,
-		словно разлетевшаяся стая воронов, -- я уничтожу тебя!
+		Лоскуты-тени сгущаются в чёрном небе над трупами.
+		Вихрями спустившись вниз, они вгрызаются в лица мертвецов.
+		На твоих глазах мертвые оживают и поднимаются на ноги.
 		^
-		Лоскуты-тени сгущаются в чёрном небе над трупами. Вихрем спустившись вниз они вгрызаются
-		в их лица. на твоих глазах мертецы оживают и поднимаются на ноги. Двое урук-хай и стражник.
+		Тебя обступают двое покачивающихся урук-хай и перекошенный стражник.
 	]];
 end;
 
@@ -61,8 +73,7 @@ burning_quarter_weapon_change = function()
 			drop 'burning_quarter_fight_hammer';
 			objs(burning_quarter_fight):del('burning_quarter_fight_hammer');
 			return [[
-				Решив, что молот не очень полезен в этой ситуации, ты бросаешь его
-				куда-то в сторону.
+				Уступив ноящей боли в мышцах, ты отбрасываешь молот.
 				^
 			]];
 		end;
@@ -136,9 +147,10 @@ burning_quarter_fight_hammer = obj {
 	]];
 	tak = function()
 		local s = burning_quarter_en_garde();
+		local pd_text = burning_quarter_priest_disappear();
 		return ([[
 			Ты наклоняешься, и выдохнув поднимаешь молот.
-		]] .. s);
+		]] .. pd_text .. s);
 	end;
 }
 
@@ -268,6 +280,7 @@ burning_quarter_priest = obj {
 		-- S4
 		if what == burning_quarter_fight_hammer then
 			local s = burning_quarter_en_garde();
+			local pd_text = burning_quarter_priest_disappear();
 			return ([[
 				Тебя обуревает неожиданный приступ ярости.
 				Тебе хочется взмахнуть своим тяжеленным молотом и смести этот ухмыляющийся ворох рванья.
@@ -285,6 +298,9 @@ burning_quarter_priest = obj {
 				но избавившись от пут, обнаруживаешь себя в полной темноте.
 				^
 				-- Это должно остудить твою ярость, -- шепчет проповедник.
+				^
+				Ты вываливаешься из тьмы обратно в горящий квартал и затравленно озираешься по сторонам.
+				Проповедника нигде не видно.
 			]] .. s);
 		end;
 
@@ -591,12 +607,13 @@ burning_quarter_knuckle = obj {
 			burning_quarter_zombie_fighter:disable();
 			-- Поднять остальных (S4 S5 S6 S7)
 			local s = burning_quarter_en_garde();
+			local pd_text = burning_quarter_priest_disappear();
 			return (s1 .. [[
 				Ты с трудом стягиваешь это подобие кастета с лапы орка,
 				под насмешливым взглядом проповедника.
 				Кое-как затянув ремни вокруг локтя, ты надеешься,
 				что всё это не разлетиться после первого же удара.
-			]] .. s);
+			]] .. pd .. s);
 		end;
 	end;
 }
@@ -702,10 +719,11 @@ burning_quarter_knife = obj {
 			burning_quarter_zombie_thug:disable();
 			-- Поднять остальных (S4 S5 S6 S7)
 			local s = burning_quarter_en_garde();
+			local pd_text = burning_quarter_priest_disappear();
 			return (s1 .. [[
 				Ты разжимаешь дубовые пальцы урук-хай и забираешь нож.
 				Он тяжеловат, как ты и ожидал, и хорошо заточен.
-			]] .. s);
+			]] .. pd_text .. s);
 		end;
 	end;
 }
@@ -797,10 +815,11 @@ burning_quarter_halberd = obj {
 			burning_quarter_zombie_guard:disable();
 			-- Поднять остальных (S4 S5 S6 S7)
 			local s = burning_quarter_en_garde();
+			local pd_text = burning_quarter_priest_disappear();
 			return (s1 .. [[
 				Ты отбираешь у мертвеца алебарду и делаешь пару пробных замахов.
 				После пудового молота ты управляешься с ней на удивление легко.
-			]] .. s);
+			]] .. pd_text .. s);
 		end;
 	end;
 }
