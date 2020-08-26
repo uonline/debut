@@ -10,7 +10,7 @@ burning_quarter_priest_disappear = function()
 		^
 		Его тряпьё растворяется в ночи, словно разлетевшаяся стая воронов.
 		^
-		-- Хорошо, давай сыграем в эту игру, -- шипит голос проповедника, -- пусть Они позабавятся!
+		-- Хорошо, давай сыграем в эту игру, -- шипит голос проповедника, -- пусть Она позабавится!
 	]];
 end;
 
@@ -23,6 +23,7 @@ burning_quarter_en_garde = function()
 	objs('burning_quarter_fight'):del('burning_quarter_priest');
 	objs('burning_quarter_fight'):del('burning_quarter_dagger');
 
+	objs('burning_quarter_fight'):add('burning_quarter_zombies');
 	objs('burning_quarter_fight'):add('burning_quarter_zombie_fighter');
 	objs('burning_quarter_fight'):add('burning_quarter_zombie_thug');
 	objs('burning_quarter_fight'):add('burning_quarter_zombie_guard');
@@ -35,9 +36,8 @@ burning_quarter_en_garde = function()
 		^
 		Лоскуты-тени сгущаются в чёрном небе над трупами.
 		Вихрями спустившись вниз, они вгрызаются в лица мертвецов.
-		На твоих глазах мертвые оживают и поднимаются на ноги.
 		^
-		Тебя обступают двое покачивающихся урук-хай и перекошенный стражник.
+		На твоих глазах мертвые оживают и поднимаются на ноги.
 	]];
 end;
 
@@ -48,6 +48,7 @@ burning_quarter_dmz = function()
 	objs('burning_quarter_fight'):add('burning_quarter_priest');
 	objs('burning_quarter_fight'):add('burning_quarter_dagger');
 
+	objs('burning_quarter_fight'):del('burning_quarter_zombies');
 	objs('burning_quarter_fight'):del('burning_quarter_zombie_fighter');
 	objs('burning_quarter_fight'):del('burning_quarter_zombie_thug');
 	objs('burning_quarter_fight'):del('burning_quarter_zombie_guard');
@@ -584,6 +585,14 @@ burning_quarter_armed_corpses = obj {
 	end;
 }
 
+-- Зомби
+burning_quarter_zombies = obj {
+	nam = 'Зомби';
+	dsc = [[
+		Тебя обступают покачивающиеся мертвецы с оружием в окоченевших руках.
+	]];
+}
+
 -- Кастет урук-хай
 burning_quarter_knuckle = obj {
 	nam = 'Кастет урук-хай';
@@ -623,11 +632,19 @@ burning_quarter_knuckle:disable();
 burning_quarter_zombie_fighter = obj {
 	nam = 'Зомби боец урук-хай';
 	dsc = [[
-		{Мёртвый урук} не спускает с тебя глаз.
+		Бледный {урук-боец} не спускает с тебя взгляда неморгающих глаз.
 	]];
 	act = function()
 		return [[
-			О бойцах урук-хай.
+			Ты ловишь пустой взгляд мертвеца.
+			Вокруг множества ран на его теле запеклась кровь.
+			Только сейчас ты обращаешь внимание, что на этом орке совсем нет брони.
+			Кастет, которым орк вооружён, выдает в нём бойца.
+			Когда урук-хай, принимают в банду неопытного урук, его заставляют драться
+			без брони с кастетами вместо оружия.
+			^
+			Ты ещё раз осматриваешь несуразное оружие орка.
+			Таким кастетом можно легко отводить удары мечей и кинжалов, и увечить плоть.
 		]];
 	end;
 	used = function(self, what)
@@ -706,7 +723,8 @@ burning_quarter_knife = obj {
 		return [[
 			Ты присматриваешься к широкому лезвию орочьего ножа.
 			По людским меркам, это полноценный короткий меч, но в руке орка
-			оружие и в правду походит на нож.
+			оружие и в правду походит на тесак.
+			Таким запросто можно отрубить древко копья или кисть.
 		]];
 	end;
 	used = function(self, what)
@@ -733,10 +751,13 @@ burning_quarter_knife:disable();
 burning_quarter_zombie_thug = obj {
 	nam = '';
 	dsc = [[
-		{Мёртвый головорез} изучает тебя взглядом.
+		Утыканный стрелами {головорез} низко опустил голову, глядя себе под ноги.
 	]];
 	act = function()
 		return [[
+			Ты рассматриваешь головореза.
+			Десяток стрел нисколько не мешает ему ковылять в твою сторону,
+			размахивая здоровенным тесаком.
 		]];
 	end;
 	used = function(self, what)
@@ -829,11 +850,16 @@ burning_quarter_halberd:disable();
 burning_quarter_zombie_guard = obj {
 	nam = 'Зомби стражник';
 	dsc = [[
-		{Мёртвый стражник} следит за твоими движениями, щёлкая тем, что
-		осталось от челюстей.
+		Позади тебя {выпотрошенный стражник} следит за твоими движениями, щёлкая тем,
+		что осталось от челюстей.
 	]];
 	act = function()
 		return [[
+			Ты с омерзением смотришь на изуродованного стражника.
+			Окровавленная алебарда у него в руках до сих пор выглядит грозно.
+			Сложно будет подобраться близко к вооружённому подобным оружием.
+			Хотя ты помнишь, как на войне урук-хай разрубали древки копий и пик.
+			Может быть и у тебя получится что-то подобное.
 		]];
 	end;
 	used = function(self, what)
