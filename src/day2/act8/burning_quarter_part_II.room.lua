@@ -964,35 +964,66 @@ burning_quarter_godchosen = obj {
 	]];
 	act = function()
 		return [[
-			-- Ты думаешь ты один такой? Да таких ничтожеств дезертиров -- целая страна. Из-за таких как вы вашу
-			родину сейчас пожирает другое государство. Вы убегаете от бремени жизни, непонимая, что жить это
-			-- значит принимать решение и нести за них ответственность...
+			Ты смотришь на богоизбранного...
+			^
+			-- Ты думаешь ты один такой? -- ...
+			-- Да таких ничтожеств дезертиров -- целая страна. Из-за таких как вы вашу
+			родину сейчас пожирает другое государство.
+			Вы убегаете от бремени жизни, непонимая,
+			что жить -- это значит принимать решение и нести за них ответственность...
 		]];
 	end;
 	used = function(self, what)
+		local killed_by_godchosen = false;
+		local killed_by_godchosen_text;
+		local unreal_attack_text = [[
+			Ты делаешь шаг в сторону богоизбранного, раздумывая как тебе следует напасть.
+			Но богоизбранный решает, не ждать когда ты сообразишь и сам бросается в атаку.
+			^
+		]];
+
 		-- GO7
-		if (
-			(what == burning_quarter_knuckle) or
-			(what == burning_quarter_knife) or
-			(what == burning_quarter_halberd) or
-			(what == burning_quarter_hands) or
-			(what == burning_quarter_fight_hammer)
-		) then
+		if (what == burning_quarter_knuckle) then
+			killed_by_godchosen_text = unreal_attack_text;
+			killed_by_godchosen = true;
+		end;
+
+		if (what == burning_quarter_knife) then
+			killed_by_godchosen_text = [[
+				Ты нападаешь с ножом.
+			]];
+			killed_by_godchosen = true;
+		end;
+
+		if (what == burning_quarter_halberd) then
+			killed_by_godchosen_text = [[
+				Ты нападаешь с алебардой.
+			]];
+			killed_by_godchosen = true;
+		end;
+
+		if (what == burning_quarter_hands) then
+			killed_by_godchosen_text = [[
+				Ты сдаёшься?
+			]];
+			killed_by_godchosen = true;
+		end;
+
+		if (what == burning_quarter_fight_hammer) then
+			killed_by_godchosen_text = unreal_attack_text;
+			killed_by_godchosen = true;
+		end;
+
+		if killed_by_godchosen then
 			walk 'burning_quarter_part_II_gameover';
 			return [[
-				Ты пытаешься напасть на человека в плаще, но быстро понимаешь,
-				что этот противник тебе не по зубам. Он виртуозно обращается
-				со своим оружием, настолько, что его движения больше
-				похожи на танец, а удары быстры и точны.
+				Ты падаешь на колени перед богоизбранным.
 				^
-				Бой длится не больше минуты, и ты успеваешь пропустить два удара
-				в голову. Пульс бешено стучит в висках, ты падаешь на землю,
-				не в силах продолжать. Твой противник что-то говорит, но ты
-				не в силах разобрать ни слова.
-
+				-- Я вижу в твоих глазах жажду искупления. Это глаза преступника, я могу распознать их,
+				-- ...,
+				-- я подарю тебе столь желаемое правосудие.
 				^
-				-- Я вижу в твоих глазах жажду искупления. Это глаза преступника, я могу распознать их.
-				Я подарю тебе столь желаемое правосудие.
+				Блеск меча ослепляет тебя.
 			]];
 		end;
 	end;
