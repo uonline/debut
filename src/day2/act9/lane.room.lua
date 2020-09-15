@@ -1,5 +1,5 @@
 -- Переменные локации
-local lane_counter = 4;
+_lane_counter = 4;
 
 -- Функции локации
 -- Функция для обратного отсчёта до завершения игры в переулке
@@ -9,28 +9,28 @@ lane_action = function(act_text)
 	act_text = act_text .. "^";
 
 	-- Переводим счётчик
-	lane_counter = lane_counter - 1;
+	_lane_counter = _lane_counter - 1;
 
 	-- Герою мерещится
-	if lane_counter == 3 then
+	if _lane_counter == 3 then
 		act_text = act_text .. [[
 		]];
 	end;
 
 	-- Герой слышит шорох
-	if lane_counter == 2 then
+	if _lane_counter == 2 then
 		act_text = act_text .. [[
 		]];
 	end;
 
 	-- Герой видит как завал "оживает"
-	if lane_counter == 1 then
+	if _lane_counter == 1 then
 		act_text = act_text .. [[
 		]];
 	end;
 
 	-- Кевраза выбирается из-под завала
-	if lane_counter <= 0 then
+	if _lane_counter <= 0 then
 		walk 'killed_in_lane';
 		return act_text .. [[
 			GG WP!
