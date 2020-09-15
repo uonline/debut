@@ -1,5 +1,5 @@
 -- Переменные диалога
-local _mage_greeting = false
+_mage_greeting = false
 
 -- Диалог с беглым магом
 guild_camp_stories = dlg {
