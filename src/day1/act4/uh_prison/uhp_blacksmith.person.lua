@@ -1,25 +1,42 @@
+-- Переменные
+_uhp_awaken_blacksmith = false;
+
+-- Объект
 uhp_blacksmith = obj {
 	nam = 'Кузнец';
-	beaten_dsc = [[
-		Оставшуюся половину клетки занимает распластанное тело кузнеца.
-	]];
-	awaken_dsc = [[
-		Оставшуюся половину клетки занимает мрачный {кузнец}, потирающий затылок.
-	]];
-	awaken_act = function()
+	dsc = function()
+		-- Проверяем пришёл ли кузнец в себя после избиения
+		if _uhp_awaken_blacksmith then
+			return [[
+				Оставшуюся половину клетки занимает мрачный {кузнец}, потирающий затылок.
+			]];
+		end;
+
+		-- Проверяем избит ли кузнец
+		if _beaten_blacksmith then
+			return [[
+				Оставшуюся половину клетки занимает распластанное тело кузнеца.
+			]];
+		end;
+
 		return [[
-			Ты пробуешь заговорить с кузнецом, но его полный злобы взгляд
-			заставляет тебя замолчать.
+			Оставшуюся половину клетки занимает мрачный {кузнец}. Вид у него поникший.
 		]];
 	end;
-	dsc = [[
-		Оставшуюся половину клетки занимает мрачный {кузнец}. Вид у него поникший.
-	]];
 	act = function()
+		-- Проверяем избит ли кузнец
+		if _beaten_blacksmith then
+			return [[
+				Ты пробуешь заговорить с кузнецом, но его полный злобы взгляд
+				заставляет тебя замолчать.
+			]];
+		end;
+
 		walk 'uhp_blacksmith_dlg';
 	end;
 }
 
+-- Диалог
 uhp_blacksmith_dlg = dlg {
 	nam = 'Кузнец';
 	hideinv = true;
@@ -122,7 +139,6 @@ uhp_blacksmith_dlg = dlg {
 			function()
 				_beaten_blacksmith = true;
 				event 'blood was spilled';
-				uhp_blacksmith.dsc = uhp_blacksmith.beaten_dsc;
 				back();
 			end;
 		};
@@ -150,10 +166,12 @@ uhp_blacksmith_dlg = dlg {
 }
 
 -- События
+-- Разрешаем диалог с избиением кузнеца
 on_event('orc wants blood', function()
 	uhp_blacksmith_dlg:pon('prepare_your_anus');
 end)
 
+-- Выключаем диалоги после избиения кузнеца
 on_event('blood was spilled', function()
 	uhp_blacksmith_dlg:poff('wassup');
 	uhp_blacksmith_dlg:poff('goodbye');

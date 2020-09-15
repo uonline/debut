@@ -14,7 +14,7 @@
 -- Сначала нужно будет убегать от Кевразы в переулок, а там расчистить люк канализации.
 
 -- Переменные локации
-local burning_quarter_counter = 4;
+_burning_quarter_counter = 4;
 
 -- Функции локации
 -- Функция для обратного отсчёта до завершения игры в горящем квартале
@@ -24,10 +24,10 @@ burning_quarter_action = function(act_text)
 	act_text = act_text .. "^";
 
 	-- Переводим счётчик
-	burning_quarter_counter = burning_quarter_counter - 1;
+	_burning_quarter_counter = _burning_quarter_counter - 1;
 
 	-- Герой видит отряд Кевразы
-	if burning_quarter_counter == 3 then
+	if _burning_quarter_counter == 3 then
 		act_text = act_text .. [[
 			-- Там кто-то есть, в квартале, -- доносится до тебя. Ты смотришь
 			вниз: у одного из проходов стоит пара солдат Режима. К ним присоединяется
@@ -57,7 +57,7 @@ burning_quarter_action = function(act_text)
 	end;
 
 	-- Герой слышит приближение орков
-	if burning_quarter_counter == 2 then
+	if _burning_quarter_counter == 2 then
 		act_text = act_text .. [[
 			Шум внизу квартала усиливается, перерастая в топот множества ног.
 			Ватага орков проносится из одного прохода в другой, оставляя позади себя клубы пыли.
@@ -71,7 +71,7 @@ burning_quarter_action = function(act_text)
 	end;
 
 	-- Отряд Кевразы побеждает орков
-	if burning_quarter_counter == 1 then
+	if _burning_quarter_counter == 1 then
 		act_text = act_text .. [[
 			Ты прислушиваешься к отголоскам боя в одном из проходов внизу квартала.
 			Стоны, проклятия и лязг железа стали подозрительно редкими.
@@ -82,7 +82,7 @@ burning_quarter_action = function(act_text)
 	end;
 
 	-- Время вышло, отряд Кевразы попадает в квартал
-	if burning_quarter_counter <= 0 then
+	if _burning_quarter_counter <= 0 then
 		walk 'killed_in_burning_quarter';
 		return act_text .. [[
 			Три тени вырастают внизу квартала, превращаясь в богоизбранного
@@ -121,7 +121,7 @@ burning_quarter_to_lane_fail_room = room {
 			]];
 
 			-- Орки замечают героя и убивают броском топорика.
-			if burning_quarter_counter == 3 then
+			if _burning_quarter_counter == 3 then
 				fail_text = [[
 					Шум внизу квартала усиливается, перерастая в топот множества ног.
 					На склон врывается ватага орков. Урук-хай проносятся из одного
@@ -135,7 +135,7 @@ burning_quarter_to_lane_fail_room = room {
 			end;
 
 			-- Раненный разоритель выбегает из прохода и стреляет в героя из лука.
-			if burning_quarter_counter == 2 then
+			if _burning_quarter_counter == 2 then
 				fail_text = [[
 					Тебя останавливает тишина, неожиданно сменившая отголоски боя в одном
 					из проходов внизу квартала. Стоны, проклятия и лязг железа затихли.
@@ -150,7 +150,7 @@ burning_quarter_to_lane_fail_room = room {
 				]];
 			end;
 
-			if burning_quarter_counter == 1 then
+			if _burning_quarter_counter == 1 then
 				-- Разрешаем переход на сцену gameover
 				return burning_quarter_action(escape_attempt_text), true;
 			end;
@@ -173,7 +173,7 @@ burning_quarter_to_lane_fail_room = room {
 			от повозки.
 		]];
 
-		if burning_quarter_counter == 1 then
+		if _burning_quarter_counter == 1 then
 			-- Разрешаем переход на сцену gameover
 			return burning_quarter_action(text_escape_trying), true;
 		end;
@@ -207,9 +207,6 @@ burning_quarter = room {
 		'burning_quarter_to_lane_fail_room';
 	};
 	enter = function()
-		-- Debug
-		take 'soldier_sword';
-
 		-- Если нет меча, то ящер убивает героя
 		if not have 'soldier_sword' then
 			walk 'halfed_by_panglolin'
@@ -277,6 +274,17 @@ burning_quarter = room {
 			К твоему сожалению переулок отказывает тебе в возможности сбежать в прохладную
 			темноту подземелий. Впереди разверзается пылающий ад.
 		]];
+	end;
+}
+
+-- Локация для отладки
+burning_quarter_debug_room = room {
+	nam = 'Отлада горящего квартала';
+	enter = function()
+		-- Берём меч, чтобы попасть в горящий квартал
+		take 'soldier_sword';
+
+		walk 'burning_quarter';
 	end;
 }
 
@@ -515,7 +523,7 @@ burning_quarter_rolled_barrels = obj {
 		]];
 
 		-- Проверяем есть ли телега и, что это не первое действие на сцене
-		if not burning_quarter_cart:disabled() and burning_quarter_counter < 4 then
+		if not burning_quarter_cart:disabled() and _burning_quarter_counter < 4 then
 			-- Если есть, то грузим в неё бочки
 			burning_quarter_rolled_barrels:disable();
 			burning_quarter_cart:disable();

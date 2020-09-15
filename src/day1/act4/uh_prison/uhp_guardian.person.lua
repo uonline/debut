@@ -1,3 +1,6 @@
+-- Переменные локации
+_may_leave_prison = false;
+
 -- Объекты
 uhp_guardian = obj {
 	nam = 'Охранник';
@@ -7,12 +10,16 @@ uhp_guardian = obj {
 		времени он со скучающим видом заглядывает в какую-нибудь из них.
 	]];
 	act = function()
+		if _may_leave_prison then
+			return [[
+				Ты смотришь на охранника, тот в ответ улыбается нехорошей улыбкой.
+			]];
+		end;
+
+		-- Разговариваем с охранником, если он нас ещё не выпустил
 		walk 'uhp_guardian_dlg';
 	end;
 	good_guardian_act = function()
-		return [[
-			Ты смотришь на охранника, тот в ответ улыбается нехорошей улыбкой.
-		]];
 	end;
 }
 
@@ -111,8 +118,7 @@ uhp_guardian_dlg = dlg {
 				Орк заходится смехом.
 			]];
 			function()
-				uhp_blacksmith.dsc = uhp_blacksmith.awaken_dsc;
-				uhp_blacksmith.act = uhp_blacksmith.awaken_act;
+				_uhp_awaken_blacksmith = true;
 				event 'may leave prison';
 			end;
 		};
@@ -185,19 +191,23 @@ uhp_guardian_dlg = dlg {
 	};
 }
 
+-- События
+-- Включаем диалог выхода из тюрьмы без избиения кузнеца
 on_event('knows about plot', function()
 	uhp_guardian_dlg:pon('gunpowder_treason_and_plot');
 end)
 
+-- Включаем диалог выхода после избиения кузнеца
 on_event('blood was spilled', function()
 	uhp_guardian_dlg:pon('ok_go');
 end)
 
+-- Выключаем диалог с охранником
 on_event('may leave prison', function()
 	uhp_guardian_dlg:poff('i_want_food');
 	uhp_guardian_dlg:poff('wassup_man');
 	uhp_guardian_dlg:poff('ok_go');
 	uhp_guardian_dlg:poff('gunpowder_treason_and_plot');
 
-	uhp_guardian.act = uhp_guardian.good_guardian_act;
+	_may_leave_prison = true;
 end)

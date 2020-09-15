@@ -1,7 +1,10 @@
 -- Переменные локации
+_burning_quarter_walking_dead = false
 
 -- Функции локации
 burning_quarter_en_garde = function()
+	_burning_quarter_walking_dead = true
+
 	objs('burning_quarter_fight'):del('burning_quarter_priest');
 	objs('burning_quarter_fight'):del('burning_quarter_dagger');
 
@@ -23,6 +26,8 @@ end;
 
 
 burning_quarter_dmz = function()
+	_burning_quarter_walking_dead = false
+
 	objs('burning_quarter_fight'):add('burning_quarter_priest');
 	objs('burning_quarter_fight'):add('burning_quarter_dagger');
 
@@ -333,6 +338,7 @@ burning_quarter_ring = obj {
 			end;
 
 			-- S11
+			take 'burning_quarter_ring'
 			objs('burning_quarter_fight'):del('burning_quarter_godchosen')
 			objs('burning_quarter_fight'):add('burning_quarter_godchosen_down')
 			return [[
@@ -751,7 +757,7 @@ burning_quarter_away = obj {
 		end
 
 		-- S2
-		if have('burning_quarter_fight_hammer') then
+		if have('burning_quarter_fight_hammer') and (not _burning_quarter_walking_dead) then
 			drop 'burning_quarter_fight_hammer';
 			objs('burning_quarter_fight'):add('burning_quarter_fight_hammer');
 			return [[
@@ -767,8 +773,9 @@ burning_quarter_away = obj {
 		-- in other cases, GO1
 		walk 'burning_quarter_part_II_gameover';
 		return [[
-			Ты пытаешься сбежать в переулок, но тень проповедника бросается
-			за тобой и холодной хваткой хватает и хреначит по хребту.
+			Ты пытаешься сбежать в переулок, но холодок пробегает у тебя
+			по спине. Краем глаза ты видишь, как за тобой вслед бросается смутная
+			тень. Ну а дальше она хреначит тебя по хребту.
 		]];
 	end;
 }
