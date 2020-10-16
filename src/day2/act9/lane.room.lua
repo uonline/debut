@@ -180,7 +180,7 @@ lane_covered_hatch_blocked = obj {
 	end;
 	used = function(self, what)
 		if what == lane_arms then
-			if not lane_pile_of_boxes:disabled() ot not lane_pile_of_trash:disabled() then
+			if not lane_pile_of_boxes:disabled() or not lane_pile_of_trash:disabled() then
 				return [[
 					Ты пытаешься отыскать взглядом решётку коллектора,
 					но среди этого хлама трудно что-то разглядеть.
@@ -370,7 +370,7 @@ lane_pile_of_trash = obj {
 		end;
 
 		return [[
-			{Хлам} толстым слоем покрывает всё вокруг тебя.
+			{Хлам} ковром покрывает всё вокруг тебя.
 		]];
 	end;
 	act = [[
@@ -394,6 +394,32 @@ lane_pile_of_trash = obj {
 lane_pile_of_trash:disable()
 
 -- Копьё
+function lane_spear_text_getting()
+	return [[
+		Приложив усилие ты выдёргиваешь копьё из земли.
+		Тебе приходится сделать это обеими руками
+	]];
+end;
+
+function lane_spear_text_fail_taking()
+	return [[
+		Ты мельком смотришь на копьё, и решаешь, что сейчас оно тебе ничем не поможет.
+		Тесак урук-хай в твоей руке уже сидит как влитой.
+	]];
+end;
+
+function lane_spear_text_gameover()
+	return lane_spear_text_getting() .. [[
+		Копьё не помогает против меча...
+	]];
+end;
+
+function lane_spear_text_breaking()
+	return lane_spear_text_getting() .. [[
+		Копьё не помогает против меча...
+	]];
+end;
+
 lane_spear = obj {
 	nam = 'Копьё';
 	dsc = [[
@@ -403,57 +429,47 @@ lane_spear = obj {
 	tak = function()
 		-- Проверяем не заняты ли у героя руки
 		if not have 'lane_arms' then
-			return [[
-				Руки заняты...
-			]], false;
+			return lane_spear_text_fail_taking(), false;
 		end;
 
-		-- Проверяем есть ли на сцене Кевраза
+		-- Проверяем есть ли на сцене Кевразы
 		if not lane_godchosen:disabled() then
 			walk 'killed_in_lane';
-			return [[
-				Копьё не помогает против меча...
-			]];
+			return lane_spear_text_gameover();
 		end;
 
 		-- Проверяем есть ли у героя мистический артефакт
 		if have 'lane_mystical_artifact' then
 			lane_spear:disable();
-			return lane_action([[
-				Хватаешь копьё и ломаешь его...
-			]]), false;
+			return lane_action(lane_spear_text_breaking()), false;
 		end;
 
-		return lane_action([[
-			Ты выдёргиваешь копьё и берёшь его в руки.
-		]]);
+		return lane_action(lane_spear_text_getting());
 	end;
 	inv = [[
-		Ты разглядываешь копьё. Кажется, человеческая работа, но очень грубо
-		сделанная. Испачкано в густой орочьей крови.
+		Ты разглядываешь копьё.
+		Твои познания в оружии оставляют желать лучшего,
+		но копьё которое обычно используют солдаты Режима ты узнаёшь без труда.
+		^
+		Острие и древко выпачканы в орочьей крови.
+		Ты проводишь пальцем по древесине, и убеждаешься, что она уже высохла.
 	]];
 	used = function(self, what)
 		if what == lane_arms then
 			-- Проверяем не под завалом ли Кевраза
 			if not lane_godchosen:disabled() then
 				walk 'killed_in_lane';
-				return [[
-					Копьё не помогает против меча...
-				]];
+				return lane_spear_text_gameover();
 			end;
 
 			-- Проверяем есть ли у героя мистический артефакт
 			if have 'lane_mystical_artifact' then
 				lane_spear:disable();
-				return lane_action([[
-					Хватаешь копьё и ломаешь его...
-				]]);
+				return lane_action(lane_spear_text_breaking());
 			end;
 
 			take 'lane_spear';
-			return lane_action([[
-				...
-			]]), self.tak;
+			return lane_action(lane_spear_text_getting()), self.tak;
 		end
 	end;
 }
