@@ -40,11 +40,6 @@ lane_action = function(act_text)
 	return act_text;
 end;
 
--- Функция проверки доступности люка
-function lane_hatch_is_covered()
-	return not lane_huge_beam_shifted:disabled() or not lane_pile_of_boxes:disabled();
-end
-
 -- Локация
 lane_room = room {
 	nam = 'Переулок';
@@ -152,7 +147,7 @@ lane_covered_hatch_blocked = obj {
 	dsc = function()
 		if (not lane_pile_of_boxes:disabled()) or (not lane_pile_of_trash:disabled()) then
 			return [[
-				Решётка теперь погребена где-то под слоем рухляди и мусора.
+				{Решётка} теперь погребена где-то под слоем рухляди и мусора.
 			]];
 		end;
 
@@ -161,37 +156,45 @@ lane_covered_hatch_blocked = obj {
 		]];
 	end;
 	act = function()
-		if lane_hatch_is_covered() then
+		if (not lane_pile_of_boxes:disabled()) or (not lane_pile_of_trash:disabled()) then
 			return [[
-				Ты рассматриваешь решётку канализации.
-				Пока что к ней не подобраться, слишком плотно завалена.
-				^
-				Ты рассматриваешь люк, но сомневаешься, что у тебя хватит сил открыть его.
-				Твоё внимание привлекает странный блеск в куче хлама.
-			]];
-		else
-			return [[
-				Ты рассматриваешь люк. Неплохой люк, между прочим. Посередине
-				изображён герб города - орёл и пламя - а края украшены
-				какими-то рунами на неизвестном тебе языке. Композицию
-				дополняет год основания города и печать городской стражи.
+				Ты пытаешься отыскать взглядом решётку коллектора,
+				но среди этого хлама трудно что-то разглядеть.
 			]];
 		end;
+
+		if not lane_huge_beam_shifted:disabled() then
+			return [[
+				Ты рассматриваешь решётку, но сомневаешься, что у тебя сдвинуть её,
+				пока сверху придавлен упавшей балкой.
+			]];
+		end;
+
+		return [[
+			Ты рассматриваешь решётку коллектора.
+			Посередине отчеканено что-то вроде герба -- ворон c туловищем льва.
+			^
+			Несмотря на то что, выглядит решётка внушительно,
+			ты не теряешь надежы попасть в коллектор.
+		]];
 	end;
 	used = function(self, what)
 		if what == lane_arms then
-			if lane_hatch_is_covered() then
+			if not lane_pile_of_boxes:disabled() ot not lane_pile_of_trash:disabled() then
 				return [[
-					Ты хочешь открыть люк, но пока что к нему не подобраться, слишком плотно он завален.
+					Ты пытаешься отыскать взглядом решётку коллектора,
+					но среди этого хлама трудно что-то разглядеть.
 				]];
-			elseif not lane_pile_of_trash:disabled() then
+			end;
+
+			if not lane_huge_beam_shifted:disabled() then
 				return lane_action([[
-					Ты пытаешься открыть люк, но даже напрягая все силы тебе не удаётся поднять крышку достаточно высоко.
+					Ты пытаешься приподнять решётку, но тщетно, крышка лаза остаётся неподвижной.
 				]]);
-			else
-				-- Конец
-				walk 'the_end';
-			end
+			end;
+
+			-- Конец
+			walk 'the_end';
 		end
 	end;
 }
@@ -295,25 +298,25 @@ lane_huge_beam_shifted = obj {
 	]];
 	used = function(self, what)
 		if what == lane_spear then
-			self:disable()
+			lane_huge_beam_shifted:disable();
 			return lane_action([[
-				Ты втиснул копьё под балку и, используя его как рычаг,
-				отодвинул балку в сторону.
+				Ты втискивает остриё копья под балку и, используя древко как рычаг,
+				сдвигаешь балку в сторону.
 			]]);
 		end
 
 		if what == lane_arms then
 			-- Проверяем есть ли мистический артефакт у героя
 			if have 'lane_mystical_artifact' then
-				self:disable()
+				lane_huge_beam_shifted:disable()
 				return lane_action([[
-					Ты без проблем сдвигаешь балку в сторону.
+					Широко расставив ноги и обхватив балку обеими руками, ты отрываешь её о земли.
+					Сам удивляясь откуда в тебе столько силы, ты бросаешь свой груз в сторону.
 				]]);
 			end;
 
 			return lane_action([[
-				Попытавшись сдвинуть балку, ты чувствуешь,
-				что сил всё-таки не достаёт.
+				Попытавшись сдвинуть балку, ты чувствуешь, что у тебя недостаточно силы.
 			]]);
 		end;
 	end;
