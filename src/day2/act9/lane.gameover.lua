@@ -13,6 +13,10 @@ killed_in_lane = room {
 		^
 		Твой взгляд навсегда застывает на опускающемся клинке.
 	]];
+	entered = function()
+		-- Clear inventory, add whitelisted items
+		inv():zap();
+	end;
 }
 
 destroyed_in_lane = room {
@@ -26,4 +30,8 @@ destroyed_in_lane = room {
 		Низкие раскаты грома, пресекает вспышка света.
 		Она выжигает все твои чувства без остатка.
 	]];
+	entered = function()
+		-- Clear inventory, add whitelisted items
+		inv():zap();
+	end;
 }
