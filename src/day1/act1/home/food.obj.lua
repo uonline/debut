@@ -1,7 +1,6 @@
 food = obj {
 	nam = 'Еда';
 	dsc = [[
-		^
 		На столе тебя ждёт {еда}.
 	]];
 	tak = function()
