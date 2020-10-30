@@ -28,7 +28,7 @@ journal = obj {
 }
 
 on_event('journal taken', function()
-	if not have 'food' and not have 'hunting_gear' then
+	if not have 'food' and not have 'hunting_gear' and not _leaved_items then
 		-- Включаем диалог у старейшины
 		elder_dlg:pon('some_journal_subject');
 	end;

@@ -36,7 +36,7 @@ hunting_gear = obj {
 on_event('gear taken', function()
 	_hunt_gear = true;
 	_need_new_bow = true;
-	if not have 'food' and not have 'journal' then
+	if not have 'food' and not have 'journal' and not _leaved_items then
 		-- Включаем диалог у старейшины
 		elder_dlg:pon('some_hunt_subject');
 	end;

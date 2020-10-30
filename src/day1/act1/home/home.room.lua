@@ -1,3 +1,6 @@
+-- Переменные
+_leaved_items = false;
+
 -- Локации
 -- Вступление
 intro = room {
@@ -88,4 +91,11 @@ home = room {
 	way = {
 		'square';
 	};
+	exit = function()
+		-- Если в первый раз выходим из хижины без вещей,
+		-- то дополнительные диалоги у старейшины больше не появятся
+		if not _leaved_items and not have 'hunting_gear' and not have 'food' and not have 'journal' then
+			_leaved_items = true;
+		end;
+	end;
 }
