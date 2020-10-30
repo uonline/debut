@@ -13,6 +13,7 @@ journal = obj {
 	end;
 	tak = function()
 		event 'got journal'
+		event 'journal taken'
 		return [[
 			Со вздохом ты берёшь книгу и кладёшь в рюкзак.
 		]];
@@ -25,3 +26,10 @@ journal = obj {
 		поставив его в известность. Пожалуй, она у тебя задержалась.
 	]];
 }
+
+on_event('journal taken', function()
+	if not have 'food' and not have 'hunting_gear' then
+		-- Включаем диалог у старейшины
+		elder_dlg:pon('some_journal_subject');
+	end;
+end)

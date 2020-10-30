@@ -63,9 +63,43 @@ elder_dlg = dlg {
 				старейшина, одаривая тебя широкой улыбкой.
 			]];
 			function()
-				event 'warren knows elder'
+				event 'warren knows elder';
 			end;
 		};
+		-- Диалог, если берём охотничье снаряжение
+		{
+			tag = 'some_hunt_subject';
+			false;
+			'охота...';
+			[[
+				-- Ммм...
+			]];
+			function()
+			end;
+		};
+		-- Диалог, если берём еду
+		{
+			tag = 'some_food_subject';
+			false;
+			'Ммм...';
+			[[
+				-- Ммм...
+			]];
+			function()
+			end;
+		};
+		-- Диалог, если берём журнал
+		{
+			tag = 'some_journal_subject';
+			false;
+			'Журнал...';
+			[[
+				-- Журнал...
+			]];
+			function()
+			end;
+		};
+		-- Уходим
 		{
 			always = true;
 			'Я пойду.';

@@ -21,5 +21,9 @@ food = obj {
 }
 
 on_event('food taken', function()
-	_hunt_food = true
+	_hunt_food = true;
+	if not have 'hunting_gear' and not have 'journal' then
+		-- Включаем диалог у старейшины
+		elder_dlg:pon('some_food_subject');
+	end;
 end)

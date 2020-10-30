@@ -13,7 +13,7 @@ hunting_gear = obj {
 		]] .. text;
 	end;
 	tak = function()
-		event 'gear taken'
+		event 'gear taken';
 		return [[
 			Первым делом ты спрятал за пояс кинжал в кожанных ножнах.
 			Затем взял лук, попробовал натянуть тетиву и выругался.
@@ -36,4 +36,8 @@ hunting_gear = obj {
 on_event('gear taken', function()
 	_hunt_gear = true;
 	_need_new_bow = true;
+	if not have 'food' and not have 'journal' then
+		-- Включаем диалог у старейшины
+		elder_dlg:pon('some_hunt_subject');
+	end;
 end)
