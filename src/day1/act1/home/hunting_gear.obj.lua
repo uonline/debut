@@ -13,6 +13,7 @@ hunting_gear = obj {
 		]] .. text;
 	end;
 	tak = function()
+		take 'your_dagger';
 		event 'gear taken';
 		return [[
 			Первым делом ты спрятал за пояс кинжал в кожанных ножнах.
