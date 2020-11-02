@@ -10,6 +10,8 @@ fields = room {
 	obj = {
 		'warren';
 		'victim';
+		'hanged_man';
+		'lying_man';
 	};
 	way = {
 		'square';
