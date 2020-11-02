@@ -16,12 +16,22 @@ warren = obj {
 warren_dlg = dlg {
 	nam = 'Уорри Ростовщик';
 	hideinv = true;
-	entered = [[
-		-- Пришёл вернуть долг? -- с порога бросает тебе Уорри, усмехаясь. Густой дым и лучи
-		солнца, бьющие тебе в глаза, мешают разглядеть его лицо.
-		^
-		-- ...
-	]];
+	entered = function()
+		-- Проверяем есить ли у игрока золото
+		if have 'gold' then
+			-- Проверяем, что квест на молот в процессе выполнения
+			if _warren_conflict then
+				warren_dlg:pon('return_gold');
+			end;
+		end;
+
+		return [[
+			-- Пришёл вернуть долг? -- с порога бросает тебе Уорри, усмехаясь. Густой дым и лучи
+			солнца, бьющие тебе в глаза, мешают разглядеть его лицо.
+			^
+			-- ...
+		]];
+	end;
 	phr = {
 		-- Потребовать у Уорри молот
 		{
@@ -79,6 +89,7 @@ warren_dlg = dlg {
 			function()
 				event 'got the hammer';
 				take 'smith_hammer';
+				drop 'gold';
 			end;
 		};
 		-- О проблемах с водой
@@ -106,12 +117,13 @@ warren_dlg = dlg {
 	};
 }
 
+-- События
 -- Находим труп во дворе
 on_event('found the body', function()
-	warren_dlg:pon('why_so_dead')
+	warren_dlg:pon('why_so_dead');
 end)
 
 -- Поговорили со старейшиной
 on_event('warren knows elder', function()
-	warren_dlg:pon('elder_hates_you')
+	warren_dlg:pon('elder_hates_you');
 end)
