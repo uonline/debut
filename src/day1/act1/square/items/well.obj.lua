@@ -1,3 +1,4 @@
+-- Колодец
 well = obj {
 	nam = 'Колодец';
 	dsc = [[
@@ -15,4 +16,12 @@ well = obj {
 		^
 		"Похоже на бездну."
 	]];
+	used = function(self, what)
+		if what == rope then
+			take 'gold';
+			return [[
+				* {?} Истории о колодцах;
+			]]
+		end;
+	end;
 }
