@@ -1,3 +1,10 @@
+-- Функции
+-- Функция проверки, стоит ли герою выкупать молот у Уорри за золото
+function _is_hammer_for_money ()
+	-- Проверяем, что квест на молот взят
+	return (have 'gold') and _warren_conflict and (not have 'smith_hammer') and (not have 'new_bow');
+end;
+
 -- Уорри
 warren = obj {
 	nam = 'Уорри Ростовщик';
@@ -17,12 +24,8 @@ warren_dlg = dlg {
 	nam = 'Уорри Ростовщик';
 	hideinv = true;
 	entered = function()
-		-- Проверяем есить ли у игрока золото
-		if have 'gold' then
-			-- Проверяем, что квест на молот в процессе выполнения
-			if _warren_conflict then
-				warren_dlg:pon('return_gold');
-			end;
+		if _is_hammer_for_money() then
+			warren_dlg:pon('return_gold');
 		end;
 
 		return [[

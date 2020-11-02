@@ -18,6 +18,7 @@ well = obj {
 	]];
 	used = function(self, what)
 		if what == rope then
+			inv():del('rope');
 			take 'gold';
 			return [[
 				* {?} Истории о колодцах;
