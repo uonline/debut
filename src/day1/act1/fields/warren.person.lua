@@ -113,7 +113,7 @@ warren_dlg = dlg {
 		};
 		-- О проблемах с водой
 		{
-			tag = 'some_water_problem';
+			tag = 'water_problem';
 			false;
 			'Вода';
 			[[
@@ -157,4 +157,9 @@ on_event('go to warren racket', function()
 	-- Уорри больше с нами не разговаривает
 	warren:disable();
 	warren_with_crossbow:enable();
+end)
+
+-- Мы узнали о проблеме с водой
+on_event('water problem', function()
+	warren_dlg:pon('water_problem');
 end)

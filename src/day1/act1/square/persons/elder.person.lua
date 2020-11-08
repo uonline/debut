@@ -41,6 +41,8 @@ elder_dlg = dlg {
 				{?} Намек на поиск пещеры в чаще;
 			]];
 			function()
+				-- Мы узнали о проблеме с водой
+				event 'water problem';
 				-- Активируем квест по проверке родника
 				_d1a1_water_problem_quest = true;
 				-- Берём флягу

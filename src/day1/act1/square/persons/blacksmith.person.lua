@@ -126,7 +126,7 @@ blacksmith_dlg = dlg {
 		};
 		-- Диалог о проблеме с водой
 		{
-			tah = 'some_water_problem';
+			tag = 'water_problem';
 			false;
 			'Вода?';
 			[[
@@ -207,4 +207,9 @@ end)
 -- Получили возможность отдать кузнецу молот
 on_event('got the hammer', function()
 	blacksmith_dlg:pon('all_done');
+end)
+
+-- Мы узнали о проблеме с водой
+on_event('water problem', function()
+	blacksmith_dlg:pon('water_problem');
 end)
