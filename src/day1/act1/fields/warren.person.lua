@@ -1,8 +1,11 @@
+-- Переменные
+_hammer_problem = false;
+
 -- Функции
 -- Функция проверки, стоит ли герою выкупать молот у Уорри за золото
 function _is_hammer_for_money ()
 	-- Проверяем, что квест на молот взят
-	return (have 'gold') and _warren_conflict and (not have 'smith_hammer') and (not have 'new_bow');
+	return (have 'gold') and _warren_conflict and _hammer_problem and (not have 'smith_hammer') and (not have 'new_bow');
 end;
 
 -- Уорри
@@ -70,6 +73,12 @@ warren_dlg = dlg {
 			]];
 			function()
 				event 'hammer problem';
+				_hammer_problem = true;
+
+				-- Проверяем, нет ли у героя золота
+				if _is_hammer_for_money() then
+					warren_dlg:pon('return_gold');
+				end;
 			end;
 		};
 		-- О трупе
