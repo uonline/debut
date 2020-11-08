@@ -15,9 +15,24 @@ warren = obj {
 		так мало спит.
 	]];
 	act = function()
-		walk 'warren_dlg'
-	end
+		walk 'warren_dlg';
+	end;
 }
+
+-- Уорри с арбалетом
+warren_with_crossbow = obj {
+	nam = 'Уорри Ростовщик';
+	dsc = [[
+		{Уорри} сидит на крыльце своего дома и, ссутулившись, раскуривает трубку.
+		На коленях у него, покоится заряженный арбалет.
+	]];
+	act = [[
+		Ты не решаешься больше заговорить с Уорри.
+		^
+		...
+	]];
+}
+warren_with_crossbow:disable()
 
 -- Диалог с Уорри
 warren_dlg = dlg {
@@ -54,6 +69,7 @@ warren_dlg = dlg {
 				-- Какое совпадение! Он мне тоже. Как и ты, кстати. Так где мои деньги?
 			]];
 			function()
+				event 'hammer problem';
 			end;
 		};
 		-- О трупе
@@ -121,6 +137,11 @@ warren_dlg = dlg {
 }
 
 -- События
+-- Получили квест на молот
+on_event('warren conflict', function()
+	warren_dlg:pon('where_is_hammer');
+end)
+
 -- Находим труп во дворе
 on_event('found the body', function()
 	warren_dlg:pon('why_so_dead');
@@ -129,4 +150,11 @@ end)
 -- Поговорили со старейшиной
 on_event('warren knows elder', function()
 	warren_dlg:pon('elder_hates_you');
+end)
+
+-- Отправлямся бить Уорри
+on_event('go to warren racket', function()
+	-- Уорри больше с нами не разговаривает
+	warren:disable();
+	warren_with_crossbow:enable();
 end)

@@ -37,19 +37,35 @@ blacksmith_dlg = dlg {
 				event 'warren conflict';
 			end;
 		};
-		-- Кузнец даёт отмычки
+		-- Ищете с кузнецом выход из ситуации с Уорри
 		{
-			tag = 'get_stick';
+			tag = 'solve_problem';
 			false;
 			'Похоже, твой молот теперь очень дорог для Уорри.';
 			[[
 				-- Похоже, твой молот теперь очень дорог для Уорри.
 				Он не желает с ним расставаться.
 				^
-				...
+				* В этом диалоге герой и Уорри спорят, как лучше поступить;
 				* {-} Кузнец может дать герою отмычки и предложит пробраться в дом Уорри через чёрный ход;
+				* А может просто отобрать?
 			]];
 			function()
+				-- Включаем варианты решения проблемы
+				blacksmith_dlg:pon('get_stick');
+				blacksmith_dlg:pon('go_fight');
+			end;
+		};
+		{
+			tag = 'get_stick';
+			false;
+			'Ладно, давай свои отмычки';
+			[[
+				-- Ладно, давай свои отмычки, -- ... -- поиграю во взломщика.
+				^
+			]];
+			function()
+				blacksmith_dlg:poff('go_fight');
 			end;
 		};
 		-- Уговорить кузнеца пойти к Уорри вдвоём
@@ -68,6 +84,8 @@ blacksmith_dlg = dlg {
 				* {-} Можно уговорить кузнеца пойти к Уорри вдвоём и попробовать выбить из него молот:
 			]];
 			function()
+				event 'go to warren racket';
+				back();
 			end;
 		};
 		-- Забираем лук, после неудачной драки с Уорри
@@ -157,16 +175,36 @@ blacksmith_dlg = dlg {
 			'Я пойду.';
 			'Кузнец погружён в свои мысли, или что там у него в голове, и ничего тебе не отвечает.';
 			function()
-				back()
+				back();
 			end;
 		};
 	};
 }
 
+-- Взяли охотничье снаряжение, теперь можем поговорить с кузнецом о качестве лука
 on_event('gear taken', function()
-	blacksmith_dlg:pon('new_bow')
+	blacksmith_dlg:pon('new_bow');
 end)
 
+-- Уорри сказал нам, что не отдаст лук
+on_event('hammer problem', function()
+	blacksmith_dlg:pon('solve_problem');
+end)
+
+-- Кузнец пошёл с тобой к Уорри
+on_event('go to warren racket', function()
+	blacksmith_dlg:poff('get_stick');
+	blacksmith:disable();
+end)
+
+-- Уорри отвадил вас с кузнецом, и ты теперь можешь получить лук
+on_event('fail warren racket', function()
+	_fields_go_to_racket = false;
+	blacksmith:enable();
+	blacksmith_dlg:pon('get_bow');
+end)
+
+-- Получили возможность отдать кузнецу молот
 on_event('got the hammer', function()
-	blacksmith_dlg:pon('all_done')
+	blacksmith_dlg:pon('all_done');
 end)
