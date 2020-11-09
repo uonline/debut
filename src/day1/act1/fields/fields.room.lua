@@ -22,6 +22,7 @@ fields = room {
 	};
 	way = {
 		'square';
+		'warren_house';
 	};
 	entered = function()
 		-- Проверяем пошли ли мы с кузнецом бить Уорри
@@ -40,4 +41,10 @@ fields = room {
 on_event('go to warren racket', function()
 	_fields_go_to_racket = true;
 	-- Уорри больше с нами не разговаривает
+end)
+
+-- Ты согласился взломать дом Уорри
+on_event('picklock quest', function()
+	-- Делает доступным дом Уорри
+	warren_house:enable();
 end)

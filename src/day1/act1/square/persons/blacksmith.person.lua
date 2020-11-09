@@ -65,6 +65,13 @@ blacksmith_dlg = dlg {
 				^
 			]];
 			function()
+				-- Соглашаемся на предложение кузнеца
+				event 'picklock quest';
+
+				-- Берём отмычки
+				take 'picklock';
+
+				-- Блокируем предложение драки с Уорри
 				blacksmith_dlg:poff('go_fight');
 			end;
 		};
