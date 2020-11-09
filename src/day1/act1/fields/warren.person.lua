@@ -72,6 +72,7 @@ warren_dlg = dlg {
 				-- Какое совпадение! Он мне тоже. Как и ты, кстати. Так где мои деньги?
 			]];
 			function()
+				-- Уорри упорствует
 				event 'hammer problem';
 				_hammer_problem = true;
 

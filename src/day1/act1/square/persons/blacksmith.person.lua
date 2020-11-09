@@ -206,7 +206,16 @@ end)
 
 -- Получили возможность отдать кузнецу молот
 on_event('got the hammer', function()
+	_hammer_problem = false;
+	_warren_conflict = false;
+
+	-- Включаем нужный диалог
 	blacksmith_dlg:pon('all_done');
+
+	-- Выключаем ненужные
+	blacksmith_dlg:poff('solve_problem');
+	blacksmith_dlg:poff('get_stick');
+	blacksmith_dlg:poff('go_fight');
 end)
 
 -- Мы узнали о проблеме с водой
