@@ -95,13 +95,16 @@ warren_dlg = dlg {
 		};
 		-- Об изгнании
 		{
-			tag = 'about_';
+			tag = 'about_exile';
 			false;
 			'Мне нужно кое-что сказать тебе.';
 			[[
+				-- Мне нужно кое-что сказать тебе... -- ....
+				^
 				* {-} Уорри обрадуется новости, что его хотели изгнать из деревни;
 			]];
 			function()
+				event 'exile reaction';
 			end;
 		};
 		-- Подкупаем Уорри золотом
@@ -157,9 +160,9 @@ on_event('found the body', function()
 	warren_dlg:pon('why_so_dead');
 end)
 
--- Поговорили со старейшиной
-on_event('warren knows elder', function()
-	warren_dlg:pon('elder_hates_you');
+-- Поговорили со старейшиной об изгнании
+on_event('news about exile', function()
+	warren_dlg:pon('about_exile');
 end)
 
 -- Отправлямся бить Уорри

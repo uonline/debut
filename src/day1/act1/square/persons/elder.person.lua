@@ -87,14 +87,14 @@ elder_dlg = dlg {
 			]];
 			function()
 				-- Включаем диалог с Уорри по поводу его изгнания
-				-- ...
+				event 'news about exile';
 			end;
 		};
 		-- О реакции Уорри на новость об изгнании
 		{
-			tag = '';
+			tag = 'warren_reaction';
 			false;
-			'';
+			'Он не расстроился';
 			[[
 				-- ...
 				^
@@ -166,10 +166,15 @@ elder_dlg = dlg {
 -- Поговорили с Уорри
 on_event('warren conflict', function()
 	_warren_conflict = true;
-	elder_dlg:pon('who_is_warren')
+	elder_dlg:pon('who_is_warren');
 end)
 
 -- Нашли труп у Уорри во дворе
 on_event('found the body', function()
-	elder_dlg:pon('why_so_dead')
+	elder_dlg:pon('why_so_dead');
+end)
+
+-- Поговорили с Уорри об изгнании
+on_event('exile reaction', function()
+	elder_dlg:pon('warren_reaction');
 end)
