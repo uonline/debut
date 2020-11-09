@@ -124,6 +124,21 @@ warren_dlg = dlg {
 				drop 'gold';
 			end;
 		};
+		-- О записке
+		{
+			tag = 'about_note';
+			false;
+			'Я тут кое-что нашёл.';
+			[[
+				-- Чепуха какая-то. Это даже не мой почерк. Где ты её взял?
+				^
+				Уорри рвёт и выкидывает записку
+			]];
+			function()
+				-- Уорри рвёт и выкидывает записку
+				inv():del('warren_note');
+			end;
+		};
 		-- О проблемах с водой
 		{
 			tag = 'water_problem';
@@ -170,6 +185,11 @@ on_event('go to warren racket', function()
 	-- Уорри больше с нами не разговаривает
 	warren:disable();
 	warren_with_crossbow:enable();
+end)
+
+-- Ты узнал о записе
+on_event('take about note', function()
+	warren_dlg:pon('about_note');
 end)
 
 -- Мы узнали о проблеме с водой
