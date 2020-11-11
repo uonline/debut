@@ -5,6 +5,11 @@ function escape_from_wh()
 	-- Герой сбегает на центральную площадь
 	-- Удивиться откуда у Уорри есть замок в двери
 
+	-- Удаляем предметы, подобранные в доме Уорри
+	inv():del('wh_oil');
+	inv():del('wh_picklock');
+	inv():del('wh_axe');
+
 	return [[
 	]];
 end;
@@ -28,6 +33,8 @@ warren_house = room {
 	entered = function()
 		-- * {-} Если герой попадает в дом Уорри, то теряет все отмычки, т.е. он не сможет попасть в дом Уорри второй раз;
 		take 'wh_picklock';
+
+		inv():del('picklock');
 	end;
 }
 warren_house:disable()
@@ -59,7 +66,8 @@ wh_trash = obj {
 	nam = 'Беспорядок';
 	dsc = function()
 		return [[
-			{Беспорядок}
+			В полумраке царит настоящий хаос.
+			Ты деже не знаешь куда смотреть в этом {беспорядке}.
 		]];
 	end;
 	act = function()
@@ -145,6 +153,7 @@ wh_flasks = obj {
 wh_floor = obj {
 	nam = 'Пол';
 	dsc = [[
+		^
 		{Пол}
 	]];
 	act = function()
@@ -161,6 +170,9 @@ wh_floor_items = obj {
 		'wh_bolts';
 		'wh_mallet';
 	};
+	dsc = [[
+		^
+	]];
 }
 wh_floor_items:disable()
 
@@ -192,6 +204,7 @@ wh_mallet = obj {
 wh_dark_room_side = obj {
 	nam = 'Тёмная часть комнаты';
 	dsc = [[
+		^
 		{Тёмная часть комнаты}
 	]];
 	act = function()
@@ -212,6 +225,9 @@ wh_dark_room_side_items = obj {
 		'wh_stove';
 		'wh_letter';
 	};
+	dsc = [[
+		^
+	]];
 }
 wh_dark_room_side_items:disable()
 
@@ -236,6 +252,8 @@ wh_wall_side_items = obj {
 		'wh_empty_mount';
 		'wh_goblin_skull';
 	};
+	dsc = [[
+	]];
 }
 wh_wall_side_items:disable()
 
@@ -281,6 +299,7 @@ wh_goblin_skull = obj {
 wh_book_shelf = obj {
 	nam = 'Книжная полка';
 	dsc = [[
+		^
 		{Книжная полка}
 	]];
 	act = function()
@@ -297,6 +316,9 @@ wh_book_shelf_items = obj {
 		'wh_scrolls';
 		'wh_envelopes';
 	};
+	dsc = [[
+		^
+	]];
 }
 wh_book_shelf_items:disable()
 
@@ -328,6 +350,7 @@ wh_envelopes = obj {
 wh_bed = obj {
 	nam = 'Кровать';
 	dsc = [[
+		^
 		{Кровать}
 	]];
 	act = function()
@@ -374,6 +397,7 @@ wh_chest = obj {
 	nam = 'Сундук';
 	dsc = function()
 		return [[
+			^
 			{Сундук}.
 		]];
 	end;
@@ -384,7 +408,6 @@ wh_chest = obj {
 	used = function(self, what)
 		-- Замок можно сломать топором, но тода на шум придёт Уорри
 		if what == wh_axe then
-			inv():del('wh_axe');
 
 			return [[
 			]] .. escape_from_wh();
@@ -392,8 +415,9 @@ wh_chest = obj {
 
 		-- Если замок смазать, то можно открыть его отмычкой:
 		if what == wh_oil then
+			-- Получаем молот
 			take 'smith_hammer';
-			inv():del('wh_oil') '';
+
 
 			return [[
 				...
