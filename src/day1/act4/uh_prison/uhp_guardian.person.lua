@@ -1,20 +1,32 @@
--- Объекты
+-- Функции
+function uhp_guardian_dsc()
+	return [[
+		^
+		Вокруг клеток вышагивает здоровенный {урук-охранник}.
+		Время от времени он со скучающим видом заглядывает в какую-нибудь из них.
+	]];
+end;
+
+-- Охранник
 uhp_guardian = obj {
 	nam = 'Охранник';
-	dsc = [[
-		^
-		Вокруг клеток вышагивает здоровенный {урук-охранник}. Время от
-		времени он со скучающим видом заглядывает в какую-нибудь из них.
-	]];
+	dsc = uhp_guardian_dsc();
 	act = function()
 		walk 'uhp_guardian_dlg';
 	end;
-	good_guardian_act = function()
+}
+
+-- Выпустивший тебя охранник
+uhp_guardian_good = obj {
+	nam = 'Добрый охранник';
+	dsc = uhp_guardian_dsc();
+	act = function()
 		return [[
 			Ты смотришь на охранника, тот в ответ улыбается нехорошей улыбкой.
 		]];
 	end;
 }
+uhp_guardian_good:disable()
 
 -- Диалог
 uhp_guardian_dlg = dlg {
@@ -111,8 +123,12 @@ uhp_guardian_dlg = dlg {
 				Орк заходится смехом.
 			]];
 			function()
-				uhp_blacksmith.dsc = uhp_blacksmith.awaken_dsc;
-				uhp_blacksmith.act = uhp_blacksmith.awaken_act;
+				-- Включаем нужное состояние кузнеца
+				uhp_blacksmith:disable();
+				uhp_blacksmith_beaten:disable();
+				uhp_blacksmith_awaken:enable();
+
+				-- Теперь можем покинуть клетку
 				event 'may leave prison';
 			end;
 		};
@@ -185,6 +201,7 @@ uhp_guardian_dlg = dlg {
 	};
 }
 
+-- События
 on_event('knows about plot', function()
 	uhp_guardian_dlg:pon('gunpowder_treason_and_plot');
 end)
@@ -199,5 +216,7 @@ on_event('may leave prison', function()
 	uhp_guardian_dlg:poff('ok_go');
 	uhp_guardian_dlg:poff('gunpowder_treason_and_plot');
 
-	uhp_guardian.act = uhp_guardian.good_guardian_act;
+	-- Меняем описание охраннику и делаем недоступным диалог с ним
+	uhp_guardian:disable()
+	uhp_guardian_good:enable()
 end)

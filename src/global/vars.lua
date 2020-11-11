@@ -1,1 +1,1 @@
-_beaten_blacksmith = false
+_d1a4_beaten_blacksmith = false

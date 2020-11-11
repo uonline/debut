@@ -1,10 +1,13 @@
+-- Переходы
 uh_prison_to_uh_square = vroom('Площадь лагеря', 'uh_square');
 uh_prison_to_uh_square:disable();
 
+-- События
 on_event('may leave prison', function()
 	uh_prison_to_uh_square:enable();
 end)
 
+-- Локация
 uh_prison = room {
 	nam = 'Загон рабов';
 	dsc = [[
@@ -23,7 +26,10 @@ uh_prison = room {
 		'uhp_goblin';
 		'uhp_warren';
 		'uhp_blacksmith';
+		'uhp_blacksmith_beaten';
+		'uhp_blacksmith_awaken';
 		'uhp_guardian';
+		'uhp_guardian_good';
 	};
 	way = {
 		uh_prison_to_uh_square;
@@ -34,6 +40,8 @@ uh_prison = room {
 	end;
 }
 
+-- Объекты
+-- Уоррен
 uhp_warren = obj {
 	nam = 'Уорри';
 	dsc = [[

@@ -1,17 +1,6 @@
+-- Кузнец
 uhp_blacksmith = obj {
 	nam = 'Кузнец';
-	beaten_dsc = [[
-		Оставшуюся половину клетки занимает распластанное тело кузнеца.
-	]];
-	awaken_dsc = [[
-		Оставшуюся половину клетки занимает мрачный {кузнец}, потирающий затылок.
-	]];
-	awaken_act = function()
-		return [[
-			Ты пробуешь заговорить с кузнецом, но его полный злобы взгляд
-			заставляет тебя замолчать.
-		]];
-	end;
 	dsc = [[
 		Оставшуюся половину клетки занимает мрачный {кузнец}. Вид у него поникший.
 	]];
@@ -20,6 +9,34 @@ uhp_blacksmith = obj {
 	end;
 }
 
+-- Кузнец в отключке
+uhp_blacksmith_beaten = obj {
+	nam = 'Кузнец в отключке';
+	awaken_dsc = [[
+		Оставшуюся половину клетки занимает мрачный {кузнец}, потирающий затылок.
+	]];
+	dsc = [[
+		Оставшуюся половину клетки занимает распластанное тело кузнеца.
+	]];
+}
+uhp_blacksmith_beaten:disable()
+
+-- Кузнец избитый
+uhp_blacksmith_awaken = obj {
+	nam = 'Кузнец избитый';
+	dsc = [[
+		Оставшуюся половину клетки занимает мрачный {кузнец}, потирающий затылок.
+	]];
+	act = function()
+		return [[
+			Ты пробуешь заговорить с кузнецом, но его полный злобы взгляд
+			заставляет тебя замолчать.
+		]];
+	end;
+}
+uhp_blacksmith_awaken:disable()
+
+-- Диалог
 uhp_blacksmith_dlg = dlg {
 	nam = 'Кузнец';
 	hideinv = true;
@@ -120,9 +137,16 @@ uhp_blacksmith_dlg = dlg {
 				и без чувств сползает на пол.
 			]];
 			function()
-				_beaten_blacksmith = true;
+				-- Запоминает что кузнец избит
+				_d1a4_beaten_blacksmith = true;
+
 				event 'blood was spilled';
-				uhp_blacksmith.dsc = uhp_blacksmith.beaten_dsc;
+
+				-- Включаем нужное состояние кузнеца
+				uhp_blacksmith:disable();
+				uhp_blacksmith_beaten:enable();
+				uhp_blacksmith_awaken:disable();
+
 				back();
 			end;
 		};
