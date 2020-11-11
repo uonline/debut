@@ -3,6 +3,7 @@ local main_ways = {
 }
 
 local main_ways_debug = {
+	vroom('D1A1 (Дом Уорри)^', 'warren_house_debug');
 	vroom('D1A2^', 'forest_edge');
 	vroom('D1A3^', 'lords_lands');
 	vroom('D1A4^', 'uh_prison');
