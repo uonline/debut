@@ -8,6 +8,12 @@ function _is_hammer_for_money ()
 	return (have 'gold') and _warren_conflict and _hammer_problem and (not have 'smith_hammer') and (not have 'new_bow');
 end;
 
+-- Даём Уорри арбалет
+function _give_crossbow_to_warren()
+	warren:disable();
+	warren_with_crossbow:enable();
+end;
+
 -- Уорри
 warren = obj {
 	nam = 'Уорри Ростовщик';
@@ -183,8 +189,7 @@ end)
 -- Отправлямся бить Уорри
 on_event('go to warren racket', function()
 	-- Уорри больше с нами не разговаривает
-	warren:disable();
-	warren_with_crossbow:enable();
+	_give_crossbow_to_warren();
 end)
 
 -- Ты узнал о записе

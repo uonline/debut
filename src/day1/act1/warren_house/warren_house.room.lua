@@ -52,14 +52,25 @@ function drop_wh_items()
 	inv():del('wh_axe');
 end;
 
+-- Функция выхода из дома Уорри
+function leave_from_wh()
+	_give_crossbow_to_warren();
+
+	-- Выбрасываем награбленное
+	drop_wh_items();
+
+	warren_house:disable();
+end;
+
 -- Функция бегства из дома Уорри
 function escape_from_wh()
 	-- Если герой покидает сцену, то больше не сможет вернуться]
 	-- Уорри понимает, что его взломали и берёт арбалет
 	-- Герой сбегает на центральную площадь
 	-- Удивиться откуда у Уорри есть замок в двери
+	leave_from_wh();
 
-	drop_wh_items();
+	walk 'square';
 
 	return [[
 	]];
@@ -67,9 +78,7 @@ end;
 
 -- Функция появления Уории из-за шума
 function make_some_noise()
-	drop_wh_items();
-
-	warren_house:disable();
+	leave_from_wh();
 
 	walk 'fields';
 
@@ -78,7 +87,8 @@ function make_some_noise()
 end;
 
 
--- Локация
+-- Локации
+-- Дом Уорри
 warren_house = room {
 	nam = 'Дом Уорри';
 	dsc = [[
@@ -90,6 +100,7 @@ warren_house = room {
 		'wh_trash';
 		'wh_trash_items';
 		'wh_chest';
+		'wh_chest_oiled';
 	};
 	way = {
 		'fields';
@@ -189,6 +200,8 @@ wh_bottles = obj {
 	dsc = [[
 		{Бутылки}
 	]];
+	act = [[
+	]];
 }
 
 -- Масло
@@ -211,8 +224,8 @@ wh_flasks = obj {
 	dsc = [[
 		{Склянки}
 	]];
-	act = function()
-	end;
+	act = [[
+	]];
 }
 
 -- Пол
@@ -248,6 +261,8 @@ wh_subfield_hatch = obj {
 	dsc = [[
 		{Лаз в подпол}
 	]];
+	act = [[
+	]];
 }
 
 -- Колчан с болтами
@@ -256,6 +271,8 @@ wh_bolts = obj {
 	dsc = [[
 		{Колчан с болтами}
 	]];
+	act = [[
+	]];
 }
 
 -- Киянка
@@ -263,6 +280,8 @@ wh_mallet = obj {
 	nam = 'Киянка';
 	dsc = [[
 		{Киянка}
+	]];
+	act = [[
 	]];
 }
 
@@ -343,6 +362,8 @@ wh_sword = obj {
 	dsc = [[
 		{Ятаган}
 	]];
+	act = [[
+	]];
 }
 
 -- Пустое крепление
@@ -351,6 +372,8 @@ wh_empty_mount = obj {
 	dsc = [[
 		{Пустое крепление}
 	]];
+	act = [[
+	]];
 }
 
 -- Череп гоблина
@@ -358,6 +381,8 @@ wh_goblin_skull = obj {
 	nam = 'Череп гоблина';
 	dsc = [[
 		{Череп гоблина}
+	]];
+	act = [[
 	]];
 }
 
@@ -394,6 +419,8 @@ wh_book = obj {
 	dsc = [[
 		{Книга}
 	]];
+	act = [[
+	]];
 }
 
 -- Свитки
@@ -402,6 +429,8 @@ wh_scrolls = obj {
 	dsc = [[
 		{Свитки}
 	]];
+	act = [[
+	]];
 }
 
 -- Конверты
@@ -409,6 +438,8 @@ wh_envelopes = obj {
 	nam = 'Конверты';
 	dsc = [[
 		{Конверты}
+	]];
+	act = [[
 	]];
 }
 
@@ -476,24 +507,60 @@ wh_chest = obj {
 		if what == wh_axe then
 
 			return [[
-			]] .. escape_from_wh();
+			]] .. make_some_noise();
 		end;
 
 		-- Если замок смазать, то можно открыть его отмычкой:
 		if what == wh_oil then
-			-- Получаем молот
-			take 'smith_hammer';
+			wh_chest_oiled:enable();
+			wh_chest:disable();
 
-
-			return [[
-				...
+			local text = [[
 			]];
+
+			return wh_action(text);
 		end;
 
 		-- Молота может не быть, если герой уже его выкупил
 		if what == wh_picklock then
+			local text = [[
+			]];
+
+			return wh_action(text);
+		end;
+	end;
+}
+
+-- Сундук со смазанным замком
+wh_chest_oiled = obj {
+	nam = 'Сундук со смазанным замком';
+	dsc = function()
+		return [[
+			^
+			{Сундук}.
+		]];
+	end;
+	act = function()
+		return [[
+		]];
+	end;
+	used = function(self, what)
+		-- Замок можно сломать топором, но тода на шум придёт Уорри
+		if what == wh_axe then
+
 			return [[
+			]] .. make_some_noise();
+		end;
+
+		-- Молота может не быть, если герой уже его выкупил
+		if what == wh_picklock then
+			-- Получаем молот
+			take 'smith_hammer';
+
+			return escape_from_wh() .. [[
+				Victory!
 			]];
 		end;
 	end;
 }
+wh_chest_oiled:disable()
