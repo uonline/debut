@@ -40,7 +40,6 @@ lane_action = function(act_text)
 	return act_text;
 end;
 
-
 -- Функция проверки доступности люка
 function lane_hatch_is_covered()
 	return not lane_huge_beam_shifted:disabled() or not lane_pile_of_boxes:disabled();
