@@ -50,7 +50,7 @@ lane_action = function(act_text)
 	end;
 
 	-- Кевраза выбирается из-под завала
-	if lane_counter <= 0 then
+	if _lane_counter <= 0 then
 		walk 'destroyed_in_lane';
 		return act_text .. [[
 			Звуки внутри завала становится нестерпимыми.
@@ -671,7 +671,7 @@ lane_blockage = obj {
 			перекрыв проход окончательно.
 		]];
 
-		if lane_counter < 4 then
+		if _lane_counter < 4 then
 			return '^{Завал},' .. text;
 		end;
 
