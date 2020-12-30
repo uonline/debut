@@ -1,6 +1,6 @@
 -- Переменные
-local got_dagger = false
-local maintent_countdown = 3
+_got_dagger = false;
+_maintent_countdown = 3;
 
 -- Функции
 -- Функция для обратного отсчёта до завершения игры в шатре
@@ -11,10 +11,10 @@ local deadly_act = function(act_text)
 		act_text = act_text .. "^";
 
 		-- Переводим счётчик
-		maintent_countdown = maintent_countdown - 1
+		_maintent_countdown = _maintent_countdown - 1;
 
 		-- Осталось два хода
-		if maintent_countdown == 2 then
+		if _maintent_countdown == 2 then
 			act_text = act_text .. [[
 				Твоё внимание привлекает странный хруст. Оглянувшись ты видишь
 				как урук с ятаганом разминает костяшки пальцев. Поймав твой взгляд,
@@ -24,7 +24,7 @@ local deadly_act = function(act_text)
 		end;
 
 		-- Остался один ход
-		if maintent_countdown == 1 then
+		if _maintent_countdown == 1 then
 			act_text = act_text .. [[
 				Тебя отвлекает приглушённое рычание, доносящееся из тёмного угла.
 				Скаля зубы, телохранитель намекает тебе, что его терпение на исходе.
@@ -34,7 +34,7 @@ local deadly_act = function(act_text)
 		end;
 
 		-- Урук нападают на главаря
-		if maintent_countdown <= 0 then
+		if _maintent_countdown <= 0 then
 			walk 'assassinated';
 		end;
 
@@ -105,12 +105,12 @@ big_table = obj {
 			городах Приграничья после войны. Ты пытаешься вспомнить, как называется город, но
 			тщетно. На карте тоже не разобрать.
 		]]
-		if got_dagger then
+		if _got_dagger then
 			return ret .. ' ' .. [[
 				Дыра от кинжала красуется прямо на месте названия города.
 			]]
 		else
-			got_dagger = true
+			_got_dagger = true
 			inv():add('dagger')
 			return ret .. ' ' .. [[
 				Кинжал торчит прямо в названии.
