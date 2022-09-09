@@ -73,6 +73,13 @@ function escape_from_wh()
 
 	return [[
 		Ты испугался и сбежал. Уорри тебя застукал на выходе.
+		...
+		-- Темно там у тебя, -- говоришь ты, не отрывая взгляда от арбалета.
+		^
+		-- Ты не бывал в по-настоящему чёрной комнате, -- говорит тебе Уорри,
+		-- но возможно тебе ещё это предстоит.
+		^
+		-- А теперь выаорачивай карманы!
 	]];
 end;
 
@@ -205,6 +212,8 @@ wh_trash = obj {
 wh_trash_items = obj {
 	nam = 'Беспорядок';
 	obj = {
+		'wh_table';
+		'wh_table_items';
 		'wh_board';
 		'wh_board_items';
 		'wh_floor';
@@ -215,11 +224,82 @@ wh_trash_items = obj {
 }
 wh_trash_items:disable()
 
+-- Стол
+wh_table = obj {
+	nam = 'Стол';
+	dsc = function()
+		return [[
+			{Стол}
+		]];
+	end;
+	act = function()
+		wh_table_items:enable();
+		wh_table:disable();
+	end;
+}
+
+-- Объекты на столе
+wh_table_items = obj {
+	nam = 'Объеты на столе';
+	obj = {
+		'wh_food';
+		'wh_stuff';
+		'wh_lamp';
+	};
+}
+wh_table_items:disable()
+
+-- Остатки еды
+wh_food = obj {
+	nam = 'Остатки еды';
+	dsc = [[
+		^
+		{Еда}
+	]];
+}
+
+-- Утварь
+wh_stuff = obj {
+	nam = 'Утварь';
+	dsc = [[
+		{Утварь}
+	]];
+}
+
+-- Лампа
+wh_lamp = obj {
+	nam = 'Лампа';
+	dsc = function()
+		return [[
+			{Лампа}
+		]];
+	end;
+	act = [[
+		Валяется на столе среди мусора.
+		Под ней пятно.
+		Ты вспоминаешь посиделки у Уорри...
+	]];
+	used = function(self, what)
+		if what == wh_arms then
+			take 'wh_lamp';
+			wh_food:disable();
+			wh_stuff:disable();
+
+			local text = [[
+				Ты разгребаешь хлам и берёшь лампу.
+			]];
+
+			return wh_action(text);
+		end;
+	end;
+}
+
 -- Полка
 wh_board = obj {
 	nam = 'Полка';
 	dsc = function()
 		return [[
+			^
 			{Полка}
 		]];
 	end;
@@ -231,7 +311,7 @@ wh_board = obj {
 
 -- Объекты внутри полки
 wh_board_items = obj {
-	nam = 'Объеты на полке полки';
+	nam = 'Объеты на полке';
 	obj = {
 		'wh_bottles';
 		'wh_oil';
@@ -247,7 +327,28 @@ wh_bottles = obj {
 		{Бутылки}
 	]];
 	act = [[
+		Какие-то бутылки.
 	]];
+	used = function(self, what)
+
+		if what == wh_arms then
+			wh_bottles:disable();
+
+			local text = [[
+				Ты ставишь бутылку на место и она звякает с другой.
+			]];
+
+			return wh_action(text);
+		end;
+
+		if what == wh_lamp then
+			local text = [[
+				Ты ставишь бутылку на место и она звякает с другой.
+			]];
+
+			return text;
+		end;
+	end;
 }
 
 -- Масло
@@ -552,6 +653,7 @@ wh_chest = obj {
 		]];
 	end;
 	used = function(self, what)
+
 		-- Замок можно сломать топором, но тода на шум придёт Уорри
 		if what == wh_axe then
 
