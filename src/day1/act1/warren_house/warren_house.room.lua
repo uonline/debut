@@ -10,31 +10,31 @@ wh_action = function(act_text)
 	act_text = act_text .. "^";
 
 	-- Переводим счётчик
-	_lane_counter = _lane_counter - 1;
+	_wh_counter = _wh_counter - 1;
 
 	-- Герою мерещится
-	if _lane_counter == 3 then
+	if _wh_counter == 3 then
+		act_text = act_text .. [[
+			Осталось 3 действия
+		]];
+	end;
+
+	-- Герой слышит кашель
+	if _wh_counter == 2 then
 		act_text = act_text .. [[
 			Осталось 2 действия
 		]];
 	end;
 
-	-- Герой слышит шорох
-	if _lane_counter == 2 then
-		act_text = act_text .. [[
-			Осталось 2 действия
-		]];
-	end;
-
-	-- Герой видит как завал "оживает"
-	if _lane_counter == 1 then
+	-- Герой слышит шаги
+	if _wh_counter == 1 then
 		act_text = act_text .. [[
 			Осталось 1 действие
 		]];
 	end;
 
-	-- Кевраза выбирается из-под завала
-	if _lane_counter <= 0 then
+	-- Уорри заходит в комнату
+	if _wh_counter <= 0 then
 		make_some_noise();
 		return act_text .. [[
 			GG WP!
@@ -46,7 +46,9 @@ end;
 
 -- Функция удаления предметов взятых в доме Уорри
 function drop_wh_items()
+
 	-- Удаляем предметы, подобранные в доме Уорри
+	inv():del('wh_arms');
 	inv():del('wh_oil');
 	inv():del('wh_picklock');
 	inv():del('wh_axe');
@@ -60,11 +62,24 @@ function leave_from_wh()
 	drop_wh_items();
 
 	warren_house:disable();
+	warren_house_exit:disable();
 end;
 
 -- Функция бегства из дома Уорри
 function escape_from_wh()
-	-- Если герой покидает сцену, то больше не сможет вернуться]
+	leave_from_wh();
+
+	walk 'fields';
+
+	return [[
+		Ты испугался и сбежал. Уорри тебя застукал на выходе.
+	]];
+end;
+
+-- Функция бегства из дома Уорри с добычей
+function escape_from_wh_with_loot()
+
+	-- Если герой покидает сцену, то больше не сможет вернуться
 	-- Уорри понимает, что его взломали и берёт арбалет
 	-- Герой сбегает на центральную площадь
 	-- Удивиться откуда у Уорри есть замок в двери
@@ -83,6 +98,7 @@ function make_some_noise()
 	walk 'fields';
 
 	return [[
+		Тебя застукали на горячем.
 	]];
 end;
 
@@ -103,17 +119,31 @@ warren_house = room {
 		'wh_chest_oiled';
 	};
 	way = {
-		'fields';
+		'warren_house_exit';
 	};
 	entered = function()
+		warren_house_exit:enable();
+
 		-- Удаляем отмычки
 		inv():del('picklock');
 
 		-- Даём одну отмычку
 		take 'wh_picklock';
+
+		-- Даём руки
+		take 'wh_arms';
 	end;
 }
 warren_house:disable()
+
+-- Выход из дома Уорри
+warren_house_exit = room {
+	nam = 'На улицу';
+	enter = function()
+		return [[]] .. escape_from_wh();
+	end;
+}
+warren_house_exit:disable()
 
 -- Debug
 warren_house_debug = room {
@@ -124,7 +154,9 @@ warren_house_debug = room {
 	end;
 }
 
--- * {-} Если долго ковыряться, то на действия игрока придёт Уорри и прогонит героя, заставив оставить некоторые вещи (в том числе отмычки):
+-- * {-} Если долго ковыряться,
+--   то на действия игрока придёт Уорри и прогонит героя,
+--   заставив оставить некоторые вещи (в том числе отмычки):
 --    * {-} 3 действия: достать масло, смазать замок, открыть отмычкой сундук
 --       * {-} Сразу после этого герой уходит из дома
 --       * {-} Герой может уйти из дома Уорри в любой момент (например, если он нашёл лук)
@@ -136,6 +168,20 @@ wh_picklock = obj {
 	inv = [[
 		Отмычка осталась одна...
 	]];
+}
+
+-- Руки
+wh_arms = obj {
+	nam = 'Руки';
+	inv = function()
+		return [[
+			Ты рассматриваешь свои руки словно видишь их впервые.
+			И хотя выглядят они как обысно, под кожей среди мышц и жил
+			пульсирует небывалое ощущение силы.
+			^
+			Кольцо на пальце странно переливается...
+		]];
+	end;
 }
 
 -- Беспорядок
@@ -482,6 +528,7 @@ wh_letter = obj {
 		]];
 	end;
 	tak = [[
+		Несожжённое письмо.
 	]];
 	inv = [[
 		Ммм...
@@ -545,6 +592,7 @@ wh_chest_oiled = obj {
 		]];
 	end;
 	used = function(self, what)
+
 		-- Замок можно сломать топором, но тода на шум придёт Уорри
 		if what == wh_axe then
 
@@ -552,15 +600,20 @@ wh_chest_oiled = obj {
 			]] .. make_some_noise();
 		end;
 
-		-- Молота может не быть, если герой уже его выкупил
 		if what == wh_picklock then
-			-- Получаем молот
-			take 'smith_hammer';
 
-			return escape_from_wh() .. [[
-				Victory!
-			]];
+			-- Молота может не быть, если герой уже его выкупил
+			if true then
+
+				-- Получаем молот
+				take 'smith_hammer';
+
+				return escape_from_wh_with_loot() .. [[
+					Сбежал с молотом. Но Уорри всё равно берёт арбалет.
+				]];
+			end;
 		end;
 	end;
 }
+
 wh_chest_oiled:disable()
