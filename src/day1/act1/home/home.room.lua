@@ -83,7 +83,6 @@ home = room {
 	obj = {
 		'hunting_gear';
 		'food';
-		'journal';
 		'trophies';
 		'diary';
 		'posters';
@@ -92,6 +91,7 @@ home = room {
 		'square';
 	};
 	exit = function()
+
 		-- Если в первый раз выходим из хижины без вещей,
 		-- то дополнительные диалоги у старейшины больше не появятся
 		if not _leaved_items and not have 'hunting_gear' and not have 'food' and not have 'journal' then

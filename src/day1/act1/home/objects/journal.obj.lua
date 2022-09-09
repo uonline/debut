@@ -26,9 +26,13 @@ journal = obj {
 		поставив его в известность. Пожалуй, она у тебя задержалась.
 	]];
 }
+journal:disable()
 
+-- Test
+-- Переделать событие на другое действие в Хижине
 on_event('journal taken', function()
 	if not have 'food' and not have 'hunting_gear' and not _leaved_items then
+
 		-- Включаем диалог у старейшины
 		elder_dlg:pon('some_journal_subject');
 	end;

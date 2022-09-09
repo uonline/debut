@@ -353,6 +353,7 @@ wh_dark_room_side_items = obj {
 		'wh_book_shelf';
 		'wh_book_shelf_items';
 		'wh_bed';
+		'journal';
 		'wh_stove';
 		'wh_letter';
 	};
@@ -498,6 +499,7 @@ wh_bed = obj {
 	]];
 	act = function()
 		wh_stove:enable();
+		journal:enable();
 
 		return [[
 		]];
