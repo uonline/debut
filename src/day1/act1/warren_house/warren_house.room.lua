@@ -291,7 +291,26 @@ wh_lamp = obj {
 
 			return wh_action(text);
 		end;
+
+		if what == wh_oil then
+			inv():del('wh_oil');
+			inv():del('wh_lamp');
+
+			take 'wh_lamp_fired';
+
+			return [[
+				Зажигаешь лампу как это делал Уорри.
+			]];
+		end;
 	end;
+}
+
+-- Лампа зажённая
+wh_lamp_fired = obj {
+	nam = 'Зажённая лампа';
+	inv = [[
+		Гори гори моя звезда...
+	]];
 }
 
 -- Полка
@@ -341,9 +360,9 @@ wh_bottles = obj {
 			return wh_action(text);
 		end;
 
-		if what == wh_lamp then
+		if what == wh_lamp_fired then
 			local text = [[
-				Ты ставишь бутылку на место и она звякает с другой.
+				Ты ставишь бутылку на место.
 			]];
 
 			return text;
@@ -359,13 +378,28 @@ wh_oil = obj {
 			{Масло}
 		]];
 	end;
-	tak = [[
+	act = [[
+		Масло же...
 	]];
 	inv = [[
+		?
 	]];
+	used = function(self, what)
+
+		if what == wh_arms then
+			take 'wh_oil';
+
+			local text = [[
+				Ты прячешь берёшь масло себе.
+			]];
+
+			return wh_action(text);
+		end;
+	end;
 }
 
 -- Склянки
+-- Обжигают, когда трясёшь
 wh_flasks = obj {
 	nam = 'Склянки';
 	dsc = [[
@@ -382,8 +416,30 @@ wh_floor = obj {
 		^
 		{Пол}
 	]];
-	act = function()
-		wh_floor_items:enable();
+	act = [[
+		Ничего не разобрать что здесь, хоть опускайся на
+		карачки и щупай руками.
+	]];
+	used = function(self, what)
+		if what == wh_arms then
+			wh_floor:disable();
+			wh_floor_items:enable();
+			wh_subfield_hatch:disable();
+
+			return [[
+				Ты поползал по полу...
+			]];
+		end;
+
+		if what == wh_lamp_fired then
+			wh_floor:disable();
+			wh_floor_items:enable();
+
+			return [[
+				Тебе удалось разглядеть что-то интересное...
+			]];
+		end;
+
 		wh_floor:disable()
 	end;
 }
@@ -419,6 +475,7 @@ wh_bolts = obj {
 		{Колчан с болтами}
 	]];
 	act = [[
+		Тебя пронзает мысль, что у Уорри был арбалет.
 	]];
 }
 
@@ -429,6 +486,8 @@ wh_mallet = obj {
 		{Киянка}
 	]];
 	act = [[
+		По началу ты ликуешь, но это всего лишь киянка,
+		а не молот.
 	]];
 }
 
@@ -470,10 +529,66 @@ wh_wall_side = obj {
 	dsc = [[
 		{Стена}
 	]];
-	act = function()
-		wh_wall_side_items:enable();
-		wh_wall_side:disable();
+	act = [[
+		Странные силуэты на стене.
+	]];
+	used = function(self, what)
+		if what == wh_arms then
+			wh_wall_side_items:enable();
+			wh_empty_mount:disable();
+			wh_goblin_skull:disable();
+			wh_wall_side:disable();
+
+			return [[
+				Пощупал стену.
+			]];
+		end;
+
+		if what == wh_lamp_fired then
+			wh_wall_side_items:enable();
+			wh_wall_side:disable();
+
+			return [[
+				Посветил на стену.
+			]];
+		end;
 	end;
+}
+
+-- Предметы на стене
+wh_wall_side_items = obj {
+	nam = 'Предметы на стене';
+	obj = {
+		'wh_axe';
+		'wh_sword';
+		'wh_empty_mount';
+		'wh_goblin_skull';
+	};
+	dsc = [[
+	]];
+}
+wh_wall_side_items:disable()
+
+-- Топор
+wh_axe = obj {
+	nam = 'Топор';
+	dsc = function()
+		return [[
+			{Топор}
+		]];
+	end;
+	tak = [[
+	]];
+	inv = [[
+	]];
+}
+
+-- Ятаган
+wh_sword = obj {
+	nam = 'Ятаган';
+	dsc = [[
+		{Ятаган}
+	]];
 }
 
 -- Предметы на стене
@@ -541,9 +656,28 @@ wh_book_shelf = obj {
 		^
 		{Книжная полка}
 	]];
-	act = function()
-		wh_book_shelf_items:enable();
-		wh_book_shelf:disable();
+	act = [[
+		...
+	]];
+	used = function(self,what)
+		if what == wh_arms then
+			wh_book_shelf:disable();
+
+			local text = [[
+				Всё упало, книгу оставшуся у тебя в руке невозможно прочитать...
+			]];
+
+			return wh_action(text);
+		end;
+
+		if what == wh_lamp_fired then
+			wh_book_shelf_items:enable();
+			wh_book_shelf:disable();
+
+			return [[
+				...
+			]];
+		end;
 	end;
 }
 
@@ -568,6 +702,15 @@ wh_book = obj {
 		{Книга}
 	]];
 	act = [[
+		Что такое Вождь для человека?
+		Это звезда в бесконечной черноте космоса,
+		это огонь в адской бездне.
+		Свет его ослепляет и человек готов совершать
+		любые подвиги, любые бесчинства, любые зверства.
+		Если хотите остаться человеком, гасите звёзды и тушите огонь
+		в своём сознании.
+		^
+		Стремитесь остаться со мраком наедине.
 	]];
 }
 
