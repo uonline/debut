@@ -1,9 +1,9 @@
 -- Переменные глобальные
 _bazaar_old_woman_is_burned = false
 -- Переменные локации
-local _thief_leader_quest = false
-local _thief_leader_has_gotten_help = false
-local _orc_is_angry = false
+_thief_leader_quest = false
+_thief_leader_has_gotten_help = false
+_orc_is_angry = false
 
 -- Переходы
 bazaar_to_lane = vroom('На встречу с торгашом', 'lane')

@@ -3,7 +3,7 @@ sewer_to_collector = vroom('В укрытие старика', 'collector')
 sewer_to_guild_camp = vroom('Лагерь подполья', 'guild_camp')
 sewer_to_collector:disable()
 sewer_to_guild_camp:disable()
-local sewer_entered = false
+_sewer_entered = false
 
 -- Локация
 sewer = room {
@@ -28,12 +28,12 @@ sewer = room {
 	};
 	entered = function()
 		-- Поверяем не заходил ли уже игрок на эту локацию
-		if not sewer_entered then
+		if not _sewer_entered then
 			-- Clear inventory, add whitelisted items
 			inv():zap();
 			inv():add('capitan_docs');
 			inv():add('black_coin');
-			sewer_entered = true;
+			_sewer_entered = true;
 		end;
 	end;
 }
